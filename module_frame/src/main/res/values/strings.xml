@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">module_frame</string>
+    <string name="network_exception">网络错误</string>
+    <string name="connect_exception">连接失败</string>
+    <string name="parse_json_exception">json解析失败</string>
+    <string name="parse_host_exception">无法解析该域名</string>
+</resources>
