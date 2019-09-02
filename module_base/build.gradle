@@ -26,11 +26,10 @@ android {
 }
 
 dependencies {
-    implementation project(':module_frame')
+    api project(':module_frame')
     //Arouter路由
     annotationProcessor rootProject.ext.dependencies["arouter_compiler"]
     kapt rootProject.ext.dependencies["arouter_compiler"]
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {
     mavenCentral()
