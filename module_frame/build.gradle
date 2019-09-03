@@ -53,6 +53,9 @@ dependencies {
     api rootProject.ext.dependencies["support-v4"]
     api rootProject.ext.dependencies["design"]
     api rootProject.ext.dependencies["support_annotations"]
+
+    //kotlin
+    api rootProject.ext.dependencies["kotlin"]
     //协程
     api rootProject.ext.dependencies["kotlinx-coroutines"]
 
@@ -86,9 +89,9 @@ dependencies {
     //MultiDex分包方法
     api rootProject.ext.dependencies["multidex"]
 
-    //kotlin
-    api rootProject.ext.dependencies["kotlin"]
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //greenDao
+    api rootProject.ext.dependencies["greenDao"]
+    api rootProject.ext.dependencies["greenDaoHelper"]
 }
 repositories {
     mavenCentral()

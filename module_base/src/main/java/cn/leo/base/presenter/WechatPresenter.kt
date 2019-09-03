@@ -2,7 +2,7 @@ package cn.leo.base.presenter
 
 import android.support.v7.app.AppCompatActivity
 import cn.leo.base.model.WechatModel
-import cn.leo.base.toast
+import cn.leo.base.utils.toast
 import cn.leo.frame.network.JLPresenter
 
 /**

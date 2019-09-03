@@ -1,4 +1,4 @@
-package cn.leo.base
+package cn.leo.base.utils
 
 import android.content.Context
 import android.support.annotation.StringRes
