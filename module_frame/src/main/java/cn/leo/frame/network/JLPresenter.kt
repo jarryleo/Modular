@@ -2,6 +2,7 @@ package cn.leo.frame.network
 
 import android.arch.lifecycle.*
 import android.os.Looper
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @author : ling luo
@@ -12,11 +13,18 @@ open class JLPresenter<V : LifecycleOwner>(protected val mView: V) : LifecycleOb
         mView.lifecycle.addObserver(this)
     }
 
+    val modelCache = ConcurrentHashMap<Class<*>, ViewModel>()
     /**
      * 获取ViewModel
      */
     inline fun <reified T : ViewModel> model(): T {
-        return ViewModelProvider.NewInstanceFactory().create(T::class.java)
+        return if (modelCache.containsKey(T::class.java)) {
+            modelCache[T::class.java] as T
+        } else {
+            ViewModelProvider.NewInstanceFactory().create(T::class.java).apply {
+                modelCache[T::class.java] = this
+            }
+        }
     }
 
 
@@ -57,5 +65,6 @@ open class JLPresenter<V : LifecycleOwner>(protected val mView: V) : LifecycleOb
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun onDestroy() {
+        modelCache.clear()
     }
 }
