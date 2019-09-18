@@ -1,6 +1,7 @@
 package cn.leo.frame.network
 
 import android.app.Application
+import cn.leo.frame.log.Logger
 
 /**
  * @author : ling luo
@@ -10,5 +11,6 @@ object JL {
     lateinit var context:Application
     fun init(application: Application){
         context = application
+        Logger.init(application)
     }
 }

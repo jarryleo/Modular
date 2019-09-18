@@ -13,17 +13,19 @@ open class JLPresenter<V : LifecycleOwner>(protected val mView: V) : LifecycleOb
         mView.lifecycle.addObserver(this)
     }
 
-    val modelCache = ConcurrentHashMap<Class<*>, ViewModel>()
+    val modelCache = ConcurrentHashMap<Class<*>, JLModel<*>>()
     /**
      * 获取ViewModel
      */
-    inline fun <reified T : ViewModel> model(): T {
+    inline fun <reified T : JLModel<*>> model(): T {
         return if (modelCache.containsKey(T::class.java)) {
             modelCache[T::class.java] as T
         } else {
             ViewModelProvider.NewInstanceFactory().create(T::class.java).apply {
                 modelCache[T::class.java] = this
             }
+        }.apply {
+            this.modelLifeOwner = getView
         }
     }
 
@@ -67,4 +69,8 @@ open class JLPresenter<V : LifecycleOwner>(protected val mView: V) : LifecycleOb
     open fun onDestroy() {
         modelCache.clear()
     }
+
+    @PublishedApi
+    internal val getView: V
+        get() = mView
 }

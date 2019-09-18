@@ -3,6 +3,7 @@ package cn.leo.frame.network
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
+import cn.leo.frame.log.toLogE
 import cn.leo.frame.network.exceptions.ApiException
 
 /**
@@ -11,6 +12,26 @@ import cn.leo.frame.network.exceptions.ApiException
  */
 open class JLLiveData<T> : MutableLiveData<JLLiveData.Wrapper<T>>() {
 
+    var liveDataLifecycleOwner: LifecycleOwner? = null
+
+    var mError: (e: ApiException?) -> Unit = {}
+    var mFailed: (value: T?) -> Unit = {}
+    var mFailedOrError: () -> Unit = {}
+    var mSuccess: (value: T?) -> Unit = {}
+
+    private val observer = Observer<Wrapper<T>> {
+        when (it) {
+            is Wrapper.Error -> {
+                mError(it.exception)
+                mFailedOrError()
+            }
+            is Wrapper.Failed -> {
+                mFailed(it.data)
+                mFailedOrError()
+            }
+            is Wrapper.Success -> mSuccess(it.data)
+        }
+    }
 
     open fun success(value: T) {
         super.postValue(Wrapper.Success(value))
@@ -24,33 +45,33 @@ open class JLLiveData<T> : MutableLiveData<JLLiveData.Wrapper<T>>() {
         super.postValue(Wrapper.Error(e))
     }
 
+
     fun observe(
-        owner: LifecycleOwner,
         error: (e: ApiException?) -> Unit = {},
         failed: (value: T?) -> Unit = {},
+        failedOrError: () -> Unit = {},
         success: (value: T?) -> Unit = {}
     ) {
-        super.observe(owner, Observer<Wrapper<T>> {
-            when (it) {
-                is Wrapper.Error -> error(it.exception)
-                is Wrapper.Failed -> failed(it.data)
-                is Wrapper.Success -> success(it.data)
-            }
-        })
+        super.removeObserver(observer)
+        mError = error
+        mFailed = failed
+        mFailedOrError = failedOrError
+        mSuccess = success
+        super.observe(liveDataLifecycleOwner!!, observer)
     }
 
     fun observeForever(
         error: (e: ApiException?) -> Unit = {},
         failed: (value: T?) -> Unit = {},
+        failedOrError: () -> Unit = {},
         success: (value: T?) -> Unit = {}
     ) {
-        super.observeForever(Observer<Wrapper<T>> {
-            when (it) {
-                is Wrapper.Error -> error(it.exception)
-                is Wrapper.Failed -> failed(it.data)
-                is Wrapper.Success -> success(it.data)
-            }
-        })
+        super.removeObserver(observer)
+        mError = error
+        mFailed = failed
+        mFailedOrError = failedOrError
+        mSuccess = success
+        super.observeForever(observer)
     }
 
     sealed class Wrapper<T>(val data: T?) {

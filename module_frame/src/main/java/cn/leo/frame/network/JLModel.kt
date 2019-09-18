@@ -1,7 +1,7 @@
 package cn.leo.frame.network
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.ViewModel
-import cn.leo.frame.network.OkHttp3Builder
 import cn.leo.frame.network.exceptions.ApiException
 import cn.leo.frame.network.exceptions.FactoryException
 import cn.leo.frame.network.interceptor.CacheInterceptor
@@ -18,6 +18,8 @@ abstract class JLModel<T> : ViewModel() {
     companion object {
         private val apiMap = ConcurrentHashMap<Class<*>, Any>()
     }
+
+    var modelLifeOwner: LifecycleOwner? = null
 
     @Suppress("UNCHECKED_CAST")
     protected val api: T
@@ -70,13 +72,23 @@ abstract class JLModel<T> : ViewModel() {
     }
 
 
-    protected fun <R> Deferred<R>.request(
+    /**
+     * 协程执行网络请求，并把结果给上层的LiveData
+     * @param isFailed 根据上层的返回值判断是否是失败的请求
+     */
+    protected fun <R : Any> Deferred<R>.request(
         jlLiveData: JLLiveData<R>,
         isFailed: (R) -> Boolean = { false }
     ): Job {
+        jlLiveData.liveDataLifecycleOwner = modelLifeOwner
         return scope.launch {
             try {
                 val result = this@request.await()
+                JLNet.interceptors.forEach {
+                    if (it.intercept(result, jlLiveData)) {
+                        return@launch
+                    }
+                }
                 if (isFailed(result)) {
                     jlLiveData.failed(result)
                 } else {
@@ -87,6 +99,30 @@ abstract class JLModel<T> : ViewModel() {
                 jlLiveData.error(FactoryException.analysisException(e))
             }
         }
+    }
+
+
+    /**
+     * 直接返回JLLiveData 的请求
+     */
+    protected fun <R : Any> Deferred<R>.request(): JLLiveData<R> {
+        val liveData = JLLiveData<R>()
+        liveData.liveDataLifecycleOwner = modelLifeOwner
+        scope.launch {
+            try {
+                val result = this@request.await()
+                JLNet.interceptors.forEach {
+                    if (it.intercept(result, liveData)) {
+                        return@launch
+                    }
+                }
+                liveData.success(result)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                liveData.error(FactoryException.analysisException(e))
+            }
+        }
+        return liveData
     }
 
     /**
