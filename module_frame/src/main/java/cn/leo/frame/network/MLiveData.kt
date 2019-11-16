@@ -1,64 +1,89 @@
 package cn.leo.frame.network
 
-import androidx.lifecycle.*
+import android.os.Bundle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 import cn.leo.frame.network.exceptions.ApiException
 
 /**
  * @author : ling luo
  * @date : 2019-07-03
  */
-open class MLiveData<T> : MutableLiveData<MLiveData.Wrapper<T>>() {
+open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
 
     lateinit var mLifecycleOwner: LifecycleOwner
-    var mFailed: (e: ApiException) -> Unit = {}
-    var mSuccess: (value: T) -> Unit = {}
+    var mResult: (result: Result<T>) -> Unit = {}
 
-    private val observer = Observer<Wrapper<T>> {
-        when (it) {
-            is Wrapper.Failed -> mFailed(it.exception)
-            is Wrapper.Success -> mSuccess(it.data)
-        }
+    private val observer = Observer<Result<T>> {
+        mResult(it)
     }
 
-    open fun success(value: T) {
-        super.postValue(Wrapper.Success(value))
+    open fun success(value: T, bundle: Bundle? = null) {
+        super.postValue(Result.Success(value).apply { this.bundle = bundle })
     }
 
-    open fun failed(e: Exception) {
+    open fun failed(e: Exception, bundle: Bundle? = null) {
         if (e is ApiException) {
-            super.postValue(Wrapper.Failed(e))
+            val failed = Result.Failed<T>(e)
+            failed.bundle = bundle
+            super.postValue(failed)
         } else {
-            super.postValue(Wrapper.Failed(ApiException(e)))
+            val failed = Result.Failed<T>(ApiException(e))
+            failed.bundle = bundle
+            super.postValue(failed)
         }
     }
 
 
     fun observe(
-        failed: (e: ApiException) -> Unit = {},
-        success: (value: T) -> Unit = {}
+        result: (Result<T>).() -> Unit = {}
     ) {
-        //super.removeObserver(observer)
-        mFailed = failed
-        mSuccess = success
+        mResult = result
         super.observe(mLifecycleOwner, observer)
     }
 
     fun observeForever(
-        failed: (e: ApiException) -> Unit = {},
-        success: (value: T) -> Unit = {}
+        result: (Result<T>).() -> Unit = {}
     ) {
-        //super.removeObserver(observer)
-        mFailed = failed
-        mSuccess = success
+        mResult = result
         super.observeForever(observer)
     }
 
-    fun <R> map(mapFunction: (input: Wrapper<T>) -> R): LiveData<R> {
-        return Transformations.map(this, mapFunction)
+    fun <R> map(mapFunction: (input: T) -> R): MLiveData<R> {
+        val newLiveData = MLiveData<R>()
+        newLiveData.mLifecycleOwner = mLifecycleOwner
+        newLiveData.addSource(this) {
+            when (it) {
+                is Result.Failed -> {
+                    val failed = Result.Failed<R>(it.exception)
+                    failed.bundle = it.bundle
+                    newLiveData.postValue(failed)
+                }
+                is Result.Success -> {
+                    val success = Result.Success(mapFunction(it.data))
+                    success.bundle = it.bundle
+                    newLiveData.postValue(success)
+                }
+            }
+        }
+        return newLiveData
     }
 
-    sealed class Wrapper<T> {
-        class Success<T>(val data: T) : Wrapper<T>()
-        class Failed<T>(var exception: ApiException) : Wrapper<T>()
+    sealed class Result<T> {
+        var bundle: Bundle? = null
+
+        class Success<T>(val data: T) : Result<T>()
+        class Failed<T>(var exception: ApiException) : Result<T>()
+
+        fun get(
+            failed: (exception: ApiException) -> Unit = {},
+            success: (data: T) -> Unit = {}
+        ) {
+            when (this) {
+                is Success -> success(data)
+                is Failed -> failed(exception)
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 package cn.leo.frame.network
 
-import cn.leo.frame.network.exceptions.ApiException
+import android.os.Bundle
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import java.lang.reflect.Proxy
@@ -25,37 +25,35 @@ class ViewModelHelper<T : Any>(val apis: T) :
         return this
     }
 
-    inline fun <reified R : Any> request(deferred: Deferred<R>): Job {
-        return model.executeRequest(deferred, getLiveData())
+    inline fun <reified R : Any> request(bundle: Bundle? = null, deferred: Deferred<R>): Job {
+        return model.executeRequest(bundle, deferred, getLiveData())
     }
 
-    inline fun <reified R : Any> apis(api: T.() -> Deferred<R>): Job {
-        return request(api(apis))
+    inline fun <reified R : Any> apis(bundle: Bundle? = null, api: T.() -> Deferred<R>): Job {
+        return request(bundle, api(apis))
     }
 
-    inline fun <reified R : Any> apis(): T {
+    inline fun <reified R : Any> apis(bundle: Bundle? = null): T {
         return Proxy.newProxyInstance(
             javaClass.classLoader,
             arrayOf(*apis.javaClass.interfaces)
         ) { _, method, args ->
             val deferred = method.invoke(apis, *args) as Deferred<R>
-            request(deferred)
+            request(bundle, deferred)
             return@newProxyInstance deferred
         } as T
     }
 
     inline fun <reified R : Any> observe(
-        noinline failed: (e: ApiException) -> Unit = {},
-        noinline success: (value: R) -> Unit = {}
+        noinline result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        getLiveData<R>().observe(failed, success)
+        getLiveData<R>().observe(result)
     }
 
     inline fun <reified R : Any> observeForever(
-        noinline failed: (e: ApiException) -> Unit = {},
-        noinline success: (value: R) -> Unit = {}
+        noinline result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        getLiveData<R>().observeForever(failed, success)
+        getLiveData<R>().observeForever(result)
     }
 
     inline fun <reified R : Any> getLiveData(): MLiveData<R> {

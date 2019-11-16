@@ -1,5 +1,6 @@
 package cn.leo.frame.network
 
+import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import cn.leo.frame.network.interceptor.CacheInterceptor
@@ -63,26 +64,31 @@ abstract class MModel<T : Any> : ViewModel() {
      * 协程执行网络请求，并把结果给上层的LiveData
      */
     protected fun <R : Any> Deferred<R>.request(
+        bundle: Bundle? = null,
         mLiveData: MLiveData<R>
     ): Job {
         return scope.launch {
             try {
                 val result = this@request.await()
                 JLNet.interceptors.forEach {
-                    if (it.intercept(result, mLiveData)) {
+                    if (it.intercept(bundle, result, mLiveData)) {
                         return@launch
                     }
                 }
-                mLiveData.success(result)
+                mLiveData.success(result, bundle)
             } catch (e: Exception) {
                 e.printStackTrace()
-                mLiveData.failed(e)
+                mLiveData.failed(e, bundle)
             }
         }
     }
 
-    fun <R : Any> executeRequest(deferred: Deferred<R>, liveData: MLiveData<R>): Job {
-        return deferred.request(liveData)
+    fun <R : Any> executeRequest(
+        bundle: Bundle? = null,
+        deferred: Deferred<R>,
+        liveData: MLiveData<R>
+    ): Job {
+        return deferred.request(bundle, liveData)
     }
 
 }
