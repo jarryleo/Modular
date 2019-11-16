@@ -1,6 +1,6 @@
 package cn.leo.base
 
-import android.support.multidex.MultiDexApplication
+import androidx.multidex.MultiDexApplication
 import cn.leo.base.db.helper.DBHelper
 import cn.leo.frame.network.JL
 import cn.leo.frame.network.JLNet
@@ -14,6 +14,6 @@ open class BaseApplication : MultiDexApplication() {
         super.onCreate()
         JL.init(this)
         DBHelper.initGreenDao(this)
-        JLNet.addInterceptor(MyInterceptor())
+        //JLNet.addInterceptor(MyInterceptor())
     }
 }

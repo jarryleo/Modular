@@ -1,6 +1,6 @@
 package cn.leo.frame.network.exceptions
 
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 
 /**
  * @author : ling luo
@@ -8,7 +8,7 @@ import android.support.annotation.IntDef
  */
 object CodeException {
     /*网络错误*/
-    const val NETWORD_ERROR = 0x1
+    const val NETWORK_ERROR = 0x1
     /*http_错误*/
     const val HTTP_ERROR = 0x2
     /*json错误*/
@@ -18,10 +18,10 @@ object CodeException {
     /*运行时异常-包含自定义异常*/
     const val RUNTIME_ERROR = 0x5
     /*无法解析该域名*/
-    const val UNKOWNHOST_ERROR = 0x6
+    const val UNKOWN_HOST_ERROR = 0x6
 
 
-    @IntDef(NETWORD_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWNHOST_ERROR)
+    @IntDef(NETWORK_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWN_HOST_ERROR)
     @Retention(AnnotationRetention.SOURCE)
     annotation class CodeEp
 }

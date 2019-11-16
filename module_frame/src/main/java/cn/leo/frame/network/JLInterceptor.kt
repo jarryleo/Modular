@@ -5,8 +5,11 @@ package cn.leo.frame.network
  * @date : 2019-09-17
  */
 
-interface JLInterceptor{
-   fun <T:Any> intercept(data:T,liveData: JLLiveData<T>):Boolean{
-       return false
-   }
+interface JLInterceptor {
+    /**
+     * @return 返回true 拦截
+     */
+    fun <T : Any> intercept(data: T, liveData: MLiveData<T>): Boolean {
+        return false
+    }
 }

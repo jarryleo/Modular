@@ -2,9 +2,11 @@ package cn.leo.frame.network.interceptor
 
 
 import android.util.Log
-import okhttp3.*
+import cn.leo.frame.network.sign.UrlUtil
+import okhttp3.Interceptor
+import okhttp3.RequestBody
+import okhttp3.Response
 import okio.Buffer
-
 import java.io.IOException
 import java.nio.charset.Charset
 
@@ -31,9 +33,10 @@ class LoggerInterceptor : Interceptor {
         source.request(Integer.MAX_VALUE.toLong())
         val buffer = source.buffer()
         //接口数据大于16K不显示
-        if (buffer.size() > 1024 * 16) {
+        if (buffer.size() > 1024 * 32) {
             Log.d(
-                TAG, request.url().toString() + "请求返回：| (长度:" + buffer.size()
+                TAG, UrlUtil.getBaseUrl(request.url().toString())
+                        + "请求返回：| (长度:" + buffer.size()
                         + ")大于16K不打印,点击链接在网页查看"
             )
             return response

@@ -1,6 +1,6 @@
 package cn.leo.frame.network
 
-import android.arch.lifecycle.*
+import androidx.lifecycle.*
 import android.os.Looper
 import java.util.concurrent.ConcurrentHashMap
 
@@ -13,11 +13,11 @@ open class JLPresenter<V : LifecycleOwner>(protected val mView: V) : LifecycleOb
         mView.lifecycle.addObserver(this)
     }
 
-    val modelCache = ConcurrentHashMap<Class<*>, JLModel<*>>()
+    val modelCache = ConcurrentHashMap<Class<*>, MModel<*>>()
     /**
      * 获取ViewModel
      */
-    inline fun <reified T : JLModel<*>> model(): T {
+    inline fun <reified T : MModel<*>> model(): T {
         return if (modelCache.containsKey(T::class.java)) {
             modelCache[T::class.java] as T
         } else {
@@ -25,7 +25,7 @@ open class JLPresenter<V : LifecycleOwner>(protected val mView: V) : LifecycleOb
                 modelCache[T::class.java] = this
             }
         }.apply {
-            this.modelLifeOwner = getView
+            this.mLifecycleOwner = getView
         }
     }
 

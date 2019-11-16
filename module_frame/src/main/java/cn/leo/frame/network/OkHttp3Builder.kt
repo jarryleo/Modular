@@ -1,24 +1,22 @@
 package cn.leo.frame.network
 
 import cn.leo.frame.BuildConfig
-import cn.leo.frame.network.JL
 import cn.leo.frame.network.interceptor.LoggerInterceptor
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-
-import javax.net.ssl.*
 import java.io.File
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
-import java.util.ArrayList
+import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.*
 
 /**
  * Created by Leo on 2018/1/4.
  */
 
-class OkHttp3Builder() {
+class OkHttp3Builder {
     private var mCacheDir: File = JL.context.cacheDir
     private val mInterceptorList = ArrayList<Interceptor>()
     fun connectTimeout(timeout: Int): OkHttp3Builder {

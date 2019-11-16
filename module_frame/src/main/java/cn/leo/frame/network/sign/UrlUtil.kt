@@ -1,6 +1,6 @@
 package cn.leo.frame.network.sign
 
-import java.util.TreeMap
+import java.util.*
 
 
 /**
@@ -21,7 +21,8 @@ object UrlUtil {
         if (splitBp.size > 1) {
             val paramStr = splitBp[1]
             //获取每个参数的键值对
-            val singleParam = paramStr.split("&".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val singleParam =
+                paramStr.split("&".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             for (s in singleParam) {
                 //把键值对拆开获取键和值
                 val param = s.split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()

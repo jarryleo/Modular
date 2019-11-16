@@ -15,10 +15,10 @@ import java.net.UnknownHostException
  * @date : 2019-04-26
  */
 object FactoryException {
-    val HttpException_MSG = ResUtil.getString(R.string.network_exception)
-    val ConnectException_MSG = ResUtil.getString(R.string.connect_exception)
-    val JSONException_MSG = ResUtil.getString(R.string.parse_json_exception)
-    val UnknownHostException_MSG = ResUtil.getString(R.string.parse_host_exception)
+    private val HttpException_MSG = ResUtil.getString(R.string.network_exception)
+    private val ConnectException_MSG = ResUtil.getString(R.string.connect_exception)
+    private val JSONException_MSG = ResUtil.getString(R.string.parse_json_exception)
+    private val UnknownHostException_MSG = ResUtil.getString(R.string.parse_host_exception)
 
     /**
      * 解析异常
@@ -53,7 +53,7 @@ object FactoryException {
             apiException.displayMessage = JSONException_MSG
         } else if (e is UnknownHostException) {
             /*无法解析该域名异常*/
-            apiException.code = CodeException.UNKOWNHOST_ERROR
+            apiException.code = CodeException.UNKOWN_HOST_ERROR
             apiException.displayMessage = UnknownHostException_MSG
         } else {
             /*未知异常*/

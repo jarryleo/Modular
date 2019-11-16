@@ -2,7 +2,7 @@ package cn.leo.frame.image
 
 import android.app.Activity
 import android.content.Context
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import android.widget.ImageView
 import cn.leo.frame.utils.UIUtil
 import com.bumptech.glide.Glide

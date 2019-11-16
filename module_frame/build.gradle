@@ -11,7 +11,7 @@ android {
         targetSdkVersion rootProject.ext.versions["targetSdkVersion"]
         versionCode rootProject.ext.versions["versionCode"]
         versionName rootProject.ext.versions["versionName"]
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
@@ -92,6 +92,7 @@ dependencies {
     //greenDao
     api rootProject.ext.dependencies["greenDao"]
     api rootProject.ext.dependencies["greenDaoHelper"]
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc02'
 }
 repositories {
     mavenCentral()
