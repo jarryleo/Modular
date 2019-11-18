@@ -46,6 +46,9 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
         super.observeForever(getObserver(result))
     }
 
+    /**
+     * LiveData 类型转换，类似与RxJava的map
+     */
     fun <R> map(mapFunction: (input: T) -> R): MLiveData<R> {
         val newLiveData = MLiveData<R>()
         newLiveData.addSource(this) {

@@ -26,6 +26,9 @@ class ViewModelHelper<T : Any>(val apis: T) :
         return this
     }
 
+    /**
+     * 发起请求
+     */
     inline fun <reified R : Any> request(
         deferred: Deferred<R>,
         obj: Any? = null,
@@ -34,6 +37,12 @@ class ViewModelHelper<T : Any>(val apis: T) :
         return model.executeRequest(deferred, getLiveData(flag), obj)
     }
 
+    /**
+     * 建议使用此方法实现网络请求
+     * @param obj 请求携带附加数据，会在回调监听里原样返回，适合list条目数据变化，记录条目位置等
+     * @param flag 多个请求返回相同类型对象的时候附加 标记，区分是哪个请求
+     *
+     */
     inline fun <reified R : Any> apis(
         obj: Any? = null,
         flag: String = "",
@@ -42,6 +51,10 @@ class ViewModelHelper<T : Any>(val apis: T) :
         return request(api(apis), obj, flag)
     }
 
+
+    /**
+     * 性能较低，不建议使用
+     */
     inline fun <reified R : Any> apis(obj: Any? = null, flag: String = ""): T {
         return Proxy.newProxyInstance(
             javaClass.classLoader,
@@ -53,6 +66,10 @@ class ViewModelHelper<T : Any>(val apis: T) :
         } as T
     }
 
+    /**
+     * 监听请求回调
+     * @param flag 多个请求返回相同类型对象的时候附加 标记，区分是哪个请求
+     */
     inline fun <reified R : Any> observe(
         lifecycleOwner: LifecycleOwner,
         flag: String = "",
@@ -61,6 +78,9 @@ class ViewModelHelper<T : Any>(val apis: T) :
         getLiveData<R>(flag).observe(lifecycleOwner, result)
     }
 
+    /**
+     * 无生命周期的监听，谨慎使用，防止泄露
+     */
     inline fun <reified R : Any> observeForever(
         flag: String = "",
         noinline result: (MLiveData.Result<R>).() -> Unit = {}
@@ -68,6 +88,9 @@ class ViewModelHelper<T : Any>(val apis: T) :
         getLiveData<R>(flag).observeForever(result)
     }
 
+    /**
+     * 获取LiveData
+     */
     inline fun <reified R : Any> getLiveData(flag: String = ""): MLiveData<R> {
         val key = R::class.java.name + flag
         Logger.d("LiveData key  = $key")

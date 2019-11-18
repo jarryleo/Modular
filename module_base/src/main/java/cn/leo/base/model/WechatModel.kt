@@ -10,7 +10,11 @@ import kotlinx.coroutines.delay
 class WechatModel : BaseModel() {
 
     fun test(id: Int) = async {
-        id + 1
+        add() + id
+    }
+
+    fun add(): Int {
+        return 3
     }
 
 
