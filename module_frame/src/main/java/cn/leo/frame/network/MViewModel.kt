@@ -1,10 +1,13 @@
 package cn.leo.frame.network
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import cn.leo.frame.log.Logger
 import cn.leo.frame.network.interceptor.CacheInterceptor
 import cn.leo.frame.utils.ClassUtils
 import kotlinx.coroutines.*
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KFunction
 
 /**
  * @author : ling luo
@@ -59,7 +62,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
     /**
      * 协程执行网络请求，并把结果给上层的LiveData
      */
-    protected fun <R : Any> Deferred<R>.request(
+    fun <R : Any> Deferred<R>.request(
         obj: Any? = null,
         liveData: MLiveData<R>
     ): Job {
@@ -80,11 +83,49 @@ abstract class MViewModel<T : Any> : ViewModel() {
     }
 
     fun <R : Any> executeRequest(
-        obj: Any? = null,
         deferred: Deferred<R>,
-        liveData: MLiveData<R>
+        liveData: MLiveData<R>,
+        obj: Any? = null
     ): Job {
         return deferred.request(obj, liveData)
+    }
+
+    /**
+     * 异步方法
+     */
+    inline fun <reified R : Any> async(
+        crossinline block: suspend CoroutineScope.() -> R
+    ): MJob<R> {
+        //获取当前方法名称
+        val methodName =
+            Thread.currentThread().stackTrace.find {
+                it.className == this::class.java.name
+            }?.methodName
+        Logger.d("methodName = $methodName")
+
+        //异步协程
+        val deferred = GlobalScope.async(
+            context = Dispatchers.IO,
+            start = CoroutineStart.LAZY
+        ) {
+            block()
+        }
+        //执行
+        val job = executeRequest(deferred, request.getLiveData(methodName ?: ""))
+        return MJob(job)
+    }
+
+
+    /**
+     * 订阅异步方法回调
+     * @param kFunction 参数写法 model::test
+     */
+    inline fun <reified R : Any> observe(
+        lifecycleOwner: LifecycleOwner,
+        kFunction: KFunction<MJob<R>>,
+        noinline result: (MLiveData.Result<R>).() -> Unit = {}
+    ) {
+        request.getLiveData<R>(kFunction.name).observe(lifecycleOwner, result)
     }
 
 }

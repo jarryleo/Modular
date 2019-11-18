@@ -1,6 +1,7 @@
 package cn.leo.frame.network
 
 import androidx.lifecycle.LifecycleOwner
+import cn.leo.frame.log.Logger
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import java.lang.reflect.Proxy
@@ -26,11 +27,11 @@ class ViewModelHelper<T : Any>(val apis: T) :
     }
 
     inline fun <reified R : Any> request(
+        deferred: Deferred<R>,
         obj: Any? = null,
-        flag: String = "",
-        deferred: Deferred<R>
+        flag: String = ""
     ): Job {
-        return model.executeRequest(obj, deferred, getLiveData(flag))
+        return model.executeRequest(deferred, getLiveData(flag), obj)
     }
 
     inline fun <reified R : Any> apis(
@@ -38,7 +39,7 @@ class ViewModelHelper<T : Any>(val apis: T) :
         flag: String = "",
         api: T.() -> Deferred<R>
     ): Job {
-        return request(obj, flag, api(apis))
+        return request(api(apis), obj, flag)
     }
 
     inline fun <reified R : Any> apis(obj: Any? = null, flag: String = ""): T {
@@ -47,7 +48,7 @@ class ViewModelHelper<T : Any>(val apis: T) :
             arrayOf(*apis.javaClass.interfaces)
         ) { _, method, args ->
             val deferred = method.invoke(apis, *args) as Deferred<R>
-            request(obj, flag, deferred)
+            request(deferred, obj, flag)
             return@newProxyInstance deferred
         } as T
     }
@@ -69,6 +70,7 @@ class ViewModelHelper<T : Any>(val apis: T) :
 
     inline fun <reified R : Any> getLiveData(flag: String = ""): MLiveData<R> {
         val key = R::class.java.name + flag
+        Logger.d("LiveData key  = $key")
         return if (mLiveDataCache.containsKey(key)) {
             mLiveDataCache[key] as MLiveData<R>
         } else {

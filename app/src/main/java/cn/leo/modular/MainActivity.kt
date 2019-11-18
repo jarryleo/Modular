@@ -29,30 +29,20 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        /*val liveData =
-            model.request.getLiveData<WechatUserBean>().map {
-                PositionBean<WechatUserBean>(it).apply {
-                    position = 111
-                }
-            }
 
-        liveData.observe {
+        model.observe(this, model::test) {
             get {
-                toast("请求成功：" + it.position)
+                Logger.e("result = $it")
             }
-        }*/
+        }
+
 
         tvTest.setOnClickListener {
-
-
-            model.request.apis<WechatUserBean>(123) {
-                getWechatUserInfo("", "")
-            }
-
-            model.test(1) {
-                Logger.e(it.toString())
-            }
-
+            test()
         }
+    }
+
+    private fun test() {
+        model.test(1)
     }
 }
