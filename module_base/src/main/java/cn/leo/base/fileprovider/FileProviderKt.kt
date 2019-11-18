@@ -5,7 +5,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
-import cn.leo.frame.network.JL
+import cn.leo.frame.MFrame
 import java.io.File
 
 /**
@@ -15,8 +15,9 @@ import java.io.File
 
 fun File.getUri(): Uri {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-        FileProvider.getUriForFile(JL.context,
-            "${JL.context.packageName}.FileProvider",this)
+        FileProvider.getUriForFile(
+            MFrame.context,
+            "${MFrame.context.packageName}.FileProvider",this)
 
     }else{
         Uri.fromFile(this)
@@ -26,10 +27,10 @@ fun File.getUri(): Uri {
 fun Intent.grantUriPermission(uri:Uri){
     //加入uri权限
     val infoList =
-        JL.context.packageManager.queryIntentActivities(this, PackageManager.MATCH_DEFAULT_ONLY)
+        MFrame.context.packageManager.queryIntentActivities(this, PackageManager.MATCH_DEFAULT_ONLY)
     for (resolveInfo in infoList) {
         val packageName = resolveInfo.activityInfo.packageName
-        JL.context.grantUriPermission(packageName, uri,
+        MFrame.context.grantUriPermission(packageName, uri,
             Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
 }

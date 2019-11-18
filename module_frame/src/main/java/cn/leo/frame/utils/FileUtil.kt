@@ -2,7 +2,7 @@ package cn.leo.frame.utils
 
 import android.os.Environment
 import android.os.StatFs
-import cn.leo.frame.network.JL
+import cn.leo.frame.MFrame
 import java.io.*
 
 /**
@@ -17,7 +17,7 @@ object FileUtil {
      * @return
      */
     fun getExternalCacheDir(): File? {
-        return JL.context.externalCacheDir
+        return MFrame.context.externalCacheDir
     }
 
     /**
@@ -26,7 +26,7 @@ object FileUtil {
      * @return
      */
     fun getCacheDir(): File? {
-        return JL.context.cacheDir
+        return MFrame.context.cacheDir
     }
 
 
@@ -36,7 +36,7 @@ object FileUtil {
      * @return
      */
     fun getFileDir(): File {
-        return JL.context.filesDir
+        return MFrame.context.filesDir
     }
 
     /**
@@ -45,7 +45,7 @@ object FileUtil {
      * @return
      */
     fun getDownloadDir(): File? {
-        return JL.context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+        return MFrame.context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
     }
 
     /**
@@ -54,7 +54,7 @@ object FileUtil {
      * @return
      */
     fun getPicDir(): File? {
-        return JL.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return MFrame.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     }
 
 

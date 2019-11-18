@@ -1,6 +1,6 @@
 package cn.leo.frame.network.interceptor
 
-import cn.leo.frame.network.JL
+import cn.leo.frame.MFrame
 import cn.leo.frame.utils.checkNetwork
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -16,7 +16,7 @@ class CacheInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        if (JL.context.checkNetwork()) {
+        if (MFrame.context.checkNetwork()) {
             val response = chain.proceed(request)
             // read from cache for 0 s  有网络不会使用缓存数据
             val maxAge = 0

@@ -1,6 +1,7 @@
 package cn.leo.frame.network
 
 import cn.leo.frame.BuildConfig
+import cn.leo.frame.MFrame
 import cn.leo.frame.network.interceptor.LoggerInterceptor
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -17,7 +18,7 @@ import javax.net.ssl.*
  */
 
 class OkHttp3Builder {
-    private var mCacheDir: File = JL.context.cacheDir
+    private var mCacheDir: File = MFrame.context.cacheDir
     private val mInterceptorList = ArrayList<Interceptor>()
     fun connectTimeout(timeout: Int): OkHttp3Builder {
         CONNECT_TIMEOUT = timeout

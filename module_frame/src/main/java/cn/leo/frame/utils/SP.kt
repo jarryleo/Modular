@@ -1,7 +1,7 @@
 package cn.leo.frame.utils
 
 import android.content.Context
-import cn.leo.frame.network.JL
+import cn.leo.frame.MFrame
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -11,7 +11,7 @@ import kotlin.reflect.KProperty
  */
 class SP<T>(private val key: String, private val default: T) : ReadWriteProperty<Any?, T> {
     companion object {
-        val preference = JL.context.getSharedPreferences("config", Context.MODE_PRIVATE)
+        val preference = MFrame.context.getSharedPreferences("config", Context.MODE_PRIVATE)
         fun clear() {
             preference.edit().clear().apply()
         }

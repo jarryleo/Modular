@@ -8,7 +8,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import cn.leo.frame.network.JL
+import cn.leo.frame.MFrame
 
 /**
  * @author : ling luo
@@ -19,7 +19,7 @@ object UIUtil {
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
     fun dip2px(dpValue: Float): Int {
-        val scale = JL.context.resources.displayMetrics.density
+        val scale = MFrame.context.resources.displayMetrics.density
         return (dpValue * scale + 0.5f).toInt()
     }
 
@@ -27,7 +27,7 @@ object UIUtil {
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
      */
     fun px2dip(pxValue: Float): Int {
-        val scale = JL.context.resources.displayMetrics.density
+        val scale = MFrame.context.resources.displayMetrics.density
         return (pxValue / scale + 0.5f).toInt()
     }
 
@@ -37,11 +37,11 @@ object UIUtil {
     fun getStatusBarHeight(): Int {
         var statusBarHeight = -1
         //获取status_bar_height资源的ID
-        val resourceId = JL.context.resources
+        val resourceId = MFrame.context.resources
             .getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId > 0) {
             //根据资源ID获取响应的尺寸值
-            statusBarHeight = JL.context.resources.getDimensionPixelSize(resourceId)
+            statusBarHeight = MFrame.context.resources.getDimensionPixelSize(resourceId)
         }
         return statusBarHeight
     }

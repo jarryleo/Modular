@@ -6,7 +6,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
-import cn.leo.frame.network.JL
+import cn.leo.frame.MFrame
 
 /**
  * @author : ling luo
@@ -14,19 +14,19 @@ import cn.leo.frame.network.JL
  */
 object ResUtil {
     fun getString(@StringRes id: Int): String {
-        return JL.context.getString(id)
+        return MFrame.context.getString(id)
     }
 
     fun getStringArray(@ArrayRes id: Int): Array<String> {
-        return JL.context.resources.getStringArray(id)
+        return MFrame.context.resources.getStringArray(id)
     }
 
 
     fun getDrawable(@DrawableRes id: Int): Drawable? {
-        return ActivityCompat.getDrawable(JL.context, id)
+        return ActivityCompat.getDrawable(MFrame.context, id)
     }
 
     fun getColor(@ColorRes id: Int): Int {
-        return ActivityCompat.getColor(JL.context, id)
+        return ActivityCompat.getColor(MFrame.context, id)
     }
 }
