@@ -5,11 +5,12 @@ package cn.leo.frame.network
  * @date : 2019-09-17
  */
 
-interface MInterceptor {
+open class MInterceptor {
+    var priority: Int = 0
     /**
      * @return 返回true 拦截
      */
-    fun <T : Any> intercept(obj: Any? = null, data: T, liveData: MLiveData<T>): Boolean {
+    open fun <T : Any> intercept(obj: Any? = null, data: T, liveData: MLiveData<T>): Boolean {
         return false
     }
 }

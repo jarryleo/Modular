@@ -15,7 +15,7 @@ class ModelCreator<T : ViewModel>(private val clazz: Class<T>) :
     ReadOnlyProperty<ViewModelStoreOwner, T> {
     override fun getValue(thisRef: ViewModelStoreOwner, property: KProperty<*>): T {
         val model = ViewModelProvider(thisRef).get(clazz)
-        if (model is MModel<*> && thisRef is LifecycleOwner) {
+        if (model is MViewModel<*> && thisRef is LifecycleOwner) {
             model.mLifecycleOwner = thisRef
         }
         return model

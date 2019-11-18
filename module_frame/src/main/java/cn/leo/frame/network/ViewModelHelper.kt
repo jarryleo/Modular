@@ -13,13 +13,13 @@ import kotlin.reflect.KProperty
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 class ViewModelHelper<T : Any>(val apis: T) :
-    ReadOnlyProperty<MModel<*>, ViewModelHelper<T>> {
+    ReadOnlyProperty<MViewModel<*>, ViewModelHelper<T>> {
 
     val mLiveDataCache = ConcurrentHashMap<String, MLiveData<*>>()
 
-    lateinit var model: MModel<*>
+    lateinit var model: MViewModel<*>
 
-    override fun getValue(thisRef: MModel<*>, property: KProperty<*>): ViewModelHelper<T> {
+    override fun getValue(thisRef: MViewModel<*>, property: KProperty<*>): ViewModelHelper<T> {
         model = thisRef
         return this
     }

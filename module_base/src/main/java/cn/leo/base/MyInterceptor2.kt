@@ -10,11 +10,11 @@ import cn.leo.frame.network.exceptions.FactoryException
  * @author : ling luo
  * @date : 2019-09-17
  */
-class MyInterceptor : MInterceptor() {
+class MyInterceptor2 : MInterceptor() {
     override fun <T : Any> intercept(obj: Any?, data: T, liveData: MLiveData<T>): Boolean {
         if (data is BaseBean) {
             if (data.errcode != 0) {
-                liveData.failed(BusinessException(data.errcode,"111111111111"))
+                liveData.failed(BusinessException(data.errcode,"2222222222222"))
             } else {
                 liveData.success(data, obj)
             }

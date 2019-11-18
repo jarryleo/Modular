@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @date : 2019-07-03
  */
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
-abstract class MModel<T : Any> : ViewModel() {
+abstract class MViewModel<T : Any> : ViewModel() {
 
     companion object {
         private val apiMap = ConcurrentHashMap<Class<*>, Any>()
@@ -69,7 +69,7 @@ abstract class MModel<T : Any> : ViewModel() {
         return scope.launch {
             try {
                 val result = this@request.await()
-                MNet.interceptors.forEach {
+                MInterceptorManager.interceptors.forEach {
                     if (it.intercept(obj, result, mLiveData)) {
                         return@launch
                     }
