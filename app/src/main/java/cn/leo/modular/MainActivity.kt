@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        model.request.observe<WechatUserBean> {
+        model.request.observe<WechatUserBean>(this) {
             get(
                 failed = {
                     toast("请求失败：${it.code} + ${it.msg}  ")
@@ -45,11 +45,9 @@ class MainActivity : AppCompatActivity() {
         tvTest.setOnClickListener {
 
 
-            model.request.apis(123) {
+            model.request.apis<WechatUserBean>(123) {
                 getWechatUserInfo("", "")
             }
-
-            model.request.apis<WechatUserBean>().getWecharAccessToken("","","","")
 
             model.test(1) {
                 Logger.e(it.toString())

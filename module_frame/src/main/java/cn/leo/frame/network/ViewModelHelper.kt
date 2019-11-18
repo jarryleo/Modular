@@ -1,5 +1,6 @@
 package cn.leo.frame.network
 
+import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import java.lang.reflect.Proxy
@@ -52,10 +53,11 @@ class ViewModelHelper<T : Any>(val apis: T) :
     }
 
     inline fun <reified R : Any> observe(
+        lifecycleOwner: LifecycleOwner,
         flag: String = "",
         noinline result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        getLiveData<R>(flag).observe(result)
+        getLiveData<R>(flag).observe(lifecycleOwner, result)
     }
 
     inline fun <reified R : Any> observeForever(
@@ -71,7 +73,6 @@ class ViewModelHelper<T : Any>(val apis: T) :
             mLiveDataCache[key] as MLiveData<R>
         } else {
             val liveData = MLiveData<R>()
-            liveData.mLifecycleOwner = model.mLifecycleOwner
             mLiveDataCache[key] = liveData
             liveData
         }

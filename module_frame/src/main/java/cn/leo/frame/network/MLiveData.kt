@@ -12,11 +12,8 @@ import cn.leo.frame.network.exceptions.FactoryException
  */
 open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
 
-    lateinit var mLifecycleOwner: LifecycleOwner
-    var mResult: (result: Result<T>) -> Unit = {}
-
-    private val observer = Observer<Result<T>> {
-        mResult(it)
+    private fun getObserver(result: (Result<T>).() -> Unit): Observer<Result<T>> {
+        return Observer { result(it) }
     }
 
     open fun success(value: T, obj: Any? = null) {
@@ -37,22 +34,20 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
 
 
     fun observe(
+        lifecycleOwner: LifecycleOwner,
         result: (Result<T>).() -> Unit = {}
     ) {
-        mResult = result
-        super.observe(mLifecycleOwner, observer)
+        super.observe(lifecycleOwner, getObserver(result))
     }
 
     fun observeForever(
         result: (Result<T>).() -> Unit = {}
     ) {
-        mResult = result
-        super.observeForever(observer)
+        super.observeForever(getObserver(result))
     }
 
     fun <R> map(mapFunction: (input: T) -> R): MLiveData<R> {
         val newLiveData = MLiveData<R>()
-        newLiveData.mLifecycleOwner = mLifecycleOwner
         newLiveData.addSource(this) {
             when (it) {
                 is Result.Failed -> {

@@ -1,6 +1,5 @@
 package cn.leo.frame.network
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import cn.leo.frame.network.interceptor.CacheInterceptor
 import cn.leo.frame.utils.ClassUtils
@@ -20,8 +19,6 @@ abstract class MViewModel<T : Any> : ViewModel() {
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
-
-    lateinit var mLifecycleOwner: LifecycleOwner
 
     val request by ViewModelHelper(api)
 
@@ -64,20 +61,20 @@ abstract class MViewModel<T : Any> : ViewModel() {
      */
     protected fun <R : Any> Deferred<R>.request(
         obj: Any? = null,
-        mLiveData: MLiveData<R>
+        liveData: MLiveData<R>
     ): Job {
         return scope.launch {
             try {
                 val result = this@request.await()
                 MInterceptorManager.interceptors.forEach {
-                    if (it.intercept(obj, result, mLiveData)) {
+                    if (it.intercept(obj, result, liveData)) {
                         return@launch
                     }
                 }
-                mLiveData.success(result, obj)
+                liveData.success(result, obj)
             } catch (e: Exception) {
                 e.printStackTrace()
-                mLiveData.failed(e, obj)
+                liveData.failed(e, obj)
             }
         }
     }
