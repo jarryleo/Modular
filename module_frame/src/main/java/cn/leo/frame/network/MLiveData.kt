@@ -1,10 +1,10 @@
 package cn.leo.frame.network
 
-import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import cn.leo.frame.network.exceptions.ApiException
+import cn.leo.frame.network.exceptions.FactoryException
 
 /**
  * @author : ling luo
@@ -19,18 +19,18 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
         mResult(it)
     }
 
-    open fun success(value: T, bundle: Bundle? = null) {
-        super.postValue(Result.Success(value).apply { this.bundle = bundle })
+    open fun success(value: T, obj: Any? = null) {
+        super.postValue(Result.Success(value).apply { this.obj = obj })
     }
 
-    open fun failed(e: Exception, bundle: Bundle? = null) {
+    open fun failed(e: Exception, obj: Any? = null) {
         if (e is ApiException) {
             val failed = Result.Failed<T>(e)
-            failed.bundle = bundle
+            failed.obj = obj
             super.postValue(failed)
         } else {
-            val failed = Result.Failed<T>(ApiException(e))
-            failed.bundle = bundle
+            val failed = Result.Failed<T>(FactoryException.analysisException(e))
+            failed.obj = obj
             super.postValue(failed)
         }
     }
@@ -57,12 +57,12 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
             when (it) {
                 is Result.Failed -> {
                     val failed = Result.Failed<R>(it.exception)
-                    failed.bundle = it.bundle
+                    failed.obj = it.obj
                     newLiveData.postValue(failed)
                 }
                 is Result.Success -> {
                     val success = Result.Success(mapFunction(it.data))
-                    success.bundle = it.bundle
+                    success.obj = it.obj
                     newLiveData.postValue(success)
                 }
             }
@@ -71,7 +71,7 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
     }
 
     sealed class Result<T> {
-        var bundle: Bundle? = null
+        var obj: Any? = null
 
         class Success<T>(val data: T) : Result<T>()
         class Failed<T>(var exception: ApiException) : Result<T>()

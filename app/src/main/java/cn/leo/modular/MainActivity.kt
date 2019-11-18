@@ -17,16 +17,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         model.request.observe<WechatUserBean> {
-            get {
-                toast("请求成功：" + bundle?.get("position"))
-            }
-
             get(
                 failed = {
-
+                    toast("请求失败：${it.code}  ")
                 },
                 success = {
-
+                    toast("请求成功：$obj  ")
                 }
             )
 
@@ -48,9 +44,7 @@ class MainActivity : AppCompatActivity() {
         tvTest.setOnClickListener {
 
 
-            model.request.apis(Bundle().apply {
-                putInt("position", 111)
-            }) {
+            model.request.apis(123) {
                 getWechatUserInfo("", "")
             }
 

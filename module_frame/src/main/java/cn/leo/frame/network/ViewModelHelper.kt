@@ -1,6 +1,5 @@
 package cn.leo.frame.network
 
-import android.os.Bundle
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import java.lang.reflect.Proxy
@@ -25,39 +24,49 @@ class ViewModelHelper<T : Any>(val apis: T) :
         return this
     }
 
-    inline fun <reified R : Any> request(bundle: Bundle? = null, deferred: Deferred<R>): Job {
-        return model.executeRequest(bundle, deferred, getLiveData())
+    inline fun <reified R : Any> request(
+        obj: Any? = null,
+        flag: String = "",
+        deferred: Deferred<R>
+    ): Job {
+        return model.executeRequest(obj, deferred, getLiveData(flag))
     }
 
-    inline fun <reified R : Any> apis(bundle: Bundle? = null, api: T.() -> Deferred<R>): Job {
-        return request(bundle, api(apis))
+    inline fun <reified R : Any> apis(
+        obj: Any? = null,
+        flag: String = "",
+        api: T.() -> Deferred<R>
+    ): Job {
+        return request(obj, flag, api(apis))
     }
 
-    inline fun <reified R : Any> apis(bundle: Bundle? = null): T {
+    inline fun <reified R : Any> apis(obj: Any? = null, flag: String = ""): T {
         return Proxy.newProxyInstance(
             javaClass.classLoader,
             arrayOf(*apis.javaClass.interfaces)
         ) { _, method, args ->
             val deferred = method.invoke(apis, *args) as Deferred<R>
-            request(bundle, deferred)
+            request(obj, flag, deferred)
             return@newProxyInstance deferred
         } as T
     }
 
     inline fun <reified R : Any> observe(
+        flag: String = "",
         noinline result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        getLiveData<R>().observe(result)
+        getLiveData<R>(flag).observe(result)
     }
 
     inline fun <reified R : Any> observeForever(
+        flag: String = "",
         noinline result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        getLiveData<R>().observeForever(result)
+        getLiveData<R>(flag).observeForever(result)
     }
 
-    inline fun <reified R : Any> getLiveData(): MLiveData<R> {
-        val key = R::class.java.name
+    inline fun <reified R : Any> getLiveData(flag: String = ""): MLiveData<R> {
+        val key = R::class.java.name + flag
         return if (mLiveDataCache.containsKey(key)) {
             mLiveDataCache[key] as MLiveData<R>
         } else {

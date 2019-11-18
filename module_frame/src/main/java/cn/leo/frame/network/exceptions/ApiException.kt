@@ -9,13 +9,13 @@ class ApiException : Exception {
     @get:CodeException.CodeEp
     var code: Int = 0
     /*显示的信息*/
-    var displayMessage: String? = null
+    var msg: String? = null
 
     constructor(e: Throwable) : super(e)
 
     constructor(cause: Throwable, @CodeException.CodeEp code: Int, showMsg: String)
             : super(showMsg, cause) {
         this.code = code
-        displayMessage = showMsg
+        msg = showMsg
     }
 }

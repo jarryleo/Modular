@@ -3,7 +3,7 @@ package cn.leo.base
 import androidx.multidex.MultiDexApplication
 import cn.leo.base.db.helper.DBHelper
 import cn.leo.frame.network.JL
-import cn.leo.frame.network.JLNet
+import cn.leo.frame.network.MNet
 
 /**
  * @author : ling luo
@@ -14,6 +14,6 @@ open class BaseApplication : MultiDexApplication() {
         super.onCreate()
         JL.init(this)
         DBHelper.initGreenDao(this)
-        //JLNet.addInterceptor(MyInterceptor())
+        MNet.addInterceptor(MyInterceptor())
     }
 }
