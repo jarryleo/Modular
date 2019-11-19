@@ -35,7 +35,7 @@ class HttpLoader private constructor(private val mRetrofit: Retrofit) {
                     .baseUrl(mBaseUrl)
                     .client(mHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                    .addCallAdapterFactory(MJobAdapterFactory())
                     .build()
             )
         }

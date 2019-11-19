@@ -23,7 +23,11 @@ abstract class MViewModel<T : Any> : ViewModel() {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
-    val request by ViewModelHelper(api)
+    private val request by ViewModelHelper(api)
+
+    fun <R : Any> request(obj: Any? = null, api: T.() -> MJob<R>) = api(request.apis<R>(obj))
+
+    fun <R : Any> apis(obj: Any? = null) = request.apis<R>(obj)
 
     @Suppress("UNCHECKED_CAST")
     private val api: T
@@ -93,8 +97,8 @@ abstract class MViewModel<T : Any> : ViewModel() {
     /**
      * 异步方法
      */
-    inline fun <reified R : Any> async(
-        crossinline block: suspend CoroutineScope.() -> R
+    fun <R : Any> async(
+        block: suspend CoroutineScope.() -> R
     ): MJob<R> {
         //获取当前方法名称
         val methodName =
@@ -120,12 +124,12 @@ abstract class MViewModel<T : Any> : ViewModel() {
      * 订阅异步方法回调
      * @param kFunction 参数写法 model::test
      */
-    inline fun <reified R : Any> observe(
+    fun <R : Any> observe(
         lifecycleOwner: LifecycleOwner,
         kFunction: KFunction<MJob<R>>,
-        noinline result: (MLiveData.Result<R>).() -> Unit = {}
+        result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        request.getLiveData<R>(kFunction.name).observe(lifecycleOwner, result)
+        request.observe(lifecycleOwner, kFunction, result)
     }
 
 }

@@ -7,4 +7,4 @@ import kotlinx.coroutines.Job
  * @date : 2019-11-18
  * Job委托类，只为去范型
  */
-class MJob<T : Any>(private val job: Job) : Job by job
+class MJob<T : Any>(val job: Job) : Job by job

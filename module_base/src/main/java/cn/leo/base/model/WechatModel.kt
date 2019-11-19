@@ -22,7 +22,6 @@ class WechatModel : BaseModel() {
 
         Logger.e("执行完毕")
         delay(3000)
-
     }
 
 

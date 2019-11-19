@@ -2,6 +2,7 @@ package cn.leo.base.net
 
 import cn.leo.base.bean.WechatAccessBean
 import cn.leo.base.bean.WechatUserBean
+import cn.leo.frame.network.MJob
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -19,7 +20,7 @@ interface Apis {
     fun getWechatUserInfo(
         @Query("access_token") access_token: String,
         @Query("openid") openid: String
-    ): Deferred<WechatUserBean>
+    ): MJob<WechatUserBean>
 
 
     /**
@@ -31,7 +32,7 @@ interface Apis {
         @Query("secret") secret: String,
         @Query("errcode") code: String,
         @Query("grant_type") grant_type: String = "authorization_code"
-    ): Deferred<WechatAccessBean>
+    ): MJob<WechatAccessBean>
 
     /*
     @FormUrlEncoded

@@ -4,7 +4,6 @@ import cn.leo.base.bean.BaseBean
 import cn.leo.frame.network.MInterceptor
 import cn.leo.frame.network.MLiveData
 import cn.leo.frame.network.exceptions.BusinessException
-import cn.leo.frame.network.exceptions.FactoryException
 
 /**
  * @author : ling luo
@@ -14,7 +13,7 @@ class MyInterceptor : MInterceptor() {
     override fun <T : Any> intercept(obj: Any?, data: T, liveData: MLiveData<T>): Boolean {
         if (data is BaseBean) {
             if (data.errcode != 0) {
-                liveData.failed(BusinessException(data.errcode,"111111111111"))
+                liveData.failed(BusinessException(data.errcode, "111111111111"), obj)
             } else {
                 liveData.success(data, obj)
             }

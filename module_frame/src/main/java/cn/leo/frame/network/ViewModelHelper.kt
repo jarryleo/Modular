@@ -4,9 +4,11 @@ import androidx.lifecycle.LifecycleOwner
 import cn.leo.frame.log.Logger
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
+import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty
 
 /**
@@ -14,12 +16,18 @@ import kotlin.reflect.KProperty
  * @date : 2019-11-15
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
-class ViewModelHelper<T : Any>(val apis: T) :
+class ViewModelHelper<T : Any>(private val apis: T) :
     ReadOnlyProperty<MViewModel<*>, ViewModelHelper<T>> {
 
-    val mLiveDataCache = ConcurrentHashMap<String, MLiveData<*>>()
+    private val mLiveDataCache = ConcurrentHashMap<String, MLiveData<*>>()
 
-    lateinit var model: MViewModel<*>
+    private lateinit var model: MViewModel<*>
+
+    //请求代理相关
+    private var mApiProxy: T? = null
+    private var mApiHandler: InvocationHandler? = null
+    @Volatile
+    private var mObj: Any? = null
 
     override fun getValue(thisRef: MViewModel<*>, property: KProperty<*>): ViewModelHelper<T> {
         model = thisRef
@@ -29,70 +37,69 @@ class ViewModelHelper<T : Any>(val apis: T) :
     /**
      * 发起请求
      */
-    inline fun <reified R : Any> request(
+    private fun <R : Any> request(
         deferred: Deferred<R>,
         obj: Any? = null,
-        flag: String = ""
+        key: String = ""
     ): Job {
-        return model.executeRequest(deferred, getLiveData(flag), obj)
+        return model.executeRequest(deferred, getLiveData(key), obj)
     }
 
     /**
-     * 建议使用此方法实现网络请求
+     * 请求接口
      * @param obj 请求携带附加数据，会在回调监听里原样返回，适合list条目数据变化，记录条目位置等
-     * @param flag 多个请求返回相同类型对象的时候附加 标记，区分是哪个请求
      *
      */
     inline fun <reified R : Any> apis(
         obj: Any? = null,
-        flag: String = "",
-        api: T.() -> Deferred<R>
-    ): Job {
-        return request(api(apis), obj, flag)
-    }
-
+        api: T.() -> MJob<R>
+    ) = api(apis<R>(obj))
 
     /**
-     * 性能较低，不建议使用
+     * 代理请求接口
      */
-    inline fun <reified R : Any> apis(obj: Any? = null, flag: String = ""): T {
-        return Proxy.newProxyInstance(
+    fun <R : Any> apis(obj: Any? = null): T {
+        mObj = obj
+        mApiHandler = mApiHandler ?: InvocationHandler { _, method, args ->
+            val mJob = method.invoke(apis, *args) as MJob<R>
+            val deferred = mJob.job as Deferred<R>
+            MJob<R>(request(deferred, mObj, method.name))
+        }
+        mApiProxy = mApiProxy ?: Proxy.newProxyInstance(
             javaClass.classLoader,
-            arrayOf(*apis.javaClass.interfaces)
-        ) { _, method, args ->
-            val deferred = method.invoke(apis, *args) as Deferred<R>
-            request(deferred, obj, flag)
-            return@newProxyInstance deferred
-        } as T
+            arrayOf(*apis.javaClass.interfaces),
+            mApiHandler
+        ) as T
+        return mApiProxy!!
     }
 
     /**
      * 监听请求回调
-     * @param flag 多个请求返回相同类型对象的时候附加 标记，区分是哪个请求
+     * @param kFunction 参数写法 Api::test
      */
-    inline fun <reified R : Any> observe(
+    fun <R : Any> observe(
         lifecycleOwner: LifecycleOwner,
-        flag: String = "",
-        noinline result: (MLiveData.Result<R>).() -> Unit = {}
+        kFunction: KFunction<MJob<R>>,
+        result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        getLiveData<R>(flag).observe(lifecycleOwner, result)
+        getLiveData<R>(kFunction.name).observe(lifecycleOwner, result)
     }
 
     /**
      * 无生命周期的监听，谨慎使用，防止泄露
+     * @param kFunction 参数写法 Api::test
      */
-    inline fun <reified R : Any> observeForever(
-        flag: String = "",
-        noinline result: (MLiveData.Result<R>).() -> Unit = {}
+    fun <R : Any> observeForever(
+        kFunction: KFunction<MJob<R>>,
+        result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        getLiveData<R>(flag).observeForever(result)
+        getLiveData<R>(kFunction.name).observeForever(result)
     }
 
     /**
      * 获取LiveData
      */
-    inline fun <reified R : Any> getLiveData(flag: String = ""): MLiveData<R> {
-        val key = R::class.java.name + flag
+    fun <R : Any> getLiveData(key: String): MLiveData<R> {
         Logger.d("LiveData key  = $key")
         return if (mLiveDataCache.containsKey(key)) {
             mLiveDataCache[key] as MLiveData<R>
