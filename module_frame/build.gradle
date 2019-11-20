@@ -46,11 +46,11 @@ kapt {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
-    api rootProject.ext.dependencies["appcompat_v7"]
+    api rootProject.ext.dependencies["appcompat"]
     api rootProject.ext.dependencies["constraint_layout"]
-    api rootProject.ext.dependencies["cardview-v7"]
-    api rootProject.ext.dependencies["recyclerview-v7"]
-    api rootProject.ext.dependencies["support-v4"]
+    api rootProject.ext.dependencies["cardview"]
+    api rootProject.ext.dependencies["recyclerview"]
+    api rootProject.ext.dependencies["support"]
     api rootProject.ext.dependencies["design"]
     api rootProject.ext.dependencies["support_annotations"]
 
@@ -59,7 +59,7 @@ dependencies {
     //协程
     api rootProject.ext.dependencies["kotlinx-coroutines"]
 
-    //Arouter路由
+    //ARouter路由
     annotationProcessor rootProject.ext.dependencies["arouter_compiler"]
     kapt rootProject.ext.dependencies["arouter_compiler"]
     api rootProject.ext.dependencies["arouter_api"]
@@ -92,8 +92,7 @@ dependencies {
     //greenDao
     api rootProject.ext.dependencies["greenDao"]
     api rootProject.ext.dependencies["greenDaoHelper"]
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc02'
-    compile "org.jetbrains.kotlin:kotlin-reflect:1.3.50"
+    api rootProject.ext.dependencies["lifecycle"]
 }
 repositories {
     mavenCentral()

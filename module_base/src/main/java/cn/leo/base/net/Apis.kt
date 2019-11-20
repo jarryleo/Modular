@@ -40,7 +40,7 @@ interface Apis {
     fun updateUserShareInfo(
         @Field("isShare") isShare: Int,
         @Field("videoId") videoId: Long
-    ): Deferred<UpdateUserShareInfoBean>
+    ): MJob<UpdateUserShareInfoBean>
     */
 
 

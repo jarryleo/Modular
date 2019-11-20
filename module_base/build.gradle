@@ -34,7 +34,7 @@ android {
 
 dependencies {
     api project(':module_frame')
-    //Arouter路由
+    //ARouter路由
     annotationProcessor rootProject.ext.dependencies["arouter_compiler"]
     kapt rootProject.ext.dependencies["arouter_compiler"]
 }

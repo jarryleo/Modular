@@ -2,15 +2,17 @@ package cn.leo.frame.image
 
 import android.app.Activity
 import android.content.Context
-import androidx.annotation.DrawableRes
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
-import cn.leo.frame.utils.UIUtil
+import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.load.resource.bitmap.FitCenter
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.*
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import java.io.File
 
 /**
@@ -19,28 +21,65 @@ import java.io.File
  */
 
 fun ImageView.netImage(
-    url: String,
+    url: String?,
     circle: Boolean = false,
-    corners: Float = 0f,
+    skipMemoryCache: Boolean = false,
+    corners: Int = 0,
+    listener: RequestListener<Drawable>? = null,
     @DrawableRes defResId: Int = -1,
-    @DrawableRes errResId: Int = -1
+    @DrawableRes errResId: Int = defResId
 ) {
     if ((context as? Activity)?.isDestroyed == true) {
         return
     }
+
+    val transforms = when (scaleType) {
+        ImageView.ScaleType.FIT_CENTER -> FitCenter()
+        ImageView.ScaleType.CENTER_INSIDE -> CenterInside()
+        else -> CenterCrop()
+    }
+
     Glide.with(this)
-        .load(url)
+        .load(url ?: "")
+        .skipMemoryCache(skipMemoryCache)
+        .diskCacheStrategy(
+            if (skipMemoryCache) {
+                DiskCacheStrategy.NONE
+            } else {
+                DiskCacheStrategy.AUTOMATIC
+            }
+        )
         .transform(
             *when {
-                circle -> arrayOf(CircleCrop())
-                corners > 0 -> arrayOf(CenterCrop(), RoundedCorners(UIUtil.dip2px(corners)))
-                else -> arrayOf(FitCenter())
+                circle -> arrayOf(CircleCrop(), transforms)
+                (corners > 0) -> arrayOf(RoundedCorners(corners), transforms)
+                else -> arrayOf(transforms)
             }
         )
         .transition(withCrossFade())
         .placeholder(defResId)
         .error(errResId)
+        .listener(listener)
         .into(this)
+}
+
+fun Context.getBitmap(
+    url: String,
+    callback: (bitmap: Bitmap, width: Int, height: Int) -> Unit
+) {
+    Glide.with(this)
+        .asBitmap()
+        .load(url)
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onLoadCleared(placeholder: Drawable?) {
+
+            }
+
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                callback(resource, resource.width, resource.height)
+            }
+
+        })
 }
 
 fun Context.downloadImage(url: String): File? {
@@ -55,3 +94,5 @@ fun Context.downloadImage(url: String): File? {
         null
     }
 }
+
+

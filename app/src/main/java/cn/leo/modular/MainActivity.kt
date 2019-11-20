@@ -48,10 +48,11 @@ class MainActivity : AppCompatActivity() {
 
         model.test(1)
 
-        model.apis<WechatUserBean>().getWechatUserInfo("", "")
+        model.apis<WechatUserBean>(123)
+            .getWechatUserInfo("", "")
 
-        model.request {
+        /*model.request {
             getWechatUserInfo("", "")
-        }
+        }*/
     }
 }
