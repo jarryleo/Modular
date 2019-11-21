@@ -19,15 +19,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         model.observe(this, Apis::getWechatUserInfo) {
-            get(
-                failed = {
-                    toast("请求失败：${it.code} + ${it.msg}  " + obj)
-                },
-                success = {
-                    toast("请求成功：$obj  ")
-                }
-            )
-
+            success {
+                toast("请求成功：$obj  ")
+            }
+            failed {
+                toast("请求失败：${it.code} + ${it.msg}  " + obj)
+            }
         }
 
 

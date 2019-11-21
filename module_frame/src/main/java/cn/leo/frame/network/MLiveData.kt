@@ -13,7 +13,13 @@ import cn.leo.frame.network.exceptions.FactoryException
 open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
 
     private fun getObserver(result: (Result<T>).() -> Unit): Observer<Result<T>> {
-        return Observer { result(it) }
+        return Observer {
+            result(it)
+            when (it) {
+                is Result.Success<T> -> it.success(it.data)
+                is Result.Failed<T> -> it.failed(it.exception)
+            }
+        }
     }
 
     open fun success(value: T, obj: Any? = null) {
@@ -83,5 +89,20 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
                 is Failed -> failed(exception)
             }
         }
+
+        fun success(block: (data: T) -> Unit = {}) {
+            get(success = block)
+        }
+
+        fun failed(block: (exception: ApiException) -> Unit = {}) {
+            get(failed = block)
+        }
+
+        val successData by lazy { (this as? Success<T>)?.data }
+        val failedException by lazy { (this as? Failed<T>)?.exception }
+
+        var success: (data: T) -> Unit = {}
+        var failed: (exception: ApiException) -> Unit = {}
+
     }
 }
