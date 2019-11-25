@@ -61,7 +61,7 @@ class ViewModelHelper<T : Any>(private val apis: T) :
     fun <R : Any> apis(obj: Any? = null): T {
         mObj = obj
         mApiHandler = mApiHandler ?: InvocationHandler { _, method, args ->
-            val mJob = method.invoke(apis, *args) as MJob<R>
+            val mJob = method.invoke(apis, *args ?: arrayOf()) as MJob<R>
             val deferred = mJob.job as Deferred<R>
             MJob<R>(request(deferred, mObj, method.name))
         }
