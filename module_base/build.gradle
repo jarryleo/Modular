@@ -31,6 +31,11 @@ android {
 
     resourcePrefix "base_"
 }
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
 
 dependencies {
     api project(':module_frame')
