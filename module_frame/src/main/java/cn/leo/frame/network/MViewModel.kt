@@ -25,8 +25,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
     private val scope = CoroutineScope(Dispatchers.IO + job)
     private val request by ViewModelHelper(api)
 
-    fun <R : Any> request(obj: Any? = null, api: T.() -> MJob<R>) = api(request.apis<R>(obj))
-    fun <R : Any> apis(obj: Any? = null) = request.apis<R>(obj)
+    fun apis(obj: Any? = null) = request.apis<Any>(obj)
 
     private val api: T
         get() {

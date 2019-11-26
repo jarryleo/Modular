@@ -2,7 +2,6 @@ package cn.leo.modular
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import cn.leo.base.bean.WechatUserBean
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
 import cn.leo.base.utils.toast
@@ -45,11 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         model.test(1)
 
-        model.apis<WechatUserBean>(123)
-            .getWechatUserInfo("", "")
+        model.apis(123).getWechatUserInfo("123", "456")
 
-        model.request {
-            getWechatUserInfo("", "")
-        }
     }
 }
