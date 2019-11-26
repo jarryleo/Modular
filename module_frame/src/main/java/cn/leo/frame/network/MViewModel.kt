@@ -13,23 +13,21 @@ import kotlin.reflect.KFunction
  * @author : ling luo
  * @date : 2019-07-03
  */
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 abstract class MViewModel<T : Any> : ViewModel() {
 
     companion object {
         private val apiMap = ConcurrentHashMap<Class<*>, Any>()
     }
 
+    var lifecycleOwner: LifecycleOwner? = null
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
-
     private val request by ViewModelHelper(api)
 
     fun <R : Any> request(obj: Any? = null, api: T.() -> MJob<R>) = api(request.apis<R>(obj))
-
     fun <R : Any> apis(obj: Any? = null) = request.apis<R>(obj)
 
-    @Suppress("UNCHECKED_CAST")
     private val api: T
         get() {
             val clazz = ClassUtils.getSuperClassGenericType<T>(javaClass)
@@ -60,6 +58,8 @@ abstract class MViewModel<T : Any> : ViewModel() {
 
     override fun onCleared() {
         job.cancel()
+        request.clear()
+        lifecycleOwner = null
     }
 
 
@@ -108,8 +108,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
         Logger.d("methodName = $methodName")
 
         //异步协程
-        val deferred = GlobalScope.async(
-            context = Dispatchers.IO,
+        val deferred = scope.async(
             start = CoroutineStart.LAZY
         ) {
             block()
@@ -125,11 +124,12 @@ abstract class MViewModel<T : Any> : ViewModel() {
      * @param kFunction 参数写法 model::test
      */
     fun <R : Any> observe(
-        lifecycleOwner: LifecycleOwner,
         kFunction: KFunction<MJob<R>>,
         result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        request.observe(lifecycleOwner, kFunction, result)
+        lifecycleOwner?.let {
+            request.observe(it, kFunction, result)
+        }
     }
 
 }

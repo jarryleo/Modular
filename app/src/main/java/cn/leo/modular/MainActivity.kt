@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        model.observe(this, Apis::getWechatUserInfo) {
+        model.observe(Apis::getWechatUserInfo) {
             success {
                 toast("请求成功：$obj  ")
             }
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        model.observe(this, model::test) {
+        model.observe(model::test) {
             get {
                 Logger.e("result = $it")
             }
@@ -48,8 +48,8 @@ class MainActivity : AppCompatActivity() {
         model.apis<WechatUserBean>(123)
             .getWechatUserInfo("", "")
 
-        /*model.request {
+        model.request {
             getWechatUserInfo("", "")
-        }*/
+        }
     }
 }

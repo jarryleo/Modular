@@ -10,6 +10,7 @@ import cn.leo.frame.network.exceptions.FactoryException
  * @author : ling luo
  * @date : 2019-07-03
  */
+@Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
 
     private fun getObserver(result: (Result<T>).() -> Unit): Observer<Result<T>> {

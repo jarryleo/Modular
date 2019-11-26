@@ -58,7 +58,7 @@ class ViewModelHelper<T : Any>(private val apis: T) :
     /**
      * 代理请求接口
      */
-    fun <R : Any> apis(obj: Any? = null): T {
+    fun <R : Any> apis(obj: Any?): T {
         mObj = obj
         mApiHandler = mApiHandler ?: InvocationHandler { _, method, args ->
             val mJob = method.invoke(apis, *args ?: arrayOf()) as MJob<R>
@@ -109,4 +109,13 @@ class ViewModelHelper<T : Any>(private val apis: T) :
             liveData
         }
     }
+
+    /**
+     * 释放资源
+     */
+    fun clear(){
+        mLiveDataCache.clear()
+    }
+
+
 }
