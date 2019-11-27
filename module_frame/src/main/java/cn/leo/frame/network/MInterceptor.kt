@@ -10,7 +10,7 @@ open class MInterceptor {
     /**
      * @return 返回true 拦截
      */
-    open fun <T : Any> intercept(obj: Any? = null, data: T, liveData: MLiveData<T>): Boolean {
+    open fun <T> intercept(obj: Any? = null, data: T, liveData: MLiveData<T>): Boolean {
         return false
     }
 }

@@ -27,7 +27,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
 
     fun apis(obj: Any? = null) = request.apis<Any>(obj)
 
-    private val api: T
+    protected val api: T
         get() {
             val clazz = ClassUtils.getSuperClassGenericType<T>(javaClass)
             return if (apiMap.containsKey(clazz)) {
@@ -65,7 +65,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
     /**
      * 协程执行网络请求，并把结果给上层的LiveData
      */
-    fun <R : Any> Deferred<R>.request(
+    fun <R> Deferred<R>.request(
         obj: Any? = null,
         liveData: MLiveData<R>
     ): Job {
@@ -85,7 +85,15 @@ abstract class MViewModel<T : Any> : ViewModel() {
         }
     }
 
-    fun <R : Any> executeRequest(
+    @Throws(Exception::class)
+    protected suspend fun <R : Any> MJob<R>.await(): R? {
+        (this.job as? Deferred<R>)?.let {
+            return it.await()
+        }
+        return null
+    }
+
+    fun <R> executeRequest(
         deferred: Deferred<R>,
         liveData: MLiveData<R>,
         obj: Any? = null
@@ -94,40 +102,63 @@ abstract class MViewModel<T : Any> : ViewModel() {
     }
 
     /**
-     * 异步方法
+     * 异步方法 回调在主线程
      */
-    fun <R : Any> async(
-        block: suspend CoroutineScope.() -> R
-    ): MJob<R> {
+    fun <R> async(block: suspend CoroutineScope.() -> R): MJob<R> {
+        val liveData = getLiveData<R>()
+        //协程
+        val deferred = scope.async { block() }
+        //异步执行
+        val job = scope.launch {
+            try {
+                liveData.success(deferred.await())
+            } catch (e: Exception) {
+                e.printStackTrace()
+                liveData.failed(e)
+            }
+        }
+        return MJob(job)
+    }
+
+    /**
+     * 主线程方法 回调在主线程
+     */
+    fun <R> sync(block: suspend CoroutineScope.() -> R): MJob<R> {
+        val liveData = getLiveData<R>()
+        //协程
+        val deferred = scope.async { block() }
+        //主线程执行
+        val job = scope.launch(context = Dispatchers.Main) {
+            try {
+                liveData.setSuccess(deferred.await())
+            } catch (e: Exception) {
+                e.printStackTrace()
+                liveData.failed(e)
+            }
+        }
+        return MJob(job)
+    }
+
+    private fun <R> getLiveData(): MLiveData<R> {
         //获取当前方法名称
         val methodName =
             Thread.currentThread().stackTrace.find {
                 it.className == this::class.java.name
             }?.methodName
         Logger.d("methodName = $methodName")
-
-        //异步协程
-        val deferred = scope.async(
-            start = CoroutineStart.LAZY
-        ) {
-            block()
-        }
-        //执行
-        val job = executeRequest(deferred, request.getLiveData(methodName ?: ""))
-        return MJob(job)
+        return request.getLiveData(methodName ?: "")
     }
 
-
     /**
-     * 订阅异步方法回调
+     * 订阅方法回调(本地方法和网络请求)
      * @param kFunction 参数写法 model::test
      */
-    fun <R : Any> observe(
+    fun <R> observe(
         kFunction: KFunction<MJob<R>>,
         result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
         lifecycleOwner?.let {
-            request.observe(it, kFunction, result)
+            request.observe(it, kFunction.name, result)
         }
     }
 

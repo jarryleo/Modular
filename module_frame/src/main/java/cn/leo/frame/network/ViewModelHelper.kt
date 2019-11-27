@@ -77,19 +77,19 @@ class ViewModelHelper<T : Any>(private val apis: T) :
      * 监听请求回调
      * @param kFunction 参数写法 Api::test
      */
-    fun <R : Any> observe(
+    fun <R> observe(
         lifecycleOwner: LifecycleOwner,
-        kFunction: KFunction<MJob<R>>,
+        funcName: String,
         result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        getLiveData<R>(kFunction.name).observe(lifecycleOwner, result)
+        getLiveData<R>(funcName).observe(lifecycleOwner, result)
     }
 
     /**
      * 无生命周期的监听，谨慎使用，防止泄露
      * @param kFunction 参数写法 Api::test
      */
-    fun <R : Any> observeForever(
+    fun <R> observeForever(
         kFunction: KFunction<MJob<R>>,
         result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
@@ -99,7 +99,7 @@ class ViewModelHelper<T : Any>(private val apis: T) :
     /**
      * 获取LiveData
      */
-    fun <R : Any> getLiveData(key: String): MLiveData<R> {
+    fun <R> getLiveData(key: String): MLiveData<R> {
         Logger.d("LiveData key  = $key")
         return if (mLiveDataCache.containsKey(key)) {
             mLiveDataCache[key] as MLiveData<R>
@@ -113,7 +113,7 @@ class ViewModelHelper<T : Any>(private val apis: T) :
     /**
      * 释放资源
      */
-    fun clear(){
+    fun clear() {
         mLiveDataCache.clear()
     }
 

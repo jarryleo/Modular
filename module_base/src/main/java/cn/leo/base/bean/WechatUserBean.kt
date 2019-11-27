@@ -1,10 +1,14 @@
 package cn.leo.base.bean
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 
 /**
  * @author : ling luo
  * @date : 2019-06-24
  */
+@Parcelize
 data class WechatUserBean(
     val openid: String,
     val nickname: String,
@@ -14,4 +18,4 @@ data class WechatUserBean(
     val country: String,
     val unionid: String,
     val province: String
-) : BaseBean()
+) : BaseBean(), Parcelable

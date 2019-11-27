@@ -36,13 +36,13 @@ kapt {
         arg("AROUTER_MODULE_NAME", project.getName())
     }
 }
-
+repositories {
+    mavenCentral()
+}
 dependencies {
     api project(':module_frame')
     //ARouter路由
     annotationProcessor rootProject.ext.dependencies["arouter_compiler"]
     kapt rootProject.ext.dependencies["arouter_compiler"]
 }
-repositories {
-    mavenCentral()
-}
+

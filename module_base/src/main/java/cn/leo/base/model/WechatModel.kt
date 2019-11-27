@@ -1,7 +1,8 @@
 package cn.leo.base.model
 
 import cn.leo.frame.log.Logger
-import kotlinx.coroutines.delay
+import cn.leo.frame.network.MJob
+import cn.leo.frame.network.exceptions.BusinessException
 
 /**
  * @author : ling luo
@@ -9,8 +10,12 @@ import kotlinx.coroutines.delay
  */
 class WechatModel : BaseModel() {
 
-    fun test(id: Int) = async {
-        add() + id
+    fun test(id: Int) = sync {
+        if (add() > 3) {
+            add() + id
+        } else {
+            throw BusinessException("测试错误")
+        }
     }
 
     fun add(): Int {
@@ -19,9 +24,9 @@ class WechatModel : BaseModel() {
 
 
     fun test2() = async {
-
         Logger.e("执行完毕")
-        delay(3000)
+        val request = api.getWechatUserInfo("", "").await()
+        request
     }
 
 

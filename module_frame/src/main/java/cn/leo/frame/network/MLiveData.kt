@@ -23,10 +23,23 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
         }
     }
 
+    /**
+     * 线程转换的成功方法
+     */
     open fun success(value: T, obj: Any? = null) {
         super.postValue(Result.Success(value).apply { this.obj = obj })
     }
 
+    /**
+     * 线程不转换的成功方法
+     */
+    fun setSuccess(value: T) {
+        super.setValue(Result.Success(value))
+    }
+
+    /**
+     * 线程转换的失败方法
+     */
     open fun failed(e: Exception, obj: Any? = null) {
         if (e is ApiException) {
             val failed = Result.Failed<T>(e)

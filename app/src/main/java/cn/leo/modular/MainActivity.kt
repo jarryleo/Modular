@@ -1,17 +1,16 @@
 package cn.leo.modular
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import cn.leo.base.BaseModelActivity
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
 import cn.leo.base.utils.toast
 import cn.leo.frame.log.Logger
-import cn.leo.frame.network.ModelCreator
+import cn.leo.frame.log.toLogE
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseModelActivity<WechatModel>() {
 
-    private val model by ModelCreator(WechatModel::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +27,18 @@ class MainActivity : AppCompatActivity() {
 
 
         model.observe(model::test) {
-            get {
+            success {
                 Logger.e("result = $it")
+            }
+
+            failed {
+                toast(it.msg ?: "")
             }
         }
 
 
         tvTest.setOnClickListener {
+            "点击".toLogE()
             test()
         }
     }
@@ -42,9 +46,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun test() {
 
-        model.test(1)
+        //model.test(1)
 
-        model.apis(123).getWechatUserInfo("123", "456")
+        //model.apis(123).getWechatUserInfo("123", "456")
+
+        model.test2()
+
+    }
+
+    override fun initObserve() {
+
+        model.observe(model::test2) {
+            success {
+                toast("请求成功：${it?.errcode}  ")
+            }
+            failed {
+                toast("请求失败：${it.code} + ${it.msg}  " + obj)
+            }
+        }
 
     }
 }
