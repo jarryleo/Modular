@@ -41,6 +41,10 @@ class LoggerInterceptor : Interceptor {
             )
             return response
         } else {
+            val headers = response.headers()
+            val header = headers.toString()
+            Log.d(TAG, String.format("headers：|\n%s\n", header))
+
             var charset: Charset? = Charset.defaultCharset()
             val contentType = body.contentType()
             if (contentType != null) {

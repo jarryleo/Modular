@@ -144,9 +144,9 @@ abstract class MViewModel<T : Any> : ViewModel() {
         val methodName =
             Thread.currentThread().stackTrace.find {
                 it.className == this::class.java.name
-            }?.methodName
+            }?.methodName ?: ""
         Logger.d("methodName = $methodName")
-        return request.getLiveData(methodName ?: "")
+        return request.getLiveData(methodName)
     }
 
     /**

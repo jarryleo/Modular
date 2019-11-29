@@ -1,7 +1,5 @@
 package cn.leo.base.model
 
-import cn.leo.frame.log.Logger
-import cn.leo.frame.network.MJob
 import cn.leo.frame.network.exceptions.BusinessException
 
 /**
@@ -19,14 +17,12 @@ class WechatModel : BaseModel() {
     }
 
     fun add(): Int {
-        return 3
+        return 4
     }
 
 
     fun test2() = async {
-        Logger.e("执行完毕")
-        val request = api.getWechatUserInfo("", "").await()
-        request
+        api.getWechatUserInfo("", "").await()
     }
 
 
