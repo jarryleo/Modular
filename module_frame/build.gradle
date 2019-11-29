@@ -93,6 +93,9 @@ dependencies {
     api rootProject.ext.dependencies["greenDao"]
     api rootProject.ext.dependencies["greenDaoHelper"]
     api rootProject.ext.dependencies["lifecycle"]
+
+    //下拉刷新
+    api rootProject.ext.dependencies["SmartRefresh"]
 }
 repositories {
     mavenCentral()

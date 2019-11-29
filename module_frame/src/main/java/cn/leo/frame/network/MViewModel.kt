@@ -71,6 +71,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
     ): Job {
         return scope.launch {
             try {
+                launch(Dispatchers.Main) { onRequestStart() }
                 val result = this@request.await()
                 MInterceptorManager.interceptors.forEach {
                     if (it.intercept(obj, result, liveData)) {
@@ -81,6 +82,8 @@ abstract class MViewModel<T : Any> : ViewModel() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 liveData.failed(e, obj)
+            } finally {
+                launch(Dispatchers.Main) { onRequestEnd() }
             }
         }
     }
@@ -160,6 +163,21 @@ abstract class MViewModel<T : Any> : ViewModel() {
         lifecycleOwner?.let {
             request.observe(it, kFunction.name, result)
         }
+    }
+
+
+    /**
+     * 请求开始
+     */
+    protected fun onRequestStart() {
+
+    }
+
+    /**
+     * 请求结束
+     */
+    protected fun onRequestEnd() {
+
     }
 
 }
