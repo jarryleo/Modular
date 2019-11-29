@@ -6,16 +6,17 @@ import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
 import cn.leo.frame.log.Logger
-import cn.leo.frame.support.getString
-import cn.leo.frame.utils.toast
+import cn.leo.frame.support.count
+import cn.leo.frame.support.int
 import cn.leo.frame.support.text
+import cn.leo.frame.utils.toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import kotlinx.android.synthetic.main.activity_main.*
 
 @Route(path = PagesHome.homeMainActivity)
 class MainActivity : BaseModelActivity<WechatModel>() {
 
-    private var mTestText by text { tvTest }
+    private var mTestText by int { tvTest }
     private var mEditText by text { etTest }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +57,13 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         model.apis(123).getWechatUserInfo("123", "456")
 
-        mTestText = R.string.app_name.getString()
+        count(onCount = {
+                Logger.d(it.toString())
+                mTestText = it
+            }, onComplete = {
+                toast("倒计时结束")
+            })
+
     }
 
 }

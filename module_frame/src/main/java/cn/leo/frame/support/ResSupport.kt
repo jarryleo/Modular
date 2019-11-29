@@ -1,7 +1,6 @@
 package cn.leo.frame.support
 
 import android.graphics.drawable.Drawable
-import androidx.annotation.ColorRes
 import androidx.core.app.ActivityCompat
 import cn.leo.frame.MFrame
 
