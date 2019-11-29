@@ -16,6 +16,7 @@ import androidx.annotation.DrawableRes
 
 /**
  * Created by Leo on 2018/5/18.
+ * 文本框显示不同颜色字符，下划线和点击事件
  */
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 class MagicTextViewUtil private constructor(private val mTextView: TextView) {

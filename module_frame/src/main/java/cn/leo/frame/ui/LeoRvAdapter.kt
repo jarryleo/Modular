@@ -19,6 +19,11 @@ import cn.leo.frame.support.singleClick
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
+/**
+ * @author leo
+ * RecyclerView 适配器
+ */
+
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 abstract class LeoRvAdapter<T : Any> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
