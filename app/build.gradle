@@ -33,7 +33,11 @@ android {
         exclude 'META-INF/beans.xml'
     }
 }
-
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //测试框架

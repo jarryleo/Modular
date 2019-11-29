@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
-import cn.leo.frame.utils.singleClick
+import cn.leo.frame.support.singleClick
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 

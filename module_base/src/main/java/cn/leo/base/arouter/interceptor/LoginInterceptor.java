@@ -1,4 +1,4 @@
-package cn.leo.frame.arouter.interceptor;
+package cn.leo.base.arouter.interceptor;
 
 import android.content.Context;
 
@@ -6,9 +6,8 @@ import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Interceptor;
 import com.alibaba.android.arouter.facade.callback.InterceptorCallback;
 import com.alibaba.android.arouter.facade.template.IInterceptor;
-import com.alibaba.android.arouter.launcher.ARouter;
 
-import cn.leo.frame.arouter.PagesConfig;
+import cn.leo.base.arouter.PagesConfig;
 import cn.leo.frame.log.Logger;
 
 /**

@@ -1,8 +1,7 @@
-package cn.leo.frame.view_support
+package cn.leo.frame.support
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.EditText
 import android.widget.TextView
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

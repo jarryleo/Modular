@@ -1,17 +1,22 @@
 package cn.leo.modular
 
 import android.os.Bundle
-import cn.leo.base.BaseModelActivity
+import cn.leo.base.arouter.pages.PagesHome
+import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
-import cn.leo.base.utils.toast
 import cn.leo.frame.log.Logger
-import cn.leo.frame.view_support.text
+import cn.leo.frame.support.getString
+import cn.leo.frame.utils.toast
+import cn.leo.frame.support.text
+import com.alibaba.android.arouter.facade.annotation.Route
 import kotlinx.android.synthetic.main.activity_main.*
 
+@Route(path = PagesHome.homeMainActivity)
 class MainActivity : BaseModelActivity<WechatModel>() {
 
     private var mTestText by text { tvTest }
+    private var mEditText by text { etTest }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +26,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         }
     }
 
-
-    override fun initObserve() {
+    override fun onInitObserve() {
 
         model.observe(Apis::getWechatUserInfo) {
             success {
@@ -50,10 +54,9 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         model.test(1)
 
-        //model.apis(123).getWechatUserInfo("123", "456")
+        model.apis(123).getWechatUserInfo("123", "456")
 
-
-        mTestText = etTest.text.toString()
+        mTestText = R.string.app_name.getString()
     }
 
 }

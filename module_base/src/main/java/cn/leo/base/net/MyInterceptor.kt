@@ -1,4 +1,4 @@
-package cn.leo.base
+package cn.leo.base.net
 
 import cn.leo.base.bean.BaseBean
 import cn.leo.frame.network.MInterceptor

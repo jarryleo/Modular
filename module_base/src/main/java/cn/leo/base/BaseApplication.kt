@@ -1,6 +1,7 @@
 package cn.leo.base
 
 import androidx.multidex.MultiDexApplication
+import cn.leo.base.net.MyInterceptor
 import cn.leo.frame.MFrame
 import cn.leo.frame.network.MInterceptorManager
 

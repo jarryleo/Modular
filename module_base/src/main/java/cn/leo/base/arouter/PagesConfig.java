@@ -1,4 +1,4 @@
-package cn.leo.frame.arouter;
+package cn.leo.base.arouter;
 
 /**
  * @author : ling luo
