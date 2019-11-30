@@ -40,9 +40,10 @@ class ViewModelHelper<T : Any>(private val apis: T) :
     private fun <R : Any> request(
         deferred: Deferred<R>,
         obj: Any? = null,
+        showLoading: Boolean = false,
         key: String = ""
     ): Job {
-        return model.executeRequest(deferred, getLiveData(key), obj)
+        return model.executeRequest(deferred, getLiveData(key), obj, showLoading)
     }
 
     /**
@@ -58,12 +59,12 @@ class ViewModelHelper<T : Any>(private val apis: T) :
     /**
      * 代理请求接口
      */
-    fun <R : Any> apis(obj: Any?): T {
+    fun <R : Any> apis(obj: Any?, showLoading: Boolean = false): T {
         mObj = obj
         mApiHandler = mApiHandler ?: InvocationHandler { _, method, args ->
             val mJob = method.invoke(apis, *args ?: arrayOf()) as MJob<R>
             val deferred = mJob.job as Deferred<R>
-            MJob<R>(request(deferred, mObj, method.name))
+            MJob<R>(request(deferred, mObj, showLoading, method.name))
         }
         mApiProxy = mApiProxy ?: Proxy.newProxyInstance(
             javaClass.classLoader,

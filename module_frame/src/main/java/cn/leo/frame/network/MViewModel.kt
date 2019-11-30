@@ -26,7 +26,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
     private val scope = CoroutineScope(Dispatchers.IO + job)
     private val request by ViewModelHelper(api)
 
-    fun apis(obj: Any? = null) = request.apis<Any>(obj)
+    fun apis(obj: Any? = null, showLoading: Boolean = false) = request.apis<Any>(obj, showLoading)
 
     protected val api: T
         get() {
@@ -68,11 +68,14 @@ abstract class MViewModel<T : Any> : ViewModel() {
      */
     fun <R> Deferred<R>.request(
         obj: Any? = null,
-        liveData: MLiveData<R>
+        liveData: MLiveData<R>,
+        showLoading: Boolean = false
     ): Job {
         return scope.launch {
             try {
-                launch(Dispatchers.Main) { onRequestStart() }
+                if (showLoading) {
+                    launch(Dispatchers.Main) { onRequestStart() }
+                }
                 val result = this@request.await()
                 MInterceptorManager.interceptors.forEach {
                     if (it.intercept(obj, result, liveData)) {
@@ -84,7 +87,9 @@ abstract class MViewModel<T : Any> : ViewModel() {
                 e.printStackTrace()
                 liveData.failed(e, obj)
             } finally {
-                launch(Dispatchers.Main) { onRequestEnd() }
+                if (showLoading) {
+                    launch(Dispatchers.Main) { onRequestEnd() }
+                }
             }
         }
     }
@@ -100,9 +105,10 @@ abstract class MViewModel<T : Any> : ViewModel() {
     fun <R> executeRequest(
         deferred: Deferred<R>,
         liveData: MLiveData<R>,
-        obj: Any? = null
+        obj: Any? = null,
+        showLoading: Boolean = false
     ): Job {
-        return deferred.request(obj, liveData)
+        return deferred.request(obj, liveData, showLoading)
     }
 
     /**
