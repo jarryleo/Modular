@@ -1,0 +1,32 @@
+package cn.leo.modular
+
+import android.os.Bundle
+import cn.leo.base.base.BaseModelActivity
+import cn.leo.base.bean.WechatUserBean
+import cn.leo.base.model.WechatModel
+import cn.leo.base.support.SmartRefreshHelper
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import kotlinx.android.synthetic.main.layout_smart_refresh_list.*
+
+class Main2Activity :
+    BaseModelActivity<WechatModel>(),
+    SmartRefreshHelper.IView<WechatUserBean> {
+
+    private val mAdapter by lazy { TestAdapter() }
+
+    private val mHelper by SmartRefreshHelper(model)
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main2)
+    }
+
+    override fun getAdapter(): SmartRefreshHelper.IAdapter<WechatUserBean> {
+        return mAdapter
+    }
+
+    override fun getSmartRefresh(): SmartRefreshLayout {
+        return smartRefresh
+    }
+}

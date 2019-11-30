@@ -11,7 +11,7 @@ import cn.leo.frame.network.exceptions.BusinessException
  */
 class MyInterceptor : MInterceptor() {
     override fun <T> intercept(obj: Any?, data: T, liveData: MLiveData<T>): Boolean {
-        if (data is BaseBean) {
+        if (data is BaseBean<*>) {
             if (data.errcode != 0) {
                 liveData.failed(BusinessException(data.errcode, "111111111111"), obj)
             } else {

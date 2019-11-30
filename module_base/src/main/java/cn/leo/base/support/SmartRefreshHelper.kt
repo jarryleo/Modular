@@ -1,10 +1,11 @@
 package cn.leo.base.support
 
-import cn.leo.base.bean.BaseBean
+import androidx.annotation.LayoutRes
+import cn.leo.base.R
 import cn.leo.base.bean.BaseListBean
-import cn.leo.frame.network.MLiveData
 import cn.leo.frame.network.exceptions.ApiException
-import com.scwang.smartrefresh.layout.api.RefreshLayout
+import cn.leo.frame.utils.toast
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -38,17 +39,31 @@ class SmartRefreshHelper<T : Any>(
             loadMore()
         }
 
-        model.observeList {
-            success {
-                onLoadDataSuccess(it.data)
-            }
-            failed {
+        model.observeList(
+            successCallback = {
+                onLoadDataSuccess(it)
+            },
+            failedCallback = {
                 onLoadDataFailed(it)
             }
+        )
+    }
+
+    /**
+     * 配置状态页
+     */
+    fun statusConfig(
+        @LayoutRes loadingRes: Int = R.layout.base_status_loading,
+        @LayoutRes emptyRes: Int = R.layout.base_status_empty,
+        @LayoutRes errorRes: Int = R.layout.base_status_error
+    ) {
+        mSmartRefresh.statusConfig(loadingRes, emptyRes, errorRes) { _, _ ->
+            refresh()
         }
     }
 
     private fun refresh() {
+        mPage = startPage
         model.requestList(mPage)
     }
 
@@ -56,14 +71,18 @@ class SmartRefreshHelper<T : Any>(
         model.requestList(++mPage)
     }
 
-    fun isRefresh() = mPage == startPage
+    private fun isRefresh() = mPage == startPage
 
     private fun onLoadDataSuccess(data: BaseListBean<T>) {
         val count = data.list?.size ?: 0
         if (data.list == null || count == 0) {
-            //显示空页面 todo
+            //显示空页面
+            if (isRefresh()) {
+                mSmartRefresh.showEmpty()
+            }
         } else {
-            //显示成功页面 todo
+            //显示成功页面
+            mSmartRefresh.showContent()
             if (isRefresh()) {
                 mView.getAdapter().replaceData(data.list)
             } else {
@@ -77,20 +96,27 @@ class SmartRefreshHelper<T : Any>(
     private fun onLoadDataFailed(exception: ApiException) {
         if (isRefresh()) {
             mSmartRefresh.finishRefresh(false)
-            //显示错误页面 todo
+            //显示错误页面
+            mSmartRefresh.showError()
         } else {
             mSmartRefresh.finishLoadMore(false)
+        }
+        exception.msg?.let {
+            toast(it)
         }
     }
 
     interface IView<T> {
         fun getAdapter(): IAdapter<T>
-        fun getSmartRefresh(): RefreshLayout
+        fun getSmartRefresh(): SmartRefreshLayout
     }
 
     interface ISource<T> {
         fun requestList(page: Int)
-        fun observeList(result: (MLiveData.Result<BaseBean<BaseListBean<T>>>).() -> Unit = {})
+        fun observeList(
+            failedCallback: (apiException: ApiException) -> Unit,
+            successCallback: (data: BaseListBean<T>) -> Unit
+        )
     }
 
     interface IAdapter<T> {

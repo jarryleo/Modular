@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--   标题栏 -->
+    <item name="base_title_bar" type="id" />
+
+    <!--   多状态管理保存Tag的key -->
+    <item name="base_status_manager" type="id" />
+
+    <!--   多状态页面  重试按钮 -->
+    <item name="base_status_retry" type="id" />
+    <!--   多状态页面  提示图片 -->
+    <item name="base_status_image" type="id" />
+    <!--   多状态页面  提示文本title -->
+    <item name="base_status_title" type="id" />
+    <!--   多状态页面  提示文本内容 -->
+    <item name="base_status_content" type="id" />
+
+</resources>

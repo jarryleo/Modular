@@ -1,10 +1,10 @@
 package cn.leo.base.model
 
-import cn.leo.base.bean.BaseBean
 import cn.leo.base.bean.BaseListBean
 import cn.leo.base.bean.WechatUserBean
+import cn.leo.base.net.Apis
 import cn.leo.base.support.SmartRefreshHelper
-import cn.leo.frame.network.MLiveData
+import cn.leo.frame.network.exceptions.ApiException
 import cn.leo.frame.network.exceptions.BusinessException
 
 /**
@@ -34,8 +34,16 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
         apis().getWechatUserInfo("", "")
     }
 
-    override fun observeList(result: MLiveData.Result<BaseBean<BaseListBean<WechatUserBean>>>.() -> Unit) {
-        //observe(Apis::getWechatUserInfo, result)
-    }
 
+    override fun observeList(
+        failedCallback: (apiException: ApiException) -> Unit,
+        successCallback: (data: BaseListBean<WechatUserBean>) -> Unit
+    ) {
+        observe(Apis::getWechatUserInfo) {
+            success {
+                //successCallback(it)
+            }
+            failed = failedCallback
+        }
+    }
 }

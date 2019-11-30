@@ -4,4 +4,8 @@ package cn.leo.base.bean
  * @author : ling luo
  * @date : 2019-08-30
  */
-open class BaseBean<T>(var errcode: Int = 0, val data: T)
+open class BaseBean<T>(
+    var errcode: Int = 0,
+    var errmsg: String,
+    val data: T
+)

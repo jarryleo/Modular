@@ -7,7 +7,7 @@ import cn.leo.frame.ui.LeoRvAdapter
  * @author : ling luo
  * @date : 2019-11-29
  */
-abstract class BaseAdapter<T : Any> : LeoRvAdapter<T>(), SmartRefreshHelper.IAdapter<T> {
+abstract class SuperAdapter<T : Any> : LeoRvAdapter<T>(), SmartRefreshHelper.IAdapter<T> {
     override fun addData(data: List<T>) {
         super.add(data)
     }

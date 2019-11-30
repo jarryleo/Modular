@@ -10,6 +10,8 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class WechatUserBean(
+    val errcode: Int,
+    val errmsg: String,
     val openid: String,
     val nickname: String,
     val headimgurl: String,
@@ -18,4 +20,4 @@ data class WechatUserBean(
     val country: String,
     val unionid: String,
     val province: String
-) : BaseBean(), Parcelable
+) : Parcelable

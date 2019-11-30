@@ -3,7 +3,6 @@ package cn.leo.base.net
 import cn.leo.base.bean.WechatAccessBean
 import cn.leo.base.bean.WechatUserBean
 import cn.leo.frame.network.MJob
-import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 
