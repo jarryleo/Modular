@@ -5,6 +5,8 @@ import cn.leo.base.arouter.pages.PagesHome
 import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
+import cn.leo.base.support.actionBar
+import cn.leo.base.support.setActionBarTitle
 import cn.leo.frame.log.Logger
 import cn.leo.frame.support.count
 import cn.leo.frame.support.int
@@ -22,8 +24,13 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        actionBar("测试哈哈哈哈哈", "菜单") {
+            toast("点击右侧菜单")
+        }
+
         tvTest.setOnClickListener {
             test()
+            setActionBarTitle("hahahahah")
         }
     }
 
@@ -58,11 +65,11 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         model.apis(123).getWechatUserInfo("123", "456")
 
         count(onCount = {
-                Logger.d(it.toString())
-                mTestText = it
-            }, onComplete = {
-                toast("倒计时结束")
-            })
+            Logger.d(it.toString())
+            mTestText = it
+        }, onComplete = {
+            toast("倒计时结束")
+        })
 
     }
 

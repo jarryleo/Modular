@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--通用actionBarSize 定义-->
+    <dimen name="base_actionBarSize">44dp</dimen>
+
+</resources>

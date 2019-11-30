@@ -16,4 +16,12 @@
     <!--   多状态页面  提示文本内容 -->
     <item name="base_status_content" type="id" />
 
+    <!--  通用标题栏后退按钮  -->
+    <item name="base_actionbar_back" type="id" />
+    <!--  通用标题栏标题  -->
+    <item name="base_actionbar_title" type="id" />
+    <!--  通用标题栏右侧菜单按钮  -->
+    <item name="base_actionbar_menu" type="id" />
+
+
 </resources>
