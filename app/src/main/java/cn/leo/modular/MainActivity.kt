@@ -1,12 +1,15 @@
 package cn.leo.modular
 
+import android.graphics.Color
 import android.os.Bundle
 import cn.leo.base.arouter.pages.PagesHome
 import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
 import cn.leo.base.support.actionBar
+import cn.leo.base.support.actionBarView
 import cn.leo.base.support.setActionBarTitle
+import cn.leo.base.support.setMenu
 import cn.leo.frame.log.Logger
 import cn.leo.frame.support.count
 import cn.leo.frame.support.int
@@ -30,7 +33,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         tvTest.setOnClickListener {
             test()
-            setActionBarTitle("hahahahah")
+            setMenu("hahahahah")
         }
     }
 

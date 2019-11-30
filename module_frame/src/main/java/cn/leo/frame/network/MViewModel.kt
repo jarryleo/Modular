@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import cn.leo.frame.log.Logger
 import cn.leo.frame.network.interceptor.CacheInterceptor
+import cn.leo.frame.ui.ILoading
 import cn.leo.frame.utils.ClassUtils
 import kotlinx.coroutines.*
 import java.util.concurrent.ConcurrentHashMap
@@ -170,14 +171,14 @@ abstract class MViewModel<T : Any> : ViewModel() {
      * 请求开始
      */
     protected fun onRequestStart() {
-
+        (lifecycleOwner as? ILoading)?.showLoading()
     }
 
     /**
      * 请求结束
      */
     protected fun onRequestEnd() {
-
+        (lifecycleOwner as? ILoading)?.dismissLoading()
     }
 
 }

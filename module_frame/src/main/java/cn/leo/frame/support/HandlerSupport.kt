@@ -55,6 +55,7 @@ inline fun LifecycleOwner.count(
     }
     onStart(start)
     liveData.postValue(count)
+    handler.removeCallbacks(runnable)
     handler.postDelayed(runnable, interval)
 }
 

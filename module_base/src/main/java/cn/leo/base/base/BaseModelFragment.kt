@@ -1,8 +1,6 @@
 package cn.leo.base.base
 
-import android.os.Bundle
 import androidx.annotation.CallSuper
-import androidx.appcompat.app.AppCompatActivity
 import cn.leo.base.dialog.LoadingDialog
 import cn.leo.frame.network.MViewModel
 import cn.leo.frame.network.ModelCreator
@@ -11,25 +9,21 @@ import cn.leo.frame.utils.ClassUtils
 
 /**
  * @author : ling luo
- * @date : 2019-11-27
+ * @date : 2019-11-30
  */
-abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
+abstract class BaseModelFragment<T : MViewModel<*>> : SuperFragment(),
     ILoading {
 
     val model by ModelCreator<T>(ClassUtils.getSuperClassGenericType(this::class.java))
     //加载弹窗
     private var mLoadingDialog: LoadingDialog? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        onInitialize()
-    }
-
     open fun onInitObserve() {
     }
 
+
     @CallSuper
-    open fun onInitialize() {
+    override fun onInitialize() {
         onInitObserve()
     }
 
@@ -37,8 +31,10 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
         if (mLoadingDialog != null && mLoadingDialog?.isShowing == true) {
             return
         }
-        mLoadingDialog = LoadingDialog(this, message)
-        mLoadingDialog?.show()
+        context?.apply {
+            mLoadingDialog = LoadingDialog(this, message)
+            mLoadingDialog?.show()
+        }
     }
 
     override fun dismissLoading() {
