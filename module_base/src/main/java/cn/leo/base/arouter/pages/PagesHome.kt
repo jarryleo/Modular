@@ -6,4 +6,6 @@ package cn.leo.base.arouter.pages
  */
 object PagesHome {
     const val homeMainActivity = "home/activity/main"
+
+    const val homeMain2Activity = "home/activity/main2"
 }

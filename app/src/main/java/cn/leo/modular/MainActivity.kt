@@ -8,9 +8,7 @@ import cn.leo.base.net.Apis
 import cn.leo.base.support.actionBar
 import cn.leo.base.support.setMenu
 import cn.leo.frame.log.Logger
-import cn.leo.frame.support.count
-import cn.leo.frame.support.int
-import cn.leo.frame.support.text
+import cn.leo.frame.support.*
 import cn.leo.frame.utils.toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,9 +22,10 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        actionBar("测试哈哈哈哈哈", "菜单") {
+        actionBar("测试哈哈哈哈哈测试哈哈哈哈哈", "菜单") {
             toast("点击右侧菜单")
         }
+
 
         tvTest.setOnClickListener {
             test()

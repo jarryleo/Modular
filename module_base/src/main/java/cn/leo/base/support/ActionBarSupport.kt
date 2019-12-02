@@ -1,15 +1,18 @@
 package cn.leo.base.support
 
 import android.annotation.SuppressLint
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import cn.leo.base.R
+import cn.leo.frame.support.getColor
+import cn.leo.frame.support.setDarkStatusBar
+import cn.leo.frame.support.visibleOrGone
 
 /**
  * @author : ling luo
@@ -24,32 +27,32 @@ inline fun AppCompatActivity.actionBar(
     title: String,
     menu: String = "",
     hasBack: Boolean = true,
+    @ColorRes actionBarColor: Int = R.color.colorPrimary,
+    @ColorRes statusBarColor: Int = actionBarColor,
+    @ColorRes titleColor: Int = android.R.color.white,
+    @ColorRes menuColor: Int = titleColor,
     @DrawableRes backIcon: Int = R.drawable.base_actionbar_back,
     @LayoutRes layout: Int = R.layout.base_actionbar_menu_layout,
     elevation: Float = 3.0f,
     crossinline menuClick: (View) -> Unit = {}
 ) {
     supportActionBar?.apply {
-        val actionBarView: View =
-            LayoutInflater.from(this@actionBar).inflate(layout, null)
-        val backView: ImageView? = actionBarView.findViewById(R.id.base_actionbar_back)
-        val titleView: TextView? = actionBarView.findViewById(R.id.base_actionbar_title)
-        val menuView: TextView? = actionBarView.findViewById(R.id.base_actionbar_menu)
+        setCustomView(layout)
+        val backView: ImageView? = customView.findViewById(R.id.base_actionbar_back)
+        val titleView: TextView? = customView.findViewById(R.id.base_actionbar_title)
+        val menuView: TextView? = customView.findViewById(R.id.base_actionbar_menu)
+        customView.setBackgroundColor(actionBarColor.getColor())
+        setDarkStatusBar(statusBarColor.getColor())
         titleView?.text = title
-        menuView?.text = menu
-        menuView?.setOnClickListener { menuClick(it) }
+        titleView?.setTextColor(titleColor.getColor())
+        if (menu.isNotEmpty()) {
+            menuView?.text = menu
+            menuView?.setTextColor(menuColor.getColor())
+            menuView?.setOnClickListener { menuClick(it) }
+        }
         backView?.setImageResource(backIcon)
         backView?.setOnClickListener { onBackPressed() }
-        backView?.visibility = if (hasBack) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        setCustomView(
-            actionBarView, ActionBar.LayoutParams(
-                ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT
-            )
-        )
+        backView?.visibleOrGone { hasBack }
         displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         setDefaultDisplayHomeAsUpEnabled(false)
         setDisplayShowCustomEnabled(true)

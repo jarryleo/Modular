@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.ColorInt
 import cn.leo.frame.MFrame
 
 /**
@@ -74,7 +75,7 @@ fun Activity.setLightTranslucentStatusBar() {
 /**
  * 设置不透明状态栏且文字为深颜色
  */
-fun Activity.setLightStatusBar(color: Int = Color.WHITE) {
+fun Activity.setLightStatusBar(@ColorInt color: Int = Color.WHITE) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -107,7 +108,7 @@ fun Activity.setDarkTranslucentStatusBar() {
 /**
  * 设置不透明状态栏且文字为浅颜色
  */
-fun Activity.setDarkStatusBar(color: Int = Color.BLACK) {
+fun Activity.setDarkStatusBar(@ColorInt color: Int = Color.BLACK) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
