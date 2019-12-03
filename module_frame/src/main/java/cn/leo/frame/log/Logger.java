@@ -13,10 +13,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.MessageQueue;
 import android.os.SystemClock;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.customview.widget.ViewDragHelper;
-import androidx.appcompat.app.AlertDialog;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -37,6 +33,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.customview.widget.ViewDragHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -230,15 +231,15 @@ public class Logger extends FrameLayout implements Thread.UncaughtExceptionHandl
     /**
      * 在application 的 onCreate() 方法初始化
      *
-     * @param application
+     * @param context
      */
-    public static void init(Application application) {
+    public static void init(Context context) {
         if (debuggable && me == null) {
             synchronized (Logger.class) {
                 if (me == null) {
-                    me = new Logger(application.getApplicationContext());
-                    if (showWindow) {
-                        application.registerActivityLifecycleCallbacks(me);
+                    me = new Logger(context.getApplicationContext());
+                    if (showWindow && context instanceof Application) {
+                        ((Application) context).registerActivityLifecycleCallbacks(me);
                     }
                     //获取系统默认异常处理器
                     mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -320,7 +321,7 @@ public class Logger extends FrameLayout implements Thread.UncaughtExceptionHandl
         if (!debuggable || me == null || type < mFilterLevel + 2) {
             return;
         }
-        if (msg == null){
+        if (msg == null) {
             msg = "null";
         }
         String str = "[" + getTime() + "]" + getLevel(type) + "/" + tag + ":" + msg;

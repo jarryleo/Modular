@@ -2,6 +2,9 @@ package cn.leo.base.model
 
 import cn.leo.base.bean.BaseListBean
 import cn.leo.base.bean.WechatUserBean
+import cn.leo.base.db.DB
+import cn.leo.base.db.bean.User
+import cn.leo.base.db.helper.DbModelProperty
 import cn.leo.base.net.Apis
 import cn.leo.base.support.SmartRefreshHelper
 import cn.leo.frame.network.exceptions.ApiException
@@ -13,6 +16,8 @@ import cn.leo.frame.network.exceptions.BusinessException
  */
 class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
 
+    private val db by DbModelProperty(DB::class.java)
+
     fun test(id: Int) = sync {
         if (add() > 3) {
             add() + id
@@ -23,6 +28,14 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
 
     fun add(): Int {
         return 4
+    }
+
+    fun insert(user: User) = async {
+        db.userDao().insert(user)
+    }
+
+    fun findUserById(id:Long) = async {
+        db.userDao().findUserById(id)
     }
 
 

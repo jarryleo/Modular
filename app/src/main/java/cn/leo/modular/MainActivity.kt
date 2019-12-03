@@ -3,12 +3,13 @@ package cn.leo.modular
 import android.os.Bundle
 import cn.leo.base.arouter.pages.PagesHome
 import cn.leo.base.base.BaseModelActivity
+import cn.leo.base.db.bean.User
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
 import cn.leo.base.support.actionBar
-import cn.leo.base.support.setMenu
 import cn.leo.frame.log.Logger
-import cn.leo.frame.support.*
+import cn.leo.frame.support.int
+import cn.leo.frame.support.text
 import cn.leo.frame.utils.toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,17 +24,27 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         actionBar("测试哈哈哈哈哈测试哈哈哈哈哈", "菜单") {
-            toast("点击右侧菜单")
+
+            model.insert(User(1, "Tom"))
+
         }
 
 
         tvTest.setOnClickListener {
-            test()
-            setMenu("hahahahah")
+            //test()
+            model.findUserById(2)
         }
     }
 
     override fun onInitObserve() {
+        model.observe(model::findUserById) {
+            success {
+                tvTest.text = it.name
+            }
+            failed {
+                toast(it.msg ?: "数据库查询失败")
+            }
+        }
 
         model.observe(Apis::getWechatUserInfo) {
             success {
@@ -62,13 +73,6 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         model.test(1)
 
         model.apis(123, true).getWechatUserInfo("123", "456")
-
-        count(onCount = {
-            Logger.d(it.toString())
-            mTestText = it
-        }, onComplete = {
-            toast("倒计时结束")
-        })
 
     }
 

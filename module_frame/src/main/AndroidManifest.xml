@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.leo.frame" >
+    package="cn.leo.frame">
     <!--网络权限-->
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,6 +17,11 @@
     <application>
         <meta-data
             android:name="cn.leo.frame.image.glide.OkHttpAppGlideModule"
-            android:value="AppGlideModule"/>
+            android:value="AppGlideModule" />
+
+        <provider
+            android:name=".provider.FrameContextProvider"
+            android:authorities="${applicationId}.FrameContextProvider"
+            android:exported="false" />
     </application>
 </manifest>

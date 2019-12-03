@@ -23,11 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    greendao {
-        schemaVersion 1
-        daoPackage 'cn.leo.base.db'
-        targetGenDir 'src/main/java'
-    }
 
     resourcePrefix "base_"
 }
@@ -44,5 +39,7 @@ dependencies {
     //ARouter路由
     annotationProcessor rootProject.ext.dependencies["arouter_compiler"]
     kapt rootProject.ext.dependencies["arouter_compiler"]
+    //room注解处理器
+    kapt rootProject.ext.dependencies["room-compiler"]
 }
 

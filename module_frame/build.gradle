@@ -53,11 +53,17 @@ dependencies {
     api rootProject.ext.dependencies["support"]
     api rootProject.ext.dependencies["design"]
     api rootProject.ext.dependencies["support_annotations"]
+    api rootProject.ext.dependencies["lifecycle"]
 
     //kotlin
     api rootProject.ext.dependencies["kotlin"]
     //协程
     api rootProject.ext.dependencies["kotlinx-coroutines"]
+
+    //room
+    api rootProject.ext.dependencies["room-runtime"]
+    api rootProject.ext.dependencies["room-ktx"]
+    kapt rootProject.ext.dependencies["room-compiler"]
 
     //ARouter路由
     annotationProcessor rootProject.ext.dependencies["arouter_compiler"]
@@ -88,11 +94,6 @@ dependencies {
 
     //MultiDex分包方法
     api rootProject.ext.dependencies["multidex"]
-
-    //greenDao
-    api rootProject.ext.dependencies["greenDao"]
-    api rootProject.ext.dependencies["greenDaoHelper"]
-    api rootProject.ext.dependencies["lifecycle"]
 
     //下拉刷新
     api rootProject.ext.dependencies["SmartRefresh"]

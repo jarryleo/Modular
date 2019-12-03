@@ -121,7 +121,12 @@ abstract class MViewModel<T : Any> : ViewModel() {
         //异步执行
         val job = scope.launch {
             try {
-                liveData.success(deferred.await())
+                val value = deferred.await()
+                if (value != null) {
+                    liveData.success(value)
+                } else {
+                    liveData.failed(NullPointerException("null"))
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 liveData.failed(e)
@@ -140,7 +145,12 @@ abstract class MViewModel<T : Any> : ViewModel() {
         //主线程执行
         val job = scope.launch(context = Dispatchers.Main) {
             try {
-                liveData.setSuccess(deferred.await())
+                val value = deferred.await()
+                if (value != null) {
+                    liveData.success(value)
+                } else {
+                    liveData.failed(NullPointerException("null"))
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 liveData.failed(e)

@@ -12,8 +12,6 @@ import cn.leo.frame.network.MInterceptorManager
 open class BaseApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
-        MFrame.init(this)
-        //DBHelper.initGreenDao(this)
         MInterceptorManager.addInterceptor(MyInterceptor())
     }
 }
