@@ -18,6 +18,9 @@ abstract class SuperActionBarFragment : SuperFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (!hasActionBar()) {
+            return super.onCreateView(inflater, container, savedInstanceState)
+        }
         if (getLayoutResId() == -1) {
             return createView()
         }
@@ -27,5 +30,9 @@ abstract class SuperActionBarFragment : SuperFragment() {
         viewStub.layoutResource = getLayoutResId()
         viewStub.visibility = View.VISIBLE
         return view
+    }
+
+    protected open fun hasActionBar(): Boolean {
+        return false
     }
 }

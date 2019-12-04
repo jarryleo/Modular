@@ -24,7 +24,10 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        actionBar("测试哈哈哈哈哈测试哈哈哈哈哈", "菜单") {
+        actionBar(
+            "测试哈哈哈哈哈测试哈哈哈哈哈",
+            "菜单"
+        ) {
 
             model.insert(User(1, "Tom"))
             PagesHome.homeMain3Activity.jump()

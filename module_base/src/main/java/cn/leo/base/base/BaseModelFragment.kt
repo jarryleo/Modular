@@ -11,7 +11,7 @@ import cn.leo.frame.utils.ClassUtils
  * @author : ling luo
  * @date : 2019-11-30
  */
-abstract class BaseModelFragment<T : MViewModel<*>> : SuperFragment(),
+abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
     ILoading {
 
     val model by ModelCreator<T>(ClassUtils.getSuperClassGenericType(this::class.java))

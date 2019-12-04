@@ -26,4 +26,9 @@ class TestFragment : SuperActionBarFragment() {
             setActionBarTitle("标题欢乐")
         }
     }
+
+    override fun hasActionBar(): Boolean {
+        return true
+    }
+
 }
