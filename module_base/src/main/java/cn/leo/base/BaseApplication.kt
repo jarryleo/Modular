@@ -4,6 +4,7 @@ import androidx.multidex.MultiDexApplication
 import cn.leo.base.net.MyInterceptor
 import cn.leo.frame.MFrame
 import cn.leo.frame.network.MInterceptorManager
+import com.alibaba.android.arouter.launcher.ARouter
 
 /**
  * @author : ling luo
@@ -12,6 +13,7 @@ import cn.leo.frame.network.MInterceptorManager
 open class BaseApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
+        ARouter.init(this)
         MInterceptorManager.addInterceptor(MyInterceptor())
     }
 }

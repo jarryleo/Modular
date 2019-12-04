@@ -8,6 +8,7 @@ import cn.leo.frame.network.MViewModel
 import cn.leo.frame.network.ModelCreator
 import cn.leo.frame.ui.ILoading
 import cn.leo.frame.utils.ClassUtils
+import com.alibaba.android.arouter.launcher.ARouter
 
 /**
  * @author : ling luo
@@ -30,6 +31,7 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
 
     @CallSuper
     open fun onInitialize() {
+        ARouter.getInstance().inject(this)
         onInitObserve()
     }
 

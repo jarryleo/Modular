@@ -10,6 +10,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import cn.leo.base.R
+import cn.leo.base.base.SuperActionBarFragment
 import cn.leo.frame.support.getColor
 import cn.leo.frame.support.setDarkStatusBar
 import cn.leo.frame.support.visibleOrGone
@@ -59,6 +60,42 @@ inline fun AppCompatActivity.actionBar(
         setDisplayShowHomeEnabled(false)
         setDisplayShowTitleEnabled(false)
         this.elevation = elevation
+    }
+}
+
+inline fun SuperActionBarFragment.actionBar(
+    title: String,
+    menu: String = "",
+    hasBack: Boolean = true,
+    @ColorRes actionBarColor: Int = R.color.colorPrimary,
+    @ColorRes statusBarColor: Int = actionBarColor,
+    @ColorRes titleColor: Int = android.R.color.white,
+    @ColorRes menuColor: Int = titleColor,
+    @DrawableRes backIcon: Int = R.drawable.base_actionbar_back,
+    crossinline menuClick: (View) -> Unit = {}
+) {
+    view?.findViewById<View>(R.id.actionBar)?.apply {
+        val backView: ImageView? = findViewById(R.id.base_actionbar_back)
+        val titleView: TextView? = findViewById(R.id.base_actionbar_title)
+        val menuView: TextView? = findViewById(R.id.base_actionbar_menu)
+        setBackgroundColor(actionBarColor.getColor())
+
+        activity?.setDarkStatusBar(statusBarColor.getColor())
+        if (activity is AppCompatActivity) {
+            (activity as? AppCompatActivity)?.supportActionBar?.hide()
+        } else {
+            activity?.actionBar?.hide()
+        }
+        titleView?.text = title
+        titleView?.setTextColor(titleColor.getColor())
+        if (menu.isNotEmpty()) {
+            menuView?.text = menu
+            menuView?.setTextColor(menuColor.getColor())
+            menuView?.setOnClickListener { menuClick(it) }
+        }
+        backView?.setImageResource(backIcon)
+        backView?.setOnClickListener { activity?.onBackPressed() }
+        backView?.visibleOrGone { hasBack }
     }
 }
 

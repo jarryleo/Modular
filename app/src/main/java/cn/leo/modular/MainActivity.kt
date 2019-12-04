@@ -10,6 +10,7 @@ import cn.leo.base.support.actionBar
 import cn.leo.frame.log.Logger
 import cn.leo.frame.support.int
 import cn.leo.frame.support.text
+import cn.leo.frame.utils.jump
 import cn.leo.frame.utils.toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,7 +27,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         actionBar("测试哈哈哈哈哈测试哈哈哈哈哈", "菜单") {
 
             model.insert(User(1, "Tom"))
-
+            PagesHome.homeMain3Activity.jump()
         }
 
 
