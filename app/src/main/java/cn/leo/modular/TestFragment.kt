@@ -2,7 +2,10 @@ package cn.leo.modular
 
 import cn.leo.base.base.SuperActionBarFragment
 import cn.leo.base.support.actionBar
+import cn.leo.base.support.setActionBarTitle
+import cn.leo.frame.support.singleClick
 import cn.leo.frame.utils.toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * @author : ling luo
@@ -17,6 +20,10 @@ class TestFragment : SuperActionBarFragment() {
     override fun onInitialize() {
         actionBar("Fragment标题", "菜单") {
             toast("点击菜单")
+        }
+
+        tvTest.singleClick {
+            setActionBarTitle("标题欢乐")
         }
     }
 }

@@ -110,12 +110,26 @@ fun AppCompatActivity.setActionBarTitle(title: String) {
     }
 }
 
+fun SuperActionBarFragment.setActionBarTitle(title: String) {
+    view?.findViewById<View>(R.id.actionBar)?.apply {
+        val titleView: TextView? = findViewById(R.id.base_actionbar_title)
+        titleView?.text = title
+    }
+}
+
 /**
  * 修改标题栏菜单文字
  */
 fun AppCompatActivity.setMenu(text: String) {
     supportActionBar?.apply {
         val menuView: TextView? = customView?.findViewById(R.id.base_actionbar_menu)
+        menuView?.text = text
+    }
+}
+
+fun SuperActionBarFragment.setMenu(text: String) {
+    view?.findViewById<View>(R.id.actionBar)?.apply {
+        val menuView: TextView? = findViewById(R.id.base_actionbar_menu)
         menuView?.text = text
     }
 }
