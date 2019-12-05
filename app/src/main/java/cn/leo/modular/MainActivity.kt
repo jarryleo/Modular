@@ -37,11 +37,11 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
 
         tvTest.setOnClickListener {
-            //test()
+            test()
             //model.findUserById(1)
 
             ivTest.loadImage(
-                "www.baidu.com",
+                "https://pic2.zhimg.com/v2-7cb8b1ea5e11779e25b4b35d52b777f2_xll.jpg",
                 circle = true,
                 defResId = R.drawable.ic_launcher_background,
                 errResId = R.drawable.ic_launcher_background,
@@ -53,7 +53,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     }
 
     override fun onInitObserve() {
-        model.observe(model::findUserById) {
+        model.observe(this, model::findUserById) {
             success {
                 tvTest.text = it.name
             }
@@ -62,7 +62,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
             }
         }
 
-        model.observe(Apis::getWechatUserInfo) {
+        model.observe(this, Apis::getWechatUserInfo) {
             success {
                 toast("请求成功：$obj  ")
             }
@@ -72,7 +72,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         }
 
 
-        model.observe(model::test) {
+        model.observe(this, model::test) {
             success {
                 Logger.e("result = $it")
             }
@@ -81,7 +81,6 @@ class MainActivity : BaseModelActivity<WechatModel>() {
                 toast(it.msg ?: "")
             }
         }
-
     }
 
     private fun test() {

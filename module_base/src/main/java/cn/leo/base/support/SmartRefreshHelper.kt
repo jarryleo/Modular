@@ -1,6 +1,7 @@
 package cn.leo.base.support
 
 import androidx.annotation.LayoutRes
+import androidx.lifecycle.LifecycleOwner
 import cn.leo.base.R
 import cn.leo.base.bean.BaseListBean
 import cn.leo.frame.network.exceptions.ApiException
@@ -40,6 +41,7 @@ class SmartRefreshHelper<T : Any>(
         }
 
         model.observeList(
+            mView,
             successCallback = {
                 onLoadDataSuccess(it)
             },
@@ -106,7 +108,7 @@ class SmartRefreshHelper<T : Any>(
         }
     }
 
-    interface IView<T> {
+    interface IView<T> : LifecycleOwner {
         fun getAdapter(): IAdapter<T>
         fun getSmartRefresh(): SmartRefreshLayout
     }
@@ -114,6 +116,7 @@ class SmartRefreshHelper<T : Any>(
     interface ISource<T> {
         fun requestList(page: Int)
         fun observeList(
+            lifecycleOwner: LifecycleOwner,
             failedCallback: (apiException: ApiException) -> Unit,
             successCallback: (data: BaseListBean<T>) -> Unit
         )

@@ -17,8 +17,6 @@ class ModelCreator<T : MViewModel<*>>(private val clazz: Class<T>) :
          * 绑定ViewModelStoreOwner 在 view层销毁时候会通知所有 ViewModel 调用 clear() 方法
          * 用户需重写 ViewModel 的 onCleared() 来执行回收操作
          */
-        return ViewModelProvider(thisRef).get(clazz).apply {
-            lifecycleOwner = thisRef as? LifecycleOwner
-        }
+        return ViewModelProvider(thisRef).get(clazz)
     }
 }

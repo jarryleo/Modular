@@ -3,6 +3,7 @@ package cn.leo.base.base
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import cn.leo.base.dialog.LoadingDialog
 import cn.leo.frame.network.MViewModel
 import cn.leo.frame.network.ModelCreator
@@ -32,6 +33,13 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
     @CallSuper
     open fun onInitialize() {
         ARouter.getInstance().inject(this)
+        model.loading.observe(this, Observer {
+            if (it) {
+                showLoading()
+            } else {
+                dismissLoading()
+            }
+        })
         onInitObserve()
     }
 

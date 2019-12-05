@@ -1,10 +1,10 @@
 package cn.leo.frame.network
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import cn.leo.frame.log.Logger
 import cn.leo.frame.network.interceptor.CacheInterceptor
-import cn.leo.frame.ui.ILoading
 import cn.leo.frame.utils.ClassUtils
 import kotlinx.coroutines.*
 import java.util.concurrent.ConcurrentHashMap
@@ -13,6 +13,9 @@ import kotlin.reflect.KFunction
 /**
  * @author : ling luo
  * @date : 2019-07-03
+ *
+ * ViewModel 生命周期比 Activity 长，不应该持有任何view引用活着包含view的引用，
+ * ViewModel 在页面被杀后能够恢复。持有Activity的话，会导致泄漏
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 abstract class MViewModel<T : Any> : ViewModel() {
@@ -21,10 +24,13 @@ abstract class MViewModel<T : Any> : ViewModel() {
         private val apiMap = ConcurrentHashMap<Class<*>, Any>()
     }
 
-    var lifecycleOwner: LifecycleOwner? = null
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
     private val request by ViewModelHelper(api)
+    /**
+     * 观察请求开始结束用于展示loading窗口
+     */
+    val loading = MutableLiveData<Boolean>()
 
     fun apis(obj: Any? = null, showLoading: Boolean = false) = request.apis<Any>(obj, showLoading)
 
@@ -59,7 +65,6 @@ abstract class MViewModel<T : Any> : ViewModel() {
     override fun onCleared() {
         job.cancel()
         request.clear()
-        lifecycleOwner = null
     }
 
 
@@ -174,12 +179,11 @@ abstract class MViewModel<T : Any> : ViewModel() {
      * @param kFunction 参数写法 model::test
      */
     fun <R> observe(
+        lifecycleOwner: LifecycleOwner,
         kFunction: KFunction<MJob<R>>,
         result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
-        lifecycleOwner?.let {
-            request.observe(it, kFunction.name, result)
-        }
+        request.observe(lifecycleOwner, kFunction.name, result)
     }
 
 
@@ -187,14 +191,14 @@ abstract class MViewModel<T : Any> : ViewModel() {
      * 请求开始
      */
     protected fun onRequestStart() {
-        (lifecycleOwner as? ILoading)?.showLoading()
+        loading.postValue(true)
     }
 
     /**
      * 请求结束
      */
     protected fun onRequestEnd() {
-        (lifecycleOwner as? ILoading)?.dismissLoading()
+        loading.postValue(false)
     }
 
 }

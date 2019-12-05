@@ -1,6 +1,7 @@
 package cn.leo.base.base
 
 import androidx.annotation.CallSuper
+import androidx.lifecycle.Observer
 import cn.leo.base.dialog.LoadingDialog
 import cn.leo.frame.network.MViewModel
 import cn.leo.frame.network.ModelCreator
@@ -24,6 +25,13 @@ abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
 
     @CallSuper
     override fun onInitialize() {
+        model.loading.observe(this, Observer {
+            if (it) {
+                showLoading()
+            } else {
+                dismissLoading()
+            }
+        })
         onInitObserve()
     }
 

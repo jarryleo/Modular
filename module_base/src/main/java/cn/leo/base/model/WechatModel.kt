@@ -1,5 +1,6 @@
 package cn.leo.base.model
 
+import androidx.lifecycle.LifecycleOwner
 import cn.leo.base.bean.BaseListBean
 import cn.leo.base.bean.WechatUserBean
 import cn.leo.base.db.DB
@@ -34,7 +35,7 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
         db.userDao().insert(user)
     }
 
-    fun findUserById(id:Long) = async {
+    fun findUserById(id: Long) = async {
         db.userDao().findUserById(id)
     }
 
@@ -49,10 +50,11 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
 
 
     override fun observeList(
+        lifecycleOwner: LifecycleOwner,
         failedCallback: (apiException: ApiException) -> Unit,
         successCallback: (data: BaseListBean<WechatUserBean>) -> Unit
     ) {
-        observe(Apis::getWechatUserInfo) {
+        observe(lifecycleOwner, Apis::getWechatUserInfo) {
             success {
                 //successCallback(it)
             }
