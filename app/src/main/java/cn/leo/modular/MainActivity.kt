@@ -10,7 +10,6 @@ import cn.leo.base.support.actionBar
 import cn.leo.frame.image.loadImage
 import cn.leo.frame.log.Logger
 import cn.leo.frame.log.logE
-import cn.leo.frame.support.dp
 import cn.leo.frame.support.int
 import cn.leo.frame.support.text
 import cn.leo.frame.utils.jump
@@ -43,7 +42,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
             ivTest.loadImage(
                 "www.baidu.com",
-                corners = 12.dp(),
+                circle = true,
                 defResId = R.drawable.ic_launcher_background,
                 errResId = R.drawable.ic_launcher_background,
                 onLoadFailed = { _, _ ->

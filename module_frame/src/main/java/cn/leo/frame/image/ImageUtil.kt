@@ -58,13 +58,18 @@ fun ImageView.loadImage(
         return
     }
     //图片位置处理
-    val transforms =
+    val transform =
         when (scaleType) {
             ImageView.ScaleType.FIT_CENTER -> FitCenter()
             ImageView.ScaleType.CENTER_INSIDE -> CenterInside()
             else -> CenterCrop()
         }
-
+    //图片裁剪
+    val transforms = when {
+        circle -> arrayOf(CircleCrop(), transform)
+        (corners > 0) -> arrayOf(RoundedCorners(corners), transform)
+        else -> arrayOf(transform)
+    }
     Glide.with(this)
         //资源加载途径
         .load(
@@ -87,18 +92,14 @@ fun ImageView.loadImage(
             }
         )
         //图片裁剪
-        .transform(
-            *when {
-                circle -> arrayOf(CircleCrop(), transforms)
-                (corners > 0) -> arrayOf(RoundedCorners(corners), transforms)
-                else -> arrayOf(transforms)
-            }
-        )
+        .transform(*transforms)
         //图片加载动画
         .transition(withCrossFade())
+        //缩略图(顶替占位图实现裁剪)
+        .thumbnail(loadTransform(this, defResId, transforms))
         //占位图
-        .placeholder(defResId)
-        .error(loadTransform(this, errResId, circle, corners))
+        //.placeholder(defResId)
+        .error(loadTransform(this, errResId, transforms))
         //加载回调
         .listener(object : RequestListener<Drawable> {
             override fun onLoadFailed(
@@ -123,8 +124,6 @@ fun ImageView.loadImage(
             }
 
         })
-        //缩略图
-        .thumbnail(loadTransform(this, defResId, circle, corners))
         .into(this)
 }
 
@@ -134,25 +133,11 @@ fun ImageView.loadImage(
 private fun loadTransform(
     view: ImageView,
     @DrawableRes resId: Int = -1,
-    circle: Boolean = false,
-    corners: Int = 0
+    transformation: Array<BitmapTransformation>
 ): RequestBuilder<Drawable>? {
-    if (!circle && corners == 0) {
-        return null
-    }
     return Glide.with(view)
         .load(resId)
-        .apply(
-            RequestOptions
-                .centerCropTransform()
-                .transform(
-                    when {
-                        circle -> CircleCrop()
-                        corners > 0 -> RoundedCorners(corners)
-                        else -> CenterCrop()
-                    }
-                )
-        )
+        .apply(RequestOptions().transform(*transformation))
 }
 
 /**
