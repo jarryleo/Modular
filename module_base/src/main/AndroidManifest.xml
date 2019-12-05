@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.leo.base">
 
-    <application>
+    <application
+        android:networkSecurityConfig="@xml/base_network_security_config"
+        android:usesCleartextTraffic="true">
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.FileProvider"

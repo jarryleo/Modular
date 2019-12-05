@@ -11,12 +11,12 @@ import kotlin.math.roundToInt
 /**
  * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
  */
-fun Float.px(): Int {
+fun Float.dp(): Int {
     val scale = MFrame.context.resources.displayMetrics.density
     return (this * scale).roundToInt()
 }
 
-fun Int.px(): Int {
+fun Int.dp(): Int {
     val scale = MFrame.context.resources.displayMetrics.density
     return (this * scale).roundToInt()
 }
@@ -24,12 +24,12 @@ fun Int.px(): Int {
 /**
  * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
  */
-fun Float.dp(): Int {
+fun Float.px(): Int {
     val scale = MFrame.context.resources.displayMetrics.density
     return (this / scale).roundToInt()
 }
 
-fun Int.dp(): Int {
+fun Int.px(): Int {
     val scale = MFrame.context.resources.displayMetrics.density
     return (this / scale).roundToInt()
 }
