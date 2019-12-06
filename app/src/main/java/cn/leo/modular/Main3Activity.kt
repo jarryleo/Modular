@@ -15,4 +15,8 @@ class Main3Activity : AppCompatActivity() {
 
         showFragment<TestFragment>(R.id.fragmentContainer)
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+    }
 }

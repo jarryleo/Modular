@@ -1,6 +1,5 @@
 package cn.leo.frame.network
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import kotlin.properties.ReadOnlyProperty
