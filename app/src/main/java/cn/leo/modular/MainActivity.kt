@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 @Route(path = PagesHome.homeMainActivity)
 class MainActivity : BaseModelActivity<WechatModel>() {
 
-    private var mTestText by int { tvTest }
+    private var mTestText by text { tvTest }
     private var mEditText by text { etTest }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         tvTest.setOnClickListener {
             test()
-            //model.findUserById(1)
+            model.findUserById(1)
 
             ivTest.loadImage(
                 "https://pic2.zhimg.com/v2-7cb8b1ea5e11779e25b4b35d52b777f2_xll.jpg",
@@ -55,7 +55,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     override fun onInitObserve() {
         model.observe(this, model::findUserById) {
             success {
-                tvTest.text = it.name
+                mTestText = it.name
             }
             failed {
                 toast(it.msg ?: "数据库查询失败")

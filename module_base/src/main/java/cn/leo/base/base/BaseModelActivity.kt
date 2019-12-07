@@ -63,14 +63,22 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
     /**
      * 协助订阅方法
      */
-    infix fun <R> KFunction<MJob<R>>.ob(obFun: KFunction<*>) {
-        model.observe(this@BaseModelActivity, this, obFun)
+    infix fun <R> KFunction<MJob<R>>.ob(obFunc: (R) -> Any) {
+        model.observe(this@BaseModelActivity, this) {
+            success{
+                obFunc(it)
+            }
+        }
     }
 
     /**
      * 重载操作符协助订阅方法
      */
-    protected operator fun <R> KFunction<MJob<R>>.plus(obFun: KFunction<*>) {
-        model.observe(this@BaseModelActivity, this, obFun)
+    protected operator fun <R> KFunction<MJob<R>>.plus(obFunc: (R) -> Any) {
+        model.observe(this@BaseModelActivity, this) {
+            success{
+                obFunc(it)
+            }
+        }
     }
 }

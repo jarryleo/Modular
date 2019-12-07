@@ -98,7 +98,6 @@ dependencies {
     //下拉刷新
     api rootProject.ext.dependencies["SmartRefresh"]
 
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.60"
 }
 repositories {
     mavenCentral()

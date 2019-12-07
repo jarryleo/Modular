@@ -3,8 +3,8 @@ package cn.leo.frame.network
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import cn.leo.frame.log.Logger
 import cn.leo.frame.log.logD
+import cn.leo.frame.network.exceptions.ApiException
 import cn.leo.frame.network.interceptor.CacheInterceptor
 import cn.leo.frame.utils.ClassUtils
 import kotlinx.coroutines.*
@@ -172,7 +172,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
             Thread.currentThread().stackTrace.find {
                 it.className == this::class.java.name
             }?.methodName ?: ""
-        Logger.d("methodName = $methodName")
+        logD("methodName = $methodName")
         return request.getLiveData(methodName)
     }
 
@@ -186,22 +186,6 @@ abstract class MViewModel<T : Any> : ViewModel() {
         result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
         request.observe(lifecycleOwner, kFunction.name, result)
-    }
-
-    /**
-     * 订阅方法，省去回调写法
-     * @param subFunc 被观察的方法
-     * @param obFunc 订阅方法
-     * subFunc 的返回值 要和  obFunc 的参数一致，且obFunc 只能有1个参数
-     */
-    fun <R> observe(
-        lifecycleOwner: LifecycleOwner,
-        subFunc: KFunction<MJob<R>>,
-        obFunc: KFunction<*>
-    ) {
-        request.observe<R>(lifecycleOwner, subFunc.name) {
-            success { obFunc.call(it) }
-        }
     }
 
     /**

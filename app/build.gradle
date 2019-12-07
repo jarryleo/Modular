@@ -23,8 +23,19 @@ android {
         multiDexEnabled true
     }
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            pseudoLocalesEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

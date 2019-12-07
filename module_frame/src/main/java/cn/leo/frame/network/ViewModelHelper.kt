@@ -2,6 +2,7 @@ package cn.leo.frame.network
 
 import androidx.lifecycle.LifecycleOwner
 import cn.leo.frame.log.Logger
+import cn.leo.frame.log.logD
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import java.lang.reflect.InvocationHandler
@@ -76,7 +77,7 @@ class ViewModelHelper<T : Any>(private val apis: T) :
 
     /**
      * 监听请求回调
-     * @param kFunction 参数写法 Api::test
+     * @param funcName 函数名称
      */
     fun <R> observe(
         lifecycleOwner: LifecycleOwner,
@@ -101,7 +102,7 @@ class ViewModelHelper<T : Any>(private val apis: T) :
      * 获取LiveData
      */
     fun <R> getLiveData(key: String): MLiveData<R> {
-        Logger.d("LiveData key  = $key")
+        logD("LiveData key  = $key")
         return if (mLiveDataCache.containsKey(key)) {
             mLiveDataCache[key] as MLiveData<R>
         } else {

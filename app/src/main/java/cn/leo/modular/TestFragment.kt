@@ -36,6 +36,10 @@ class TestFragment : BaseModelFragment<TestModel>() {
 
     }
 
+    private fun setTitle(title:String){
+        setActionBarTitle(title)
+    }
+
     override fun hasActionBar(): Boolean {
         return true
     }
