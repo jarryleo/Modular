@@ -1,5 +1,6 @@
 package cn.leo.base.net
 
+import cn.leo.base.bean.BaseBean
 import cn.leo.base.bean.WechatAccessBean
 import cn.leo.base.bean.WechatUserBean
 import cn.leo.frame.network.MJob
@@ -19,7 +20,7 @@ interface Apis {
     fun getWechatUserInfo(
         @Query("access_token") access_token: String,
         @Query("openid") openid: String
-    ): MJob<WechatUserBean>
+    ): MJob<BaseBean<WechatUserBean>>
 
 
     /**

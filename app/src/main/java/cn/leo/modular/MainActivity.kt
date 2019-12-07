@@ -10,7 +10,6 @@ import cn.leo.base.support.actionBar
 import cn.leo.frame.image.loadImage
 import cn.leo.frame.log.Logger
 import cn.leo.frame.log.logE
-import cn.leo.frame.support.int
 import cn.leo.frame.support.text
 import cn.leo.frame.utils.jump
 import cn.leo.frame.utils.toast
@@ -78,7 +77,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
             }
 
             failed {
-                toast(it.msg ?: "")
+                logE(it.msg ?: "")
             }
         }
     }

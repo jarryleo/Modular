@@ -27,8 +27,8 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
         }
     }
 
-    fun add(): Int {
-        return 4
+    private fun add(): Int {
+        return 3
     }
 
     fun insert(user: User) = async {
