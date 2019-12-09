@@ -72,7 +72,7 @@ open class NodeProgress @JvmOverloads constructor(
             hms = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.EXACTLY)
         }
         super.onMeasure(wms, hms)
-        if (isInEditMode) {
+        if (isInEditMode && mNodes.isNullOrEmpty()) {
             mNodes = arrayOf("v1", "v2", "v3", "v4", "v5")
             mPart = (mWidth / (mNodes.size)).toFloat()
         }
@@ -88,7 +88,9 @@ open class NodeProgress @JvmOverloads constructor(
 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
-        setNodes(mNodes)
+        if (mNodes.isNotEmpty()) {
+            setNodes(mNodes)
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {

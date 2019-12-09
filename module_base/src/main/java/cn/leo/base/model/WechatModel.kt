@@ -21,6 +21,7 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
 
     fun test(id: Int) = sync {
         if (add() > 3) {
+            testSecondSub()
             add() + id
         } else {
             throw BusinessException("测试错误")
@@ -28,7 +29,11 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
     }
 
     private fun add(): Int {
-        return 3
+        return 5
+    }
+
+    fun testSecondSub() = async {
+        22222
     }
 
     fun insert(user: User) = async {

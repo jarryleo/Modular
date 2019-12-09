@@ -1,5 +1,6 @@
 package cn.leo.frame.network
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import kotlin.properties.ReadOnlyProperty
@@ -17,5 +18,16 @@ class ModelCreator<T : MViewModel<*>>(private val clazz: Class<T>) :
          * 用户需重写 ViewModel 的 onCleared() 来执行回收操作
          */
         return ViewModelProvider(thisRef).get(clazz)
+    }
+}
+
+/**
+ * Fragment共享model 所有和这个fragment处于同一个activity的
+ * fragment 以及 activity 获取到的同名model都是同一个对象，可以订阅同一个方法，同时拿到回调
+ */
+class ShareModelCreator<T : MViewModel<*>>(private val clazz: Class<T>) :
+    ReadOnlyProperty<Fragment, T> {
+    override fun getValue(thisRef: Fragment, property: KProperty<*>): T {
+        return ViewModelProvider(thisRef.activity!!).get(clazz)
     }
 }

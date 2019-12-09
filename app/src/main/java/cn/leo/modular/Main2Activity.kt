@@ -6,6 +6,7 @@ import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.bean.WechatUserBean
 import cn.leo.base.model.WechatModel
 import cn.leo.base.support.SmartRefreshHelper
+import cn.leo.base.support.actionBar
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import kotlinx.android.synthetic.main.layout_smart_refresh_list.*
@@ -23,6 +24,7 @@ class Main2Activity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+        actionBar("SmartRefreshHelper")
         mHelper.statusConfig()
         mHelper.getData()
     }
