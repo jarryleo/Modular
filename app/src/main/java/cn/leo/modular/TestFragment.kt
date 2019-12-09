@@ -36,7 +36,7 @@ class TestFragment : BaseModelFragment<TestModel>() {
 
     }
 
-    private fun setTitle(title:String){
+    private fun setTitle(title: String) {
         setActionBarTitle(title)
     }
 

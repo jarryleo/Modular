@@ -58,8 +58,8 @@ abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
      * 协助订阅方法
      */
     protected infix fun <R> KFunction<MJob<R>>.ob(obFunc: (R) -> Any) {
-        model.observe(this@BaseModelFragment, this){
-            success{
+        model.observe(this@BaseModelFragment, this) {
+            success {
                 obFunc(it)
             }
         }
@@ -69,8 +69,8 @@ abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
      * 重载操作符协助订阅方法
      */
     protected operator fun <R> KFunction<MJob<R>>.plus(obFunc: (R) -> Any) {
-        model.observe(this@BaseModelFragment, this){
-            success{
+        model.observe(this@BaseModelFragment, this) {
+            success {
                 obFunc(it)
             }
         }

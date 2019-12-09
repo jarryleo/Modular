@@ -49,6 +49,10 @@ class MainActivity : BaseModelActivity<WechatModel>() {
                 }
             )
         }
+
+        val nodes = arrayOf("v1", "v2", "v3", "v4", "v5", "v6")
+        node.setNodes(nodes)
+        node.setProgress(3)
     }
 
     override fun onInitObserve() {

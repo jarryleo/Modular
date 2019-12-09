@@ -11,7 +11,7 @@ import cn.leo.frame.utils.SafetyMainHandler
  */
 
 /**
- * 计时器 生命周期安全的计时器(界面不可见的时候不触发事件)
+ * 计时器 生命周期安全的计时器(可选界面不可见的时候不触发事件)
  * @param times 计时次数
  * @param start 开始值
  * @param end 结束值
