@@ -31,7 +31,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         ) {
 
             model.insert(User(1, "Tom"))
-            PagesHome.homeMain3Activity.jump()
+            PagesHome.homeMain2Activity.jump()
         }
 
 
@@ -88,7 +88,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
     private fun test() {
 
-        model.test(1)
+        //model.test(1)
 
         model.apis(123, true).getWechatUserInfo("123", "456")
 

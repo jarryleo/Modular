@@ -13,7 +13,7 @@ class MyInterceptor : MInterceptor() {
     override fun <T> intercept(obj: Any?, data: T, liveData: MLiveData<T>): Boolean {
         if (data is BaseBean<*>) {
             if (data.errcode != 0) {
-                liveData.failed(BusinessException(data.errcode, "111111111111"), obj)
+                liveData.failed(BusinessException(data.errcode, "服务器返回错误"), obj)
             } else {
                 liveData.success(data, obj)
             }

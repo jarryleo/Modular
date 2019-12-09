@@ -17,12 +17,18 @@ class Main2Activity :
 
     private val mAdapter by lazy { TestAdapter() }
 
-    private val mHelper by SmartRefreshHelper(model)
+    private val mHelper by SmartRefreshHelper()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+        mHelper.statusConfig()
+        mHelper.getData()
+    }
+
+    override fun getModel(): SmartRefreshHelper.ISource<WechatUserBean> {
+        return model
     }
 
     override fun getAdapter(): SmartRefreshHelper.IAdapter<WechatUserBean> {

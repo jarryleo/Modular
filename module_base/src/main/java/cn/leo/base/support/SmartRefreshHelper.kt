@@ -15,23 +15,25 @@ import kotlin.reflect.KProperty
  * @date : 2019-11-29
  */
 
-class SmartRefreshHelper<T : Any>(
-    private val model: ISource<T>,
-    private val startPage: Int = 1
-) :
+class SmartRefreshHelper<T : Any>(private val startPage: Int = 1) :
     ReadOnlyProperty<SmartRefreshHelper.IView<T>, SmartRefreshHelper<T>> {
     private lateinit var mView: IView<T>
+    private lateinit var model: ISource<T>
+    private lateinit var mSmartRefresh: SmartRefreshLayout
 
     //当前页码
     private var mPage: Int = startPage
 
     override fun getValue(thisRef: IView<T>, property: KProperty<*>): SmartRefreshHelper<T> {
-        return SmartRefreshHelper(model).apply { mView = thisRef }
+        return SmartRefreshHelper<T>().apply {
+            mView = thisRef
+            model = mView.getModel()
+            mSmartRefresh = mView.getSmartRefresh()
+            init()
+        }
     }
 
-    private val mSmartRefresh by lazy { mView.getSmartRefresh() }
-
-    init {
+    private fun init() {
         mSmartRefresh.setOnRefreshListener {
             refresh()
         }
@@ -60,8 +62,13 @@ class SmartRefreshHelper<T : Any>(
         @LayoutRes errorRes: Int = R.layout.base_status_error
     ) {
         mSmartRefresh.statusConfig(loadingRes, emptyRes, errorRes) { _, _ ->
-            refresh()
+            getData()
         }
+    }
+
+    fun getData() {
+        mSmartRefresh.showLoading()
+        refresh()
     }
 
     private fun refresh() {
@@ -110,6 +117,7 @@ class SmartRefreshHelper<T : Any>(
 
     interface IView<T> : LifecycleOwner {
         fun getAdapter(): IAdapter<T>
+        fun getModel(): ISource<T>
         fun getSmartRefresh(): SmartRefreshLayout
     }
 
