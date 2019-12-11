@@ -5,13 +5,11 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import cn.leo.base.dialog.LoadingDialog
-import cn.leo.frame.network.MJob
 import cn.leo.frame.network.MViewModel
 import cn.leo.frame.network.ModelCreator
 import cn.leo.frame.ui.ILoading
 import cn.leo.frame.utils.ClassUtils
 import com.alibaba.android.arouter.launcher.ARouter
-import kotlin.reflect.KFunction
 
 /**
  * @author : ling luo
@@ -60,25 +58,4 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
         mLoadingDialog = null
     }
 
-    /**
-     * 协助订阅方法
-     */
-    infix fun <R> KFunction<MJob<R>>.ob(obFunc: (R) -> Any) {
-        model.observe(this@BaseModelActivity, this) {
-            success{
-                obFunc(it)
-            }
-        }
-    }
-
-    /**
-     * 重载操作符协助订阅方法
-     */
-    protected operator fun <R> KFunction<MJob<R>>.plus(obFunc: (R) -> Any) {
-        model.observe(this@BaseModelActivity, this) {
-            success{
-                obFunc(it)
-            }
-        }
-    }
 }

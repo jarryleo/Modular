@@ -4,7 +4,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import cn.leo.frame.log.logD
-import cn.leo.frame.network.exceptions.ApiException
 import cn.leo.frame.network.interceptor.CacheInterceptor
 import cn.leo.frame.utils.ClassUtils
 import kotlinx.coroutines.*
@@ -186,6 +185,21 @@ abstract class MViewModel<T : Any> : ViewModel() {
         result: (MLiveData.Result<R>).() -> Unit = {}
     ) {
         request.observe(lifecycleOwner, kFunction.name, result)
+    }
+
+    /**
+     * 订阅方法，正确结果直接传递
+     * @param viewModelSupport 写法 model::setTitle + ::setActionBarTitle
+     * 前面为订阅方法，后面为回调方法
+     * 前面的方法必须是本model的方法，后面的方法参数必须是前面方法的返回值
+     */
+    fun <R> observe(
+        lifecycleOwner: LifecycleOwner,
+        viewModelSupport: ViewModelSupport<R>
+    ) {
+        observe(lifecycleOwner, viewModelSupport.modelFuc) {
+            success { viewModelSupport.obFunc(it) }
+        }
     }
 
     /**

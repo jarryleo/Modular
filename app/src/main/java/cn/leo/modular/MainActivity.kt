@@ -7,9 +7,11 @@ import cn.leo.base.db.bean.User
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
 import cn.leo.base.support.actionBar
+import cn.leo.base.support.setActionBarTitle
 import cn.leo.frame.image.loadImage
 import cn.leo.frame.log.Logger
 import cn.leo.frame.log.logE
+import cn.leo.frame.network.GlobalModelCreator
 import cn.leo.frame.support.text
 import cn.leo.frame.utils.jump
 import cn.leo.frame.utils.toast
@@ -18,6 +20,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 @Route(path = PagesHome.homeMainActivity)
 class MainActivity : BaseModelActivity<WechatModel>() {
+
+    private val globalModel by GlobalModelCreator(TestModel::class.java)
 
     private var mTestText by text { tvTest }
     private var mEditText by text { etTest }
@@ -84,6 +88,11 @@ class MainActivity : BaseModelActivity<WechatModel>() {
                 logE(it.msg ?: "")
             }
         }
+
+        globalModel.observe(this, globalModel::setTitle) {
+            success { setActionBarTitle(it) }
+        }
+        
     }
 
     private fun test() {

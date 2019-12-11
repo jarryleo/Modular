@@ -37,20 +37,21 @@ fun ImageView.loadImage(
     resId: Int = -1,
     file: File? = null,
     bitmap: Bitmap? = null,
+    thumbnail: String? = null,
     circle: Boolean = false,
     skipCache: Boolean = false,
     corners: Int = 0,
     @DrawableRes defResId: Int = -1,
     @DrawableRes errResId: Int = defResId,
-    onLoadFailed: (
+    onLoadFailed: ((
         exception: GlideException?,
         isFirstResource: Boolean
-    ) -> Unit = { _, _ -> },
-    onLoadSuccess: (
+    ) -> Unit)? = null,
+    onLoadSuccess: ((
         resource: Drawable?,
         dataSource: DataSource?,
         isFirstResource: Boolean
-    ) -> Unit = { _, _, _ -> }
+    ) -> Unit)? = null
 
 ) {
     //页面泄漏处理
@@ -96,19 +97,24 @@ fun ImageView.loadImage(
         //图片加载动画
         .transition(withCrossFade())
         //缩略图(顶替占位图实现裁剪)
-        .thumbnail(loadTransform(this, defResId, transforms))
+        .thumbnail(
+            loadTransform(this, defResId, thumbnail, transforms)
+        )
         //占位图
         //.placeholder(defResId)
-        .error(loadTransform(this, errResId, transforms))
+        .error(loadTransform(this, errResId, transformation = transforms))
         //加载回调
-        .listener(object : RequestListener<Drawable> {
+        .listener(if (onLoadFailed == null && onLoadSuccess == null) null else object :
+            RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,
                 model: Any?,
                 target: Target<Drawable>?,
                 isFirstResource: Boolean
             ): Boolean {
-                onLoadFailed(e, isFirstResource)
+                if (onLoadFailed != null) {
+                    onLoadFailed(e, isFirstResource)
+                }
                 return false
             }
 
@@ -119,7 +125,9 @@ fun ImageView.loadImage(
                 dataSource: DataSource?,
                 isFirstResource: Boolean
             ): Boolean {
-                onLoadSuccess(resource, dataSource, isFirstResource)
+                if (onLoadSuccess != null) {
+                    onLoadSuccess(resource, dataSource, isFirstResource)
+                }
                 return false
             }
 
@@ -132,11 +140,19 @@ fun ImageView.loadImage(
  */
 private fun loadTransform(
     view: ImageView,
-    @DrawableRes resId: Int = -1,
+    @DrawableRes
+    resId: Int = -1,
+    url: String? = null,
     transformation: Array<BitmapTransformation>
 ): RequestBuilder<Drawable>? {
     return Glide.with(view)
-        .load(resId)
+        .load(
+            when {
+                !url.isNullOrEmpty() -> url
+                resId != -1 -> resId
+                else -> null
+            }
+        )
         .apply(RequestOptions().transform(*transformation))
 }
 
