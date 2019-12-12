@@ -1,4 +1,4 @@
-package cn.leo.frame.network
+package cn.leo.frame.network.model
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
@@ -24,18 +24,16 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
     }
 
     /**
-     * 线程转换的成功方法
+     * 主线程执行成功方法
      */
     open fun success(value: T, obj: Any? = null) {
         super.postValue(Result.Success(value).apply { this.obj = obj })
     }
 
     /**
-     * 线程不转换的成功方法
+     * 原线程执行成功方法
      */
-    fun setSuccess(value: T) {
-        super.setValue(Result.Success(value))
-    }
+    fun setSuccess(value: T) = super.setValue(Result.Success(value))
 
     /**
      * 线程转换的失败方法
@@ -46,25 +44,25 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
             failed.obj = obj
             super.postValue(failed)
         } else {
-            val failed = Result.Failed<T>(FactoryException.analysisException(e))
+            val failed = Result.Failed<T>(
+                FactoryException.analysisException(e)
+            )
             failed.obj = obj
             super.postValue(failed)
         }
     }
 
-
+    /**
+     * 订阅
+     */
     fun observe(
         lifecycleOwner: LifecycleOwner,
         result: (Result<T>).() -> Unit = {}
-    ) {
-        super.observe(lifecycleOwner, getObserver(result))
-    }
+    ) = super.observe(lifecycleOwner, getObserver(result))
 
     fun observeForever(
         result: (Result<T>).() -> Unit = {}
-    ) {
-        super.observeForever(getObserver(result))
-    }
+    ) = super.observeForever(getObserver(result))
 
     /**
      * LiveData 类型转换，类似与RxJava的map
@@ -74,12 +72,16 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
         newLiveData.addSource(this) {
             when (it) {
                 is Result.Failed -> {
-                    val failed = Result.Failed<R>(it.exception)
+                    val failed =
+                        Result.Failed<R>(it.exception)
                     failed.obj = it.obj
                     newLiveData.postValue(failed)
                 }
                 is Result.Success -> {
-                    val success = Result.Success(mapFunction(it.data))
+                    val success =
+                        Result.Success(
+                            mapFunction(it.data)
+                        )
                     success.obj = it.obj
                     newLiveData.postValue(success)
                 }
@@ -88,6 +90,9 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
         return newLiveData
     }
 
+    /**
+     * liveData使用的结果回调封装
+     */
     sealed class Result<T> {
         var obj: Any? = null
 

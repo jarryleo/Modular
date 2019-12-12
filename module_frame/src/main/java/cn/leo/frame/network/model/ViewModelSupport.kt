@@ -1,5 +1,6 @@
-package cn.leo.frame.network
+package cn.leo.frame.network.model
 
+import cn.leo.frame.network.http.MJob
 import kotlin.reflect.KFunction
 
 /**

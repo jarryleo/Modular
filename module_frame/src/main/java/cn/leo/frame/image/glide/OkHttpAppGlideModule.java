@@ -15,7 +15,7 @@ import com.bumptech.glide.module.AppGlideModule;
 
 import java.io.InputStream;
 
-import cn.leo.frame.network.OkHttp3Builder;
+import cn.leo.frame.network.http.OkHttp3Builder;
 import okhttp3.OkHttpClient;
 
 /**

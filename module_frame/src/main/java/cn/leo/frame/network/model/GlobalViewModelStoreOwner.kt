@@ -1,4 +1,4 @@
-package cn.leo.frame.network
+package cn.leo.frame.network.model
 
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModelStoreOwner
  * @author : ling luo
  * @date : 2019-12-10
  */
-class MViewModelStoreOwner : ViewModelStoreOwner {
+class GlobalViewModelStoreOwner : ViewModelStoreOwner {
     companion object {
         private val globalViewModelStore by lazy { ViewModelStore() }
-        val globalModelStoreOwner by lazy { MViewModelStoreOwner() }
+        val globalModelStoreOwner by lazy { GlobalViewModelStoreOwner() }
     }
 
     override fun getViewModelStore(): ViewModelStore {

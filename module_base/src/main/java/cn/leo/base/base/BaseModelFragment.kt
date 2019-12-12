@@ -3,8 +3,8 @@ package cn.leo.base.base
 import androidx.annotation.CallSuper
 import androidx.lifecycle.Observer
 import cn.leo.base.dialog.LoadingDialog
-import cn.leo.frame.network.MViewModel
-import cn.leo.frame.network.ModelCreator
+import cn.leo.frame.network.model.MViewModel
+import cn.leo.frame.network.model.ModelCreator
 import cn.leo.frame.ui.ILoading
 import cn.leo.frame.utils.ClassUtils
 
@@ -15,7 +15,11 @@ import cn.leo.frame.utils.ClassUtils
 abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
     ILoading {
 
-    val model by ModelCreator<T>(ClassUtils.getSuperClassGenericType(this::class.java))
+    val model by ModelCreator<T>(
+        ClassUtils.getSuperClassGenericType(
+            this::class.java
+        )
+    )
     //加载弹窗
     private var mLoadingDialog: LoadingDialog? = null
 

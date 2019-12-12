@@ -1,4 +1,4 @@
-package cn.leo.frame.network
+package cn.leo.frame.network.model
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -38,6 +38,6 @@ class ShareModelCreator<T : MViewModel<*>>(private val clazz: Class<T>) :
 class GlobalModelCreator<T : MViewModel<*>>(private val clazz: Class<T>) :
     ReadOnlyProperty<Any, T> {
     override fun getValue(thisRef: Any, property: KProperty<*>): T {
-        return ViewModelProvider(MViewModelStoreOwner.globalModelStoreOwner).get(clazz)
+        return ViewModelProvider(GlobalViewModelStoreOwner.globalModelStoreOwner).get(clazz)
     }
 }

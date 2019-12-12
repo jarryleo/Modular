@@ -3,7 +3,7 @@ package cn.leo.base.net
 import cn.leo.base.bean.BaseBean
 import cn.leo.base.bean.WechatAccessBean
 import cn.leo.base.bean.WechatUserBean
-import cn.leo.frame.network.MJob
+import cn.leo.frame.network.http.MJob
 import retrofit2.http.GET
 import retrofit2.http.Query
 

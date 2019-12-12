@@ -2,7 +2,7 @@ package cn.leo.base
 
 import androidx.multidex.MultiDexApplication
 import cn.leo.base.net.MyInterceptor
-import cn.leo.frame.network.MInterceptorManager
+import cn.leo.frame.network.http.MInterceptorManager
 import com.alibaba.android.arouter.launcher.ARouter
 
 /**

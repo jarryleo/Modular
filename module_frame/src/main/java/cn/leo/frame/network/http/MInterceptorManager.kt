@@ -1,4 +1,4 @@
-package cn.leo.frame.network
+package cn.leo.frame.network.http
 
 import java.util.*
 import kotlin.collections.ArrayList

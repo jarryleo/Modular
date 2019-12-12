@@ -1,8 +1,8 @@
 package cn.leo.base.net
 
 import cn.leo.base.bean.BaseBean
-import cn.leo.frame.network.MInterceptor
-import cn.leo.frame.network.MLiveData
+import cn.leo.frame.network.http.MInterceptor
+import cn.leo.frame.network.model.MLiveData
 import cn.leo.frame.network.exceptions.BusinessException
 
 /**

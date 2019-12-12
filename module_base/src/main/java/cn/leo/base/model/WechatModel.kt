@@ -19,7 +19,7 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
 
     private val db by DbModelProperty(DB::class.java)
 
-    fun test(id: Int) = sync {
+    fun test(id: Int) = async {
         if (add() > 3) {
             add() + id
         } else {
@@ -47,10 +47,6 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
         db.userDao().findUserById(id)
     }
 
-
-    fun test2() = async {
-        api.getWechatUserInfo("", "").await()
-    }
 
     override fun requestList(page: Int) {
         apis().getWechatUserInfo("", "")

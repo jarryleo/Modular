@@ -1,4 +1,6 @@
-package cn.leo.frame.network
+package cn.leo.frame.network.http
+
+import cn.leo.frame.network.model.MLiveData
 
 /**
  * @author : ling luo

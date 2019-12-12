@@ -1,4 +1,4 @@
-package cn.leo.frame.network
+package cn.leo.frame.network.http
 
 import cn.leo.frame.BuildConfig
 import cn.leo.frame.MFrame

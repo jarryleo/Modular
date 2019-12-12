@@ -5,8 +5,8 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import cn.leo.base.dialog.LoadingDialog
-import cn.leo.frame.network.MViewModel
-import cn.leo.frame.network.ModelCreator
+import cn.leo.frame.network.model.MViewModel
+import cn.leo.frame.network.model.ModelCreator
 import cn.leo.frame.ui.ILoading
 import cn.leo.frame.utils.ClassUtils
 import com.alibaba.android.arouter.launcher.ARouter
@@ -18,7 +18,11 @@ import com.alibaba.android.arouter.launcher.ARouter
 abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
     ILoading {
 
-    val model by ModelCreator<T>(ClassUtils.getSuperClassGenericType(this::class.java))
+    val model by ModelCreator<T>(
+        ClassUtils.getSuperClassGenericType(
+            this::class.java
+        )
+    )
     //加载弹窗
     private var mLoadingDialog: LoadingDialog? = null
 

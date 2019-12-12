@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.annotation.StringRes
 import cn.leo.frame.MFrame
+import cn.leo.frame.support.main
 
 /**
  * @author : ling luo
@@ -11,11 +12,11 @@ import cn.leo.frame.MFrame
  */
 
 fun Context.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, msg, duration).show()
+    main { Toast.makeText(this@toast, msg, duration).show() }
 }
 
 fun Context.toast(@StringRes msgRes: Int, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, msgRes, duration).show()
+    main { Toast.makeText(this@toast, msgRes, duration).show() }
 }
 
 fun toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT) =

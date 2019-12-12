@@ -11,7 +11,8 @@ import cn.leo.base.support.setActionBarTitle
 import cn.leo.frame.image.loadImage
 import cn.leo.frame.log.Logger
 import cn.leo.frame.log.logE
-import cn.leo.frame.network.GlobalModelCreator
+import cn.leo.frame.network.model.GlobalModelCreator
+import cn.leo.frame.support.dp
 import cn.leo.frame.support.text
 import cn.leo.frame.utils.jump
 import cn.leo.frame.utils.toast
@@ -21,7 +22,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 @Route(path = PagesHome.homeMainActivity)
 class MainActivity : BaseModelActivity<WechatModel>() {
 
-    private val globalModel by GlobalModelCreator(TestModel::class.java)
+    private val globalModel by GlobalModelCreator(
+        TestModel::class.java
+    )
 
     private var mTestText by text { tvTest }
     private var mEditText by text { etTest }
@@ -45,7 +48,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
             ivTest.loadImage(
                 "https://pic2.zhimg.com/v2-7cb8b1ea5e11779e25b4b35d52b777f2_xll.jpg",
-                circle = true,
+                corners = 12.dp(),
                 defResId = R.drawable.ic_launcher_background,
                 errResId = R.drawable.ic_launcher_background,
                 onLoadFailed = { _, _ ->
@@ -92,7 +95,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         globalModel.observe(this, globalModel::setTitle) {
             success { setActionBarTitle(it) }
         }
-        
+
     }
 
     private fun test() {
