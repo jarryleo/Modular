@@ -1,9 +1,7 @@
 package cn.leo.frame.support
 
 import android.text.Editable
-import android.text.InputFilter
 import android.text.TextWatcher
-import android.widget.EditText
 import android.widget.TextView
 import cn.leo.frame.ui.MagicTextViewUtil
 import kotlin.properties.ReadWriteProperty
@@ -30,31 +28,6 @@ class TextLengthWatcher(private var lengthWatcher: (length: Int) -> Unit = {}) :
 inline fun TextView.textLengthWatcher(crossinline lengthWatcher: (length: Int) -> Unit = {}) {
     this.addTextChangedListener(TextLengthWatcher {
         lengthWatcher(it)
-    })
-}
-
-fun EditText.textChangeWatcher(length: (text: CharSequence) -> Int) {
-    filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
-        val text = dest.replaceRange(dstart, dend, source)
-        var keep = length(text) - (dest.length - (dend - dstart))
-        when {
-            keep <= 0 -> {
-                return@InputFilter ""
-            }
-            keep >= end - start -> {
-                return@InputFilter null
-            }
-            else -> {
-                keep += start
-                if (Character.isHighSurrogate(source[keep - 1])) {
-                    --keep
-                    if (keep == start) {
-                        return@InputFilter ""
-                    }
-                }
-                return@InputFilter source.subSequence(start, keep)
-            }
-        }
     })
 }
 

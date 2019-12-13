@@ -7,13 +7,13 @@ import cn.leo.base.db.bean.User
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
 import cn.leo.base.support.actionBar
+import cn.leo.base.support.doubleClickExit
 import cn.leo.base.support.setActionBarTitle
 import cn.leo.frame.image.loadImage
 import cn.leo.frame.log.Logger
 import cn.leo.frame.log.logE
 import cn.leo.frame.network.model.GlobalModelCreator
-import cn.leo.frame.support.dp
-import cn.leo.frame.support.text
+import cn.leo.frame.support.*
 import cn.leo.frame.utils.jump
 import cn.leo.frame.utils.toast
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -60,6 +60,13 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         val nodes = arrayOf("v1", "v2", "v3", "v4", "v5", "v6")
         node.setNodes(nodes)
         node.setProgress(3)
+
+        etTest.imeSearch {
+            etTest.checkEmpty { toast("输入不能为空"); return@imeSearch }
+                .checkNum(2, 6) { toast("字符不符合");return@imeSearch }
+            toast(it)
+        }
+
     }
 
     override fun onInitObserve() {
@@ -104,6 +111,10 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         model.apis(123, true).getWechatUserInfo("123", "456")
 
+    }
+
+    override fun onBackPressed() {
+        doubleClickExit { msg = "再按一次试试" }
     }
 
 }

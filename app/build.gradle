@@ -22,12 +22,31 @@ android {
         }
         multiDexEnabled true
     }
+    signingConfigs {
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+            storeFile file('..\\st-keystore.jks')
+            keyAlias 'st'
+            keyPassword 'st123456'
+            storePassword 'st123456'
+        }
+        debug {
+            v1SigningEnabled true
+            v2SigningEnabled true
+            storeFile file('..\\st-keystore.jks')
+            keyAlias 'st'
+            keyPassword 'st123456'
+            storePassword 'st123456'
+        }
+    }
     buildTypes {
         debug {
             debuggable true
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
@@ -36,6 +55,7 @@ android {
             shrinkResources true
             zipAlignEnabled true
             pseudoLocalesEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

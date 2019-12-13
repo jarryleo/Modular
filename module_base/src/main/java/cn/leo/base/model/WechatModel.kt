@@ -37,6 +37,7 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
 
     fun testSecondSub() = async {
         22222
+        api.getWechatUserInfo("", "").await()
     }
 
     fun insert(user: User) = async {

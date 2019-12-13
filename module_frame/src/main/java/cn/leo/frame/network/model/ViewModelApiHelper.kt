@@ -3,7 +3,6 @@ package cn.leo.frame.network.model
 import cn.leo.frame.network.http.MJob
 import cn.leo.frame.utils.ClassUtils
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Job
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
 import java.util.concurrent.ConcurrentHashMap
@@ -43,7 +42,7 @@ class ViewModelApiHelper<T : Any> :
     /**
      * 网络接口实例化和缓存
      */
-    private val api: T
+    val api: T
         get() {
             val clazz = ClassUtils.getSuperClassGenericType<T>(model.javaClass)
             return if (apiMap.containsKey(clazz)) {
@@ -58,24 +57,6 @@ class ViewModelApiHelper<T : Any> :
             }
         }
 
-    /**
-     * 发起请求
-     */
-    private fun <R : Any> request(
-        deferred: Deferred<R>,
-        obj: Any? = null,
-        showLoading: Boolean = false,
-        key: String = ""
-    ): Job = model.executeRequest(deferred, model.getLiveData(key), obj, showLoading)
-
-    /**
-     * 请求接口
-     * @param obj 请求携带附加数据，会在回调监听里原样返回，适合list条目数据变化，记录条目位置等
-     */
-    inline fun <reified R : Any> apis(
-        obj: Any? = null,
-        api: T.() -> MJob<R>
-    ) = api(apis<R>(obj))
 
     /**
      * 代理请求接口
@@ -86,11 +67,11 @@ class ViewModelApiHelper<T : Any> :
             val mJob = method.invoke(api, *args ?: arrayOf()) as MJob<R>
             val deferred = mJob.job as Deferred<R>
             MJob<R>(
-                request(
+                model.executeRequest(
                     deferred,
+                    model.getLiveData(method.name),
                     mObj,
-                    showLoading,
-                    method.name
+                    showLoading
                 )
             )
         }

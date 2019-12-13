@@ -41,6 +41,11 @@ abstract class MViewModel<T : Any> : ViewModel() {
     val loading = MutableLiveData<Boolean>()
 
     /**
+     * 非代理网络请求
+     */
+    val api = mApiHelper.api
+
+    /**
      * 网络请求代理
      */
     fun apis(obj: Any? = null, showLoading: Boolean = false) =
@@ -92,11 +97,6 @@ abstract class MViewModel<T : Any> : ViewModel() {
     fun <R> async(block: suspend CoroutineScope.() -> R): MJob<R> = mCoroutineHelper.async(block)
 
     /**
-     * 主线程方法 回调在主线程
-     */
-    fun <R> sync(block: suspend CoroutineScope.() -> R): MJob<R> = mCoroutineHelper.sync(block)
-
-    /**
      * 协程延迟任务
      */
     @Throws(Exception::class)
@@ -116,6 +116,8 @@ abstract class MViewModel<T : Any> : ViewModel() {
             it.className == this::class.java.name
         }?.methodName ?: "no-name"
         logD("methodName = $methodName")
+        val names = key ?: Thread.currentThread().stackTrace.map { it.methodName }
+        logD("methodNames = $names")
         return mLiveDataHelper.getLiveData(methodName)
     }
 
