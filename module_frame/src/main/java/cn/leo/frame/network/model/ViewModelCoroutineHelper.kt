@@ -33,13 +33,10 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
     fun <R> executeRequest(
         deferred: Deferred<R>,
         liveData: MLiveData<R>,
-        obj: Any? = null,
-        showLoading: Boolean = false
+        obj: Any? = null
     ): Job = scope.launch {
         try {
-            if (showLoading) {
-                withContext(Dispatchers.Main) { model.onRequestStart() }
-            }
+            liveData.showLoading()
             val result = deferred.await()
             MInterceptorManager.interceptors.forEach {
                 if (it.intercept(obj, result, liveData)) {
@@ -50,10 +47,6 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
         } catch (e: Exception) {
             e.printStackTrace()
             liveData.failed(e, obj)
-        } finally {
-            if (showLoading) {
-                withContext(Dispatchers.Main) { model.onRequestEnd() }
-            }
         }
     }
 
@@ -67,6 +60,7 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
         //异步执行
         val job = scope.launch {
             try {
+                liveData.showLoading()
                 val value = deferred.await()
                 if (value != null) {
                     liveData.success(value)

@@ -17,6 +17,7 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
         return Observer {
             result(it)
             when (it) {
+                is Result.Loading<T> -> it.loading(it.isShow)
                 is Result.Success<T> -> it.success(it.data)
                 is Result.Failed<T> -> it.failed(it.exception)
             }
@@ -34,6 +35,11 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
      * 原线程执行成功方法
      */
     fun setSuccess(value: T) = super.setValue(Result.Success(value))
+
+    /**
+     * 通知loading状态
+     */
+    fun showLoading() = super.postValue(Result.Loading(true))
 
     /**
      * 线程转换的失败方法
@@ -96,30 +102,43 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
     sealed class Result<T> {
         var obj: Any? = null
 
+        class Loading<T>(val isShow: Boolean) : Result<T>()
         class Success<T>(val data: T) : Result<T>()
-        class Failed<T>(var exception: ApiException) : Result<T>()
+        class Failed<T>(val exception: ApiException) : Result<T>()
 
-        fun get(
+        private fun get(
+            loading: (isShow: Boolean) -> Unit = {},
             failed: (exception: ApiException) -> Unit = {},
             success: (data: T) -> Unit = {}
         ) {
             when (this) {
+                is Loading -> loading(isShow)
                 is Success -> success(data)
                 is Failed -> failed(exception)
             }
         }
 
+        fun loading(block: (isShow: Boolean) -> Unit = {}) {
+            loading = block
+            get(loading = block)
+        }
+
         fun success(block: (data: T) -> Unit = {}) {
+            success = block
             get(success = block)
+            loading(false)
         }
 
         fun failed(block: (exception: ApiException) -> Unit = {}) {
+            failed = block
             get(failed = block)
+            loading(false)
         }
 
         val successData by lazy { (this as? Success<T>)?.data }
         val failedException by lazy { (this as? Failed<T>)?.exception }
 
+        var loading: (isShow: Boolean) -> Unit = {}
         var success: (data: T) -> Unit = {}
         var failed: (exception: ApiException) -> Unit = {}
 

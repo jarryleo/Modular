@@ -61,7 +61,7 @@ class ViewModelApiHelper<T : Any> :
     /**
      * 代理请求接口
      */
-    fun <R : Any> apis(obj: Any?, showLoading: Boolean = false): T {
+    fun <R : Any> apis(obj: Any?): T {
         mObj = obj
         mApiHandler = mApiHandler ?: InvocationHandler { _, method, args ->
             val mJob = method.invoke(api, *args ?: arrayOf()) as MJob<R>
@@ -70,8 +70,7 @@ class ViewModelApiHelper<T : Any> :
                 model.executeRequest(
                     deferred,
                     model.getLiveData(method.name),
-                    mObj,
-                    showLoading
+                    mObj
                 )
             )
         }

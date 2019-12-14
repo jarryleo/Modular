@@ -1,7 +1,6 @@
 package cn.leo.base.base
 
 import androidx.annotation.CallSuper
-import androidx.lifecycle.Observer
 import cn.leo.base.dialog.LoadingDialog
 import cn.leo.frame.network.model.MViewModel
 import cn.leo.frame.network.model.ModelCreator
@@ -22,6 +21,13 @@ abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
     )
     //加载弹窗
     private var mLoadingDialog: LoadingDialog? = null
+    val loadingFun: (isShow: Boolean) -> Unit = { isShow ->
+        if (isShow) {
+            showLoading()
+        } else {
+            dismissLoading()
+        }
+    }
 
     open fun onInitObserve() {
     }
@@ -29,13 +35,6 @@ abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
 
     @CallSuper
     override fun onInitialize() {
-        model.loading.observe(this, Observer {
-            if (it) {
-                showLoading()
-            } else {
-                dismissLoading()
-            }
-        })
         onInitObserve()
     }
 
@@ -55,5 +54,7 @@ abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
         }
         mLoadingDialog = null
     }
+
+
 
 }

@@ -80,6 +80,8 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         }
 
         model.observe(this, Apis::getWechatUserInfo) {
+            loading = loadingFun
+
             success {
                 toast("请求成功：$obj  ")
             }
@@ -109,7 +111,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         //model.test(1)
 
-        model.apis(123, true).getWechatUserInfo("123", "456")
+        model.apis(123).getWechatUserInfo("123", "456")
 
     }
 

@@ -3,7 +3,6 @@ package cn.leo.base.base
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import cn.leo.base.dialog.LoadingDialog
 import cn.leo.frame.network.model.MViewModel
 import cn.leo.frame.network.model.ModelCreator
@@ -26,6 +25,14 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
     //加载弹窗
     private var mLoadingDialog: LoadingDialog? = null
 
+    val loadingFun: (isShow: Boolean) -> Unit = { isShow ->
+        if (isShow) {
+            showLoading()
+        } else {
+            dismissLoading()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onInitialize()
@@ -37,13 +44,6 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
     @CallSuper
     open fun onInitialize() {
         ARouter.getInstance().inject(this)
-        model.loading.observe(this, Observer {
-            if (it) {
-                showLoading()
-            } else {
-                dismissLoading()
-            }
-        })
         onInitObserve()
     }
 

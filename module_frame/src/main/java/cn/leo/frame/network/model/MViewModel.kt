@@ -1,7 +1,6 @@
 package cn.leo.frame.network.model
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import cn.leo.frame.log.logD
 import cn.leo.frame.network.http.HttpLoader
@@ -36,11 +35,6 @@ abstract class MViewModel<T : Any> : ViewModel() {
     private val mCoroutineHelper by ViewModelCoroutineHelper()
 
     /**
-     * 观察请求开始结束用于展示loading窗口
-     */
-    val loading = MutableLiveData<Boolean>()
-
-    /**
      * 非代理网络请求
      */
     val api = mApiHelper.api
@@ -48,8 +42,8 @@ abstract class MViewModel<T : Any> : ViewModel() {
     /**
      * 网络请求代理
      */
-    fun apis(obj: Any? = null, showLoading: Boolean = false) =
-        mApiHelper.apis<Any>(obj, showLoading)
+    fun apis(obj: Any? = null) =
+        mApiHelper.apis<Any>(obj)
 
 
     /**
@@ -87,9 +81,8 @@ abstract class MViewModel<T : Any> : ViewModel() {
     fun <R> executeRequest(
         deferred: Deferred<R>,
         liveData: MLiveData<R>,
-        obj: Any? = null,
-        showLoading: Boolean = false
-    ): Job = mCoroutineHelper.executeRequest(deferred, liveData, obj, showLoading)
+        obj: Any? = null
+    ): Job = mCoroutineHelper.executeRequest(deferred, liveData, obj)
 
     /**
      * 异步方法 回调在主线程
@@ -154,19 +147,5 @@ abstract class MViewModel<T : Any> : ViewModel() {
         kFunction: KFunction<MJob<R>>,
         result: (MLiveData.Result<R>).() -> Unit = {}
     ) = getLiveData<R>(kFunction.name).observeForever(result)
-
-    /**
-     * 请求开始
-     */
-    fun onRequestStart() {
-        loading.postValue(true)
-    }
-
-    /**
-     * 请求结束
-     */
-    fun onRequestEnd() {
-        loading.postValue(false)
-    }
 
 }
