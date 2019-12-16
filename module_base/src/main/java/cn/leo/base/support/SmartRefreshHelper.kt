@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import cn.leo.base.R
 import cn.leo.base.bean.BaseListBean
 import cn.leo.frame.network.exceptions.ApiException
+import cn.leo.frame.ui.StatusManager
 import cn.leo.frame.utils.toast
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import kotlin.properties.ReadOnlyProperty
@@ -87,7 +88,7 @@ class SmartRefreshHelper<T : Any>(private val startPage: Int = 1) :
         if (data.list == null || count == 0) {
             //显示空页面
             if (isRefresh()) {
-                mSmartRefresh.showEmpty()
+                mView.onShowEmpty(mSmartRefresh.showEmpty())
             }
         } else {
             //显示成功页面
@@ -119,6 +120,7 @@ class SmartRefreshHelper<T : Any>(private val startPage: Int = 1) :
         fun getAdapter(): IAdapter<T>
         fun getModel(): ISource<T>
         fun getSmartRefresh(): SmartRefreshLayout
+        fun onShowEmpty(helper: StatusManager.ViewHelper?) {}
     }
 
     interface ISource<T> {
