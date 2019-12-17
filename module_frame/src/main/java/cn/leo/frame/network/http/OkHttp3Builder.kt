@@ -60,7 +60,7 @@ class OkHttp3Builder {
                 READ_TIMEOUT.toLong(),
                 TimeUnit.SECONDS
             )
-        mCacheDir?.let {
+        mCacheDir.let {
             builder.cache(Cache(it, mCacheSize.toLong()))
         }
         for (interceptor in mInterceptorList) {

@@ -11,7 +11,7 @@ import androidx.viewpager.widget.PagerAdapter
  */
 
 abstract class BaseFragmentVPAdapter(fm: FragmentManager) :
-    FragmentStatePagerAdapter(fm, BEHAVIOR_SET_USER_VISIBLE_HINT) {
+    FragmentStatePagerAdapter(fm) {
 
     private val mFragmentList = mutableListOf<Fragment?>()
 

@@ -3,6 +3,7 @@ package cn.leo.base.base
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import cn.leo.base.dialog.LoadingDialog
 import cn.leo.frame.network.model.MViewModel
 import cn.leo.frame.network.model.ModelCreator
@@ -50,7 +51,9 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onInitialize()
+        lifecycleScope.launchWhenCreated {
+            onInitialize()
+        }
     }
 
     open fun onInitObserve() {

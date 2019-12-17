@@ -26,6 +26,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 
 }
 
@@ -46,7 +50,7 @@ kapt {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-
+    //官方依赖
     api rootProject.ext.dependencies["appcompat"]
     api rootProject.ext.dependencies["constraint_layout"]
     api rootProject.ext.dependencies["cardview"]
@@ -54,14 +58,15 @@ dependencies {
     api rootProject.ext.dependencies["support"]
     api rootProject.ext.dependencies["design"]
     api rootProject.ext.dependencies["support_annotations"]
-    api rootProject.ext.dependencies["lifecycle"]
-
+    //生命周期管理
+    api rootProject.ext.dependencies["lifecycle-viewmodel-ktx"]
+    api rootProject.ext.dependencies["lifecycle-runtime-ktx"]
+    api rootProject.ext.dependencies["lifecycle-livedata-ktx"]
     //kotlin
     api rootProject.ext.dependencies["kotlin"]
     //协程
     api rootProject.ext.dependencies["kotlinx-coroutines"]
-
-    //room
+    //room数据库
     api rootProject.ext.dependencies["room-runtime"]
     api rootProject.ext.dependencies["room-ktx"]
     kapt rootProject.ext.dependencies["room-compiler"]

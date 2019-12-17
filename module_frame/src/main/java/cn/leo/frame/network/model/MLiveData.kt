@@ -11,7 +11,7 @@ import cn.leo.frame.network.exceptions.FactoryException
  * @date : 2019-07-03
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
-open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
+open class MLiveData<T> : MediatorLiveData<Result<T>>() {
 
     private fun getObserver(result: (Result<T>).() -> Unit): Observer<Result<T>> {
         return Observer {
@@ -94,53 +94,5 @@ open class MLiveData<T> : MediatorLiveData<MLiveData.Result<T>>() {
             }
         }
         return newLiveData
-    }
-
-    /**
-     * liveData使用的结果回调封装
-     */
-    sealed class Result<T> {
-        var obj: Any? = null
-
-        class Loading<T>(val isShow: Boolean) : Result<T>()
-        class Success<T>(val data: T) : Result<T>()
-        class Failed<T>(val exception: ApiException) : Result<T>()
-
-        private fun get(
-            loading: (isShow: Boolean) -> Unit = {},
-            failed: (exception: ApiException) -> Unit = {},
-            success: (data: T) -> Unit = {}
-        ) {
-            when (this) {
-                is Loading -> loading(isShow)
-                is Success -> success(data)
-                is Failed -> failed(exception)
-            }
-        }
-
-        fun loading(block: (isShow: Boolean) -> Unit = {}) {
-            loading = block
-            get(loading = block)
-        }
-
-        fun success(block: (data: T) -> Unit = {}) {
-            success = block
-            get(success = block)
-            loading(false)
-        }
-
-        fun failed(block: (exception: ApiException) -> Unit = {}) {
-            failed = block
-            get(failed = block)
-            loading(false)
-        }
-
-        val successData by lazy { (this as? Success<T>)?.data }
-        val failedException by lazy { (this as? Failed<T>)?.exception }
-
-        var loading: (isShow: Boolean) -> Unit = {}
-        var success: (data: T) -> Unit = {}
-        var failed: (exception: ApiException) -> Unit = {}
-
     }
 }

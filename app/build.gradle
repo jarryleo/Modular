@@ -63,6 +63,10 @@ android {
         exclude 'META-INF/rxjava.properties'
         exclude 'META-INF/beans.xml'
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 kapt {
     arguments {

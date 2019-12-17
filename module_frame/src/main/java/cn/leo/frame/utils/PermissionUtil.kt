@@ -147,7 +147,7 @@ class PermissionUtil private constructor(private val mActivity: FragmentActivity
                 return
             }
             val fragmentTransaction =
-                parentFragmentManager.beginTransaction()
+                requireFragmentManager().beginTransaction()
             fragmentTransaction.detach(this)
             fragmentTransaction.remove(this)
             fragmentTransaction.commitAllowingStateLoss()

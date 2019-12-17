@@ -1,5 +1,6 @@
 package cn.leo.frame.network.model
 
+import androidx.lifecycle.viewModelScope
 import cn.leo.frame.network.http.MInterceptorManager
 import cn.leo.frame.network.http.MJob
 import kotlinx.coroutines.*
@@ -15,8 +16,6 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
     /**
      * 协程任务
      */
-    private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.IO + job)
     private lateinit var model: MViewModel<*>
 
     override fun getValue(
@@ -34,7 +33,9 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
         deferred: Deferred<R>,
         liveData: MLiveData<R>,
         obj: Any? = null
-    ): Job = scope.launch {
+    ): Job = model.viewModelScope.launch(
+        model.viewModelScope.coroutineContext + Dispatchers.IO
+    ) {
         try {
             liveData.showLoading()
             val result = deferred.await()
@@ -55,10 +56,12 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
      */
     fun <R> async(block: suspend CoroutineScope.() -> R): MJob<R> {
         val liveData = model.getLiveData<R>()
-        //协程
-        val deferred = scope.async { block() }
-        //异步执行
-        val job = scope.launch {
+        //协程包装(异步)
+        val deferred = model.viewModelScope.async(
+            model.viewModelScope.coroutineContext + Dispatchers.IO
+        ) { block() }
+        //执行结果
+        val job = model.viewModelScope.launch {
             try {
                 liveData.showLoading()
                 val value = deferred.await()
@@ -73,13 +76,5 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
             }
         }
         return MJob(job)
-    }
-
-
-    /**
-     * 释放资源
-     */
-    fun clear() {
-        job.cancel()
     }
 }

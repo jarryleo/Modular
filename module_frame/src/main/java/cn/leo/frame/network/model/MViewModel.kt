@@ -71,7 +71,6 @@ abstract class MViewModel<T : Any> : ViewModel() {
     override fun onCleared() {
         mApiHelper.clear()
         mLiveDataHelper.clear()
-        mCoroutineHelper.clear()
         logD("${javaClass.name} onCleared()")
     }
 
@@ -121,7 +120,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
     fun <R> observe(
         lifecycleOwner: LifecycleOwner,
         kFunction: KFunction<MJob<R>>,
-        result: (MLiveData.Result<R>).() -> Unit = {}
+        result: (Result<R>).() -> Unit = {}
     ) = getLiveData<R>(kFunction.name).observe(lifecycleOwner, result)
 
     /**
@@ -145,7 +144,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
      */
     fun <R> observeForever(
         kFunction: KFunction<MJob<R>>,
-        result: (MLiveData.Result<R>).() -> Unit = {}
+        result: (Result<R>).() -> Unit = {}
     ) = getLiveData<R>(kFunction.name).observeForever(result)
 
 }

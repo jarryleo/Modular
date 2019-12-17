@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import cn.leo.frame.log.toLogD
 import com.alibaba.android.arouter.launcher.ARouter
 
@@ -227,8 +228,10 @@ abstract class SuperFragment : Fragment() {
 
     private fun onFragmentFirstVisible() {
         "${javaClass.simpleName} + 对用户第一次可见".toLogD()
-        onInitialize()
-        onInitializeAfter()
+        lifecycleScope.launchWhenCreated {
+            onInitialize()
+            onInitializeAfter()
+        }
     }
 
     open fun onFragmentResume() {
