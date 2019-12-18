@@ -15,13 +15,14 @@ import kotlin.reflect.KProperty
  * @author : ling luo
  * @date : 2019-11-29
  */
-
+@Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 class SmartRefreshHelper<T : Any>(private val startPage: Int = 1) :
     ReadOnlyProperty<SmartRefreshHelper.IView<T>, SmartRefreshHelper<T>> {
     private lateinit var mView: IView<T>
     private lateinit var model: ISource<T>
     private lateinit var mSmartRefresh: SmartRefreshLayout
-
+    var onRefreshListener: (() -> Unit)? = null
+    var onLoadMoreListener: (() -> Unit)? = null
     //当前页码
     private var mPage: Int = startPage
 
@@ -37,10 +38,12 @@ class SmartRefreshHelper<T : Any>(private val startPage: Int = 1) :
     private fun init() {
         mSmartRefresh.setOnRefreshListener {
             refresh()
+            onRefreshListener?.invoke()
         }
 
         mSmartRefresh.setOnLoadMoreListener {
             loadMore()
+            onLoadMoreListener?.invoke()
         }
 
         model.observeList(

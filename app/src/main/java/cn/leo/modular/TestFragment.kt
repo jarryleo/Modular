@@ -41,6 +41,7 @@ class TestFragment : BaseModelFragment<TestModel>() {
 //            globalModel.setTitle("标题变了")
             //wechatModel.test(5)
             //wechatModel.nativeTest()
+            wechatModel.testSecondSub()
         }
     }
 

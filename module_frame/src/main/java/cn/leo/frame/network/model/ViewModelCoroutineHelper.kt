@@ -13,9 +13,6 @@ import kotlin.reflect.KProperty
  */
 class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCoroutineHelper> {
 
-    /**
-     * 协程任务
-     */
     private lateinit var model: MViewModel<*>
 
     override fun getValue(

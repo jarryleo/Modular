@@ -73,6 +73,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         model.observe(this, model::findUserById) {
             success {
                 mTestText = it.name
+                logE("数据库查询成功")
             }
             failed {
                 toast(it.msg ?: "数据库查询失败")
@@ -86,6 +87,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
             }
             failed {
                 toast("请求失败：${it.code} + ${it.msg}  " + obj)
+                logE("请求失败====")
             }
         }
 
@@ -110,8 +112,8 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         //model.test(1)
 
-        model.apis(123).getWechatUserInfo("12311", "45611")
-
+        //model.apis(123).getWechatUserInfo("12311", "45611")
+        model.apis.getWechatUserInfo("123", "456")
     }
 
     override fun onBackPressed() {

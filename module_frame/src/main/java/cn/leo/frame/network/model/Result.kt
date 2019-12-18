@@ -28,18 +28,15 @@ sealed class Result<T> {
     }
 
     fun loading(block: (isShow: Boolean) -> Unit = {}) {
-        loading = block
         get(loading = block)
     }
 
     fun success(block: (data: T) -> Unit = {}) {
-        success = block
         get(success = block)
         loading(false)
     }
 
     fun failed(block: (exception: ApiException) -> Unit = {}) {
-        failed = block
         get(failed = block)
         loading(false)
     }

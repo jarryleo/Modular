@@ -40,11 +40,15 @@ abstract class MViewModel<T : Any> : ViewModel() {
     val api = mApiHelper.api
 
     /**
-     * 网络请求代理
+     * 代理网络请求
      */
-    fun apis(obj: Any? = null) =
-        mApiHelper.apis<Any>(obj)
+    val apis get() = mApiHelper.apis<Any>(null)
 
+    /**
+     * 代理传参网络请求
+     * @param obj 在订阅里原样返回
+     */
+    fun apis(obj: Any? = null) = mApiHelper.apis<Any>(obj)
 
     /**
      * 获取接口基础地址
@@ -87,17 +91,6 @@ abstract class MViewModel<T : Any> : ViewModel() {
      * 异步方法 回调在主线程
      */
     fun <R> async(block: suspend CoroutineScope.() -> R): MJob<R> = mCoroutineHelper.async(block)
-
-    /**
-     * 协程延迟任务
-     */
-    @Throws(Exception::class)
-    suspend fun <R : Any> MJob<R>.await(): R? {
-        (this.job as? Deferred<R>)?.let {
-            return it.await()
-        }
-        return null
-    }
 
     /**
      * 获取liveData
