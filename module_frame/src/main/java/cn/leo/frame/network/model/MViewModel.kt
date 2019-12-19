@@ -101,8 +101,6 @@ abstract class MViewModel<T : Any> : ViewModel() {
             it.className == this::class.java.name
         }?.methodName ?: "no-name"
         logD("methodName = $methodName")
-        val names = key ?: Thread.currentThread().stackTrace.map { it.methodName }
-        logD("methodNames = $names")
         return mLiveDataHelper.getLiveData(methodName)
     }
 

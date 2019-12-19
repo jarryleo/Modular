@@ -11,7 +11,6 @@ import cn.leo.base.support.SmartRefreshHelper
 import cn.leo.frame.log.logE
 import cn.leo.frame.network.exceptions.ApiException
 import cn.leo.frame.network.exceptions.BusinessException
-import cn.leo.frame.network.http.await
 import cn.leo.frame.network.http.awaitAll
 
 /**
@@ -40,7 +39,12 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
 
     fun testSecondSub() = async {
         val jobs =
-            mutableListOf(api.getWechatUserInfo("", ""))
+            /*(0 until 10).map {
+                api.getWechatUserInfo("", "")
+            }*/
+            mutableListOf(
+                api.getWechatUserInfo("", "")
+            )
         logE("请求数据 --------")
         val list = jobs.awaitAll()
         //list.map { it.data }
