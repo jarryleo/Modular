@@ -16,9 +16,9 @@ fun Long.toShortCount(): String {
     var count = this.toString()
     if (this > 9999) {
         count = BigDecimal(this)
-                .divide(BigDecimal(10000), 1, BigDecimal.ROUND_DOWN)
-                .toString()
-                .plus("万")
+            .divide(BigDecimal(10000), 1, BigDecimal.ROUND_DOWN)
+            .toString()
+            .plus("万")
     }
     return count
 }
@@ -32,9 +32,9 @@ fun Long.toPercent(sum: Long): String {
         return "100%"
     }
     return BigDecimal(this)
-            .multiply(BigDecimal(100))
-            .divide(BigDecimal(sum), 0, BigDecimal.ROUND_HALF_UP)
-            .toString().plus("%")
+        .multiply(BigDecimal(100))
+        .divide(BigDecimal(sum), 0, BigDecimal.ROUND_HALF_UP)
+        .toString().plus("%")
 }
 
 fun Long.toPercentInt(sum: Long): Int {
@@ -42,9 +42,9 @@ fun Long.toPercentInt(sum: Long): Int {
         return 0
     }
     return BigDecimal(this)
-            .multiply(BigDecimal(100))
-            .divide(BigDecimal(sum), 0, BigDecimal.ROUND_HALF_UP)
-            .toInt()
+        .multiply(BigDecimal(100))
+        .divide(BigDecimal(sum), 0, BigDecimal.ROUND_HALF_UP)
+        .toInt()
 }
 
 //转换成时分秒
@@ -122,7 +122,10 @@ fun Long.isPassYear(): Boolean {
 }
 
 //转换成指定日志格式
-fun Long.toDate(format: String): String = SimpleDateFormat(format, Locale.getDefault()).format(Date(this))
+fun Long.toDate(format: String): String =
+    SimpleDateFormat(format, Locale.getDefault()).apply {
+        timeZone = TimeZone.getTimeZone("GMT+8:00")
+    }.format(Date(this))
 
 fun String.getFileName(): String {
     val start = this.lastIndexOf("/")

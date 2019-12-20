@@ -2,7 +2,9 @@ package cn.leo.base.base
 
 import android.os.Bundle
 import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.lifecycle.lifecycleScope
 import cn.leo.base.dialog.LoadingDialog
 import cn.leo.frame.network.model.MViewModel
@@ -49,20 +51,35 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
         }
     }
 
+    @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycleScope.launchWhenCreated {
-            onInitialize()
+        val layoutRes = getLayoutRes()
+        if (layoutRes != -1) {
+            //异步加载布局
+            AsyncLayoutInflater(this).inflate(layoutRes, null)
+            { view, _, _ ->
+                setContentView(view)
+                //创建完毕后，在协程进行初始化
+                lifecycleScope.launchWhenCreated { onInitialize() }
+            }
+        } else {
+            lifecycleScope.launchWhenCreated { onInitialize() }
         }
     }
 
-    open fun onInitObserve() {
-    }
+    @LayoutRes
+    open fun getLayoutRes(): Int = -1
+
+    open fun onInitView() {}
+
+    open fun onInitObserve() {}
 
     @CallSuper
     open fun onInitialize() {
         ARouter.getInstance().inject(this)
         onInitObserve()
+        onInitView()
     }
 
     override fun showLoading(message: CharSequence?) {

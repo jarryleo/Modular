@@ -1,6 +1,5 @@
 package cn.leo.modular
 
-import android.os.Bundle
 import cn.leo.base.arouter.pages.PagesHome
 import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.bean.WechatUserBean
@@ -20,10 +19,11 @@ class Main2Activity :
 
     private val mHelper by SmartRefreshHelper()
 
+    override fun getLayoutRes(): Int {
+        return R.layout.activity_main2
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2)
+    override fun onInitView() {
         actionBar("SmartRefreshHelper")
         mHelper.statusConfig()
         mHelper.getData()

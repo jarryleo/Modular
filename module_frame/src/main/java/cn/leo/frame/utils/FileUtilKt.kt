@@ -13,8 +13,11 @@ object FileUtilKt {
         file.writeText(text)
     }
 
-    fun getOutFile(): File {
-        return File(FileUtil.getExternalCacheDir()!!.absolutePath,
-                "Crash_Log ${System.currentTimeMillis().toDate("yyyy-MM-dd HH:mm:ss")}.html")
+    fun getLogOutFile(): File {
+        return File(
+            FileUtil.getExternalCacheDir()!!.absolutePath,
+            "Crash_Log ${System.currentTimeMillis()
+                .toDate("yyyy-MM-dd HH:mm:ss")}.html"
+        )
     }
 }

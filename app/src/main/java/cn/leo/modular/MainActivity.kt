@@ -1,6 +1,5 @@
 package cn.leo.modular
 
-import android.os.Bundle
 import cn.leo.base.arouter.pages.PagesHome
 import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.db.bean.User
@@ -29,9 +28,11 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     private var mTestText by text { tvTest }
     private var mEditText by text { etTest }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun getLayoutRes(): Int {
+        return R.layout.activity_main
+    }
+
+    override fun onInitView() {
         actionBar(
             "测试哈哈哈哈哈测试哈哈哈哈哈",
             "菜单"

@@ -727,7 +727,7 @@ public class Logger extends FrameLayout implements Thread.UncaughtExceptionHandl
     }
 
     private void writeCrashLogToFile(String crashLog) {
-        File outFile = FileUtilKt.INSTANCE.getOutFile();
+        File outFile = FileUtilKt.INSTANCE.getLogOutFile();
         Log.e("Logger", "writeCrashLogToFile: 崩溃日志已保存在:" + outFile.getAbsolutePath());
         FileUtilKt.INSTANCE.saveFile(
                 outFile,
