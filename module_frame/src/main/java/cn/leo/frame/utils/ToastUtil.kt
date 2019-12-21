@@ -12,6 +12,7 @@ import cn.leo.frame.support.main
  */
 
 fun Context.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
+    if (msg.isNotEmpty())
     main { Toast.makeText(this@toast, msg, duration).show() }
 }
 

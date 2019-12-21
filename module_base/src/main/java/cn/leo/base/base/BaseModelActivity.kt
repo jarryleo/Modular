@@ -20,6 +20,7 @@ import kotlinx.coroutines.delay
  * @author : ling luo
  * @date : 2019-11-27
  */
+@Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
     ILoading {
 

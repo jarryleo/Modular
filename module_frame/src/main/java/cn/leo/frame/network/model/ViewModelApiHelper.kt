@@ -17,6 +17,9 @@ import kotlin.reflect.KProperty
 class ViewModelApiHelper<T : Any> :
     ReadOnlyProperty<MViewModel<*>, ViewModelApiHelper<T>> {
 
+    /**
+     * 私有静态缓存api实例，保证子类只实例化一个相同的api
+     */
     companion object {
         private val apiMap = ConcurrentHashMap<Class<*>, Any>()
     }

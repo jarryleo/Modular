@@ -1,8 +1,8 @@
 package cn.leo.base.model
 
-import cn.leo.frame.network.model.MViewModel
 import cn.leo.base.net.Apis
 import cn.leo.base.net.Urls
+import cn.leo.frame.network.model.MViewModel
 
 /**
  * @author : ling luo

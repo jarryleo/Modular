@@ -57,9 +57,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.WeakHashMap;
 
 import cn.leo.frame.BuildConfig;
+import cn.leo.frame.utils.FileUtil;
 import cn.leo.frame.utils.FileUtilKt;
 
 
@@ -358,8 +360,7 @@ public class Logger extends FrameLayout implements Thread.UncaughtExceptionHandl
     }
 
     private String getTime() {
-        String time = new SimpleDateFormat("MM-dd HH:mm:ss.SSS").format(new Date());
-        return time;
+        return new SimpleDateFormat("MM-dd HH:mm:ss.SSS", Locale.CHINA).format(new Date());
     }
 
     private void addText(int type, String text) {
@@ -727,11 +728,10 @@ public class Logger extends FrameLayout implements Thread.UncaughtExceptionHandl
     }
 
     private void writeCrashLogToFile(String crashLog) {
-        File outFile = FileUtilKt.INSTANCE.getLogOutFile();
-        Log.e("Logger", "writeCrashLogToFile: 崩溃日志已保存在:" + outFile.getAbsolutePath());
-        FileUtilKt.INSTANCE.saveFile(
-                outFile,
-                createHtml(crashLog));
+        File outFile = new File(FileUtil.INSTANCE.getExternalCacheDir().getAbsolutePath(),
+                "Crash_Log_" + getTime() + ".html");
+        e("Logger", "writeCrashLogToFile: 崩溃日志已保存在:" + outFile.getAbsolutePath());
+        FileUtilKt.INSTANCE.saveFile(outFile, createHtml(crashLog));
     }
 
     private void showInWeb(CharSequence msg, final Thread t, final Throwable ex) {

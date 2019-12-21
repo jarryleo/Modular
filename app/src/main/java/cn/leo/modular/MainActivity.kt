@@ -13,7 +13,7 @@ import cn.leo.frame.log.Logger
 import cn.leo.frame.log.logE
 import cn.leo.frame.network.model.GlobalModelCreator
 import cn.leo.frame.support.*
-import cn.leo.frame.utils.jump
+import cn.leo.base.utils.jump
 import cn.leo.frame.utils.toast
 import com.alibaba.android.arouter.facade.annotation.Route
 import kotlinx.android.synthetic.main.activity_main.*

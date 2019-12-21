@@ -14,6 +14,7 @@ import kotlinx.coroutines.delay
  * @author : ling luo
  * @date : 2019-11-30
  */
+@Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
     ILoading {
 

@@ -1,6 +1,7 @@
 package cn.leo.frame.network.http
 
 import okhttp3.OkHttpClient
+import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,15 +18,20 @@ class HttpLoader private constructor(private val mRetrofit: Retrofit) {
 
         private var mBaseUrl: String = ""
             set(value) {
-                field = if (value.endsWith("/")) value
-                else "$value/"
+                field = if (value.endsWith("/")) value else "$value/"
             }
 
-        private var mHttpClient: OkHttpClient = OkHttp3Builder()
-            .build()
+        private var mHttpClient: OkHttpClient = OkHttp3Builder().build()
+
+        private var mCallAdapterFactory: CallAdapter.Factory = MJobAdapterFactory()
 
         fun client(okHttpClient: OkHttpClient): Builder {
             mHttpClient = okHttpClient
+            return this
+        }
+
+        fun callAdapterFactory(callAdapterFactory: CallAdapter.Factory): Builder {
+            mCallAdapterFactory = callAdapterFactory
             return this
         }
 
@@ -35,7 +41,7 @@ class HttpLoader private constructor(private val mRetrofit: Retrofit) {
                     .baseUrl(mBaseUrl)
                     .client(mHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(MJobAdapterFactory())
+                    .addCallAdapterFactory(mCallAdapterFactory)
                     .build()
             )
         }
