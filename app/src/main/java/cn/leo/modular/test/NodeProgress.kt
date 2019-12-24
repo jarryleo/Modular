@@ -94,6 +94,7 @@ open class NodeProgress @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
+        mPart = (mWidth / (mNodes.size)).toFloat()
         canvas?.apply {
             drawLine(
                 0f, (mHeight / 5).toFloat(), mWidth.toFloat(),
@@ -132,7 +133,6 @@ open class NodeProgress @JvmOverloads constructor(
             throw  IllegalArgumentException("nodes is empty")
         mNodes = nodes
         //分段长度
-        mPart = (mWidth / (mNodes.size)).toFloat()
         postInvalidate()
     }
 

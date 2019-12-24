@@ -135,6 +135,3 @@ fun String.getFileName(): String {
     return this.substring(start + 1)
 }
 
-fun String.jump() {
-    ARouter.getInstance().build(this).navigation()
-}

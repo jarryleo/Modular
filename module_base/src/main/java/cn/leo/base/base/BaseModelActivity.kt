@@ -24,6 +24,8 @@ import kotlinx.coroutines.delay
 abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
     ILoading {
 
+    var initialized = false
+
     val model by ModelCreator<T>(
         ClassUtils.getSuperClassGenericType(
             this::class.java
@@ -57,7 +59,7 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         val layoutRes = getLayoutRes()
         if (layoutRes != -1) {
-            //异步加载布局
+            //异步加载布局，不能在 onResume 和 onStart 里面操作UI
             AsyncLayoutInflater(this).inflate(layoutRes, null)
             { view, _, _ ->
                 setContentView(view)
@@ -67,6 +69,30 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
         } else {
             lifecycleScope.launchWhenCreated { onInitialize() }
         }
+    }
+
+    /**
+     * 异步加载布局，不能在 onResume 和 onStart 里面操作UI
+     */
+    final override fun onResume() {
+        super.onResume()
+        if (initialized) {
+            onResumeSafe()
+        }
+    }
+
+    /**
+     * 异步加载布局，不能在 onResume 和 onStart 里面操作UI
+     */
+    final override fun onStart() {
+        super.onStart()
+    }
+
+    /**
+     * 安全的onResume
+     */
+    open fun onResumeSafe() {
+
     }
 
     @LayoutRes
@@ -81,6 +107,8 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
         ARouter.getInstance().inject(this)
         onInitObserve()
         onInitView()
+        onResumeSafe()
+        initialized = true
     }
 
     override fun showLoading(message: CharSequence?) {
