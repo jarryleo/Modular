@@ -1,5 +1,6 @@
 package cn.leo.modular
 
+import android.graphics.Color
 import cn.leo.base.arouter.pages.PagesHome
 import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.db.bean.User
@@ -48,7 +49,10 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
             ivTest.loadImage(
                 "https://pic2.zhimg.com/v2-7cb8b1ea5e11779e25b4b35d52b777f2_xll.jpg",
-                corners = 12.dp(),
+                //corners = 12.dp(),
+                circle = true,
+                circleBorderWidth = 2.dp(),
+                circleBorderColor = Color.GRAY,
                 defResId = R.drawable.ic_launcher_background,
                 errResId = R.drawable.ic_launcher_background,
                 onLoadFailed = { _, _ ->
@@ -116,8 +120,8 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         //model.test(1)
 
-        //model.apis(123).getWechatUserInfo("12311", "45611")
-        model.apis.getWechatUserInfo("123", "456")
+        model.apis(123).getWechatUserInfo("12311", "45611")
+//        model.apis.getWechatUserInfo("123", "456")
     }
 
     override fun onBackPressed() {

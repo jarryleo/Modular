@@ -3,11 +3,14 @@ package cn.leo.frame.image
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
+import cn.leo.frame.image.glide.CircleBorderTransform
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
@@ -39,6 +42,9 @@ fun ImageView.loadImage(
     bitmap: Bitmap? = null,
     thumbnail: String? = null,
     circle: Boolean = false,
+    circleBorderWidth: Int = 0,
+    @ColorInt
+    circleBorderColor: Int = Color.WHITE,
     skipCache: Boolean = false,
     corners: Int = 0,
     @DrawableRes defResId: Int = -1,
@@ -67,7 +73,14 @@ fun ImageView.loadImage(
         }
     //图片裁剪
     val transforms = when {
-        circle -> arrayOf(CircleCrop(), transform)
+        circle -> {
+            val circleTransform = if (circleBorderWidth > 0) {
+                CircleBorderTransform(circleBorderWidth, circleBorderColor)
+            } else {
+                CircleCrop()
+            }
+            arrayOf(circleTransform, transform)
+        }
         (corners > 0) -> arrayOf(RoundedCorners(corners), transform)
         else -> arrayOf(transform)
     }

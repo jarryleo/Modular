@@ -67,13 +67,14 @@ class ViewModelApiHelper<T : Any> :
     fun <R : Any> apis(obj: Any?): T {
         mObj = obj
         mApiHandler = mApiHandler ?: InvocationHandler { _, method, args ->
+            val finalObj = mObj
             val mJob = method.invoke(api, *args ?: arrayOf()) as MJob<R>
             val deferred = mJob.job as Deferred<R>
             MJob<R>(
                 model.executeRequest(
                     deferred,
                     model.getLiveData(method.name),
-                    mObj
+                    finalObj
                 )
             )
         }
