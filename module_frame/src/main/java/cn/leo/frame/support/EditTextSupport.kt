@@ -48,7 +48,6 @@ inline fun EditText.event(crossinline onEvent: (text: String) -> Unit, imeOp: In
  * 获取值
  */
 fun EditText.getInt() = text.toString().toIntOrNull() ?: 0
-
 fun EditText.getLong() = text.toString().toLongOrNull() ?: 0L
 fun EditText.getFloat() = text.toString().toFloatOrNull() ?: 0f
 fun EditText.getDouble() = text.toString().toDoubleOrNull() ?: 0.0

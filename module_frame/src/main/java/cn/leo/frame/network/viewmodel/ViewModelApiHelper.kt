@@ -1,4 +1,4 @@
-package cn.leo.frame.network.model
+package cn.leo.frame.network.viewmodel
 
 import cn.leo.frame.network.http.MJob
 import cn.leo.frame.utils.ClassUtils

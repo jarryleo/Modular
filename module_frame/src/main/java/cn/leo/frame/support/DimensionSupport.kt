@@ -1,6 +1,6 @@
 package cn.leo.frame.support
 
-import cn.leo.frame.MFrame
+import android.content.res.Resources
 import kotlin.math.roundToInt
 
 /**
@@ -11,25 +11,11 @@ import kotlin.math.roundToInt
 /**
  * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
  */
-fun Float.dp(): Int {
-    val scale = MFrame.context.resources.displayMetrics.density
-    return (this * scale).roundToInt()
-}
-
-fun Int.dp(): Int {
-    val scale = MFrame.context.resources.displayMetrics.density
-    return (this * scale).roundToInt()
-}
+val Float.dp: Int get() = (this * Resources.getSystem().displayMetrics.density).roundToInt()
+val Int.dp: Int get() = (this * Resources.getSystem().displayMetrics.density).roundToInt()
 
 /**
  * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
  */
-fun Float.px(): Int {
-    val scale = MFrame.context.resources.displayMetrics.density
-    return (this / scale).roundToInt()
-}
-
-fun Int.px(): Int {
-    val scale = MFrame.context.resources.displayMetrics.density
-    return (this / scale).roundToInt()
-}
+val Float.px: Int get() = (this / Resources.getSystem().displayMetrics.density).roundToInt()
+val Int.px: Int get() = (this / Resources.getSystem().displayMetrics.density).roundToInt()

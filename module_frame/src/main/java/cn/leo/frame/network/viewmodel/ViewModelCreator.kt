@@ -1,4 +1,4 @@
-package cn.leo.frame.network.model
+package cn.leo.frame.network.viewmodel
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider

@@ -1,4 +1,4 @@
-package cn.leo.frame.network.model
+package cn.leo.frame.network.viewmodel
 
 import cn.leo.frame.log.logD
 import java.util.concurrent.ConcurrentHashMap

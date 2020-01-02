@@ -5,9 +5,9 @@ import cn.leo.base.model.WechatModel
 import cn.leo.base.support.actionBar
 import cn.leo.base.support.setActionBarTitle
 import cn.leo.frame.log.logE
-import cn.leo.frame.network.model.GlobalModelCreator
-import cn.leo.frame.network.model.ShareModelCreator
-import cn.leo.frame.network.model.plus
+import cn.leo.frame.network.viewmodel.GlobalModelCreator
+import cn.leo.frame.network.viewmodel.ShareModelCreator
+import cn.leo.frame.network.viewmodel.plus
 import cn.leo.frame.support.singleClick
 import cn.leo.frame.utils.toast
 import kotlinx.android.synthetic.main.activity_main.*

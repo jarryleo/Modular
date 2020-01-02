@@ -1,4 +1,4 @@
-package cn.leo.frame.network.model
+package cn.leo.frame.network.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import cn.leo.frame.network.http.MInterceptorManager

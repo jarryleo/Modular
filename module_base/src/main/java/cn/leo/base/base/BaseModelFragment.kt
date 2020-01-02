@@ -2,8 +2,8 @@ package cn.leo.base.base
 
 import androidx.annotation.CallSuper
 import cn.leo.base.dialog.LoadingDialog
-import cn.leo.frame.network.model.MViewModel
-import cn.leo.frame.network.model.ModelCreator
+import cn.leo.frame.network.viewmodel.MViewModel
+import cn.leo.frame.network.viewmodel.ModelCreator
 import cn.leo.frame.support.main
 import cn.leo.frame.ui.ILoading
 import cn.leo.frame.utils.ClassUtils

@@ -11,7 +11,7 @@ import cn.leo.frame.BuildConfig
 /**
  * 测试代码段，只有在debug下会执行
  */
-inline fun Any.debug(block: () -> Unit) {
+inline fun debug(block: () -> Unit) {
     if (BuildConfig.DEBUG) {
         block()
     }

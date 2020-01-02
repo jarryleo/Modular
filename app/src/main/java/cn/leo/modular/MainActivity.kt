@@ -12,7 +12,7 @@ import cn.leo.base.support.setActionBarTitle
 import cn.leo.frame.image.loadImage
 import cn.leo.frame.log.Logger
 import cn.leo.frame.log.logE
-import cn.leo.frame.network.model.GlobalModelCreator
+import cn.leo.frame.network.viewmodel.GlobalModelCreator
 import cn.leo.frame.support.*
 import cn.leo.frame.utils.toast
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -51,7 +51,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
                 "https://pic2.zhimg.com/v2-7cb8b1ea5e11779e25b4b35d52b777f2_xll.jpg",
                 //corners = 12.dp(),
                 circle = true,
-                circleBorderWidth = 2.dp(),
+                circleBorderWidth = 2.dp,
                 circleBorderColor = Color.GRAY,
                 defResId = R.drawable.ic_launcher_background,
                 errResId = R.drawable.ic_launcher_background,
@@ -73,10 +73,6 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
     }
 
-    override fun onPostResume() {
-        super.onPostResume()
-    }
-
     override fun onInitObserve() {
         model.observe(this, model::findUserById) {
             success {
@@ -89,13 +85,13 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         }
 
         model.observe(this, Apis::getWechatUserInfo) {
-            loading = loadingLazyFun
+            loading = loadingFun
             success {
                 toast("请求成功：$obj  ")
             }
             failed {
                 toast("请求失败：${it.code} + ${it.msg}  " + obj)
-                logE("请求失败====")
+                logE("请求失败====1")
             }
         }
 

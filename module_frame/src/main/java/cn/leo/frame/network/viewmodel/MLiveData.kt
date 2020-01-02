@@ -1,4 +1,4 @@
-package cn.leo.frame.network.model
+package cn.leo.frame.network.viewmodel
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData

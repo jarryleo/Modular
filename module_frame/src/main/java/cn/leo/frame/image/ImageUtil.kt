@@ -28,11 +28,9 @@ import java.io.File
 /**
  * @author : ling luo
  * @date : 2019-08-31
+ * @desc glide 加载图片封装
  */
 
-/**
- * glide 加载图片封装
- */
 fun ImageView.loadImage(
     url: String? = null,
     uri: Uri? = null,

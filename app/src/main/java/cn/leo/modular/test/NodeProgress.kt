@@ -94,6 +94,9 @@ open class NodeProgress @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
+        if(mNodes.isNullOrEmpty()){
+            return
+        }
         mPart = (mWidth / (mNodes.size)).toFloat()
         canvas?.apply {
             drawLine(
