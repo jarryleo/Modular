@@ -33,6 +33,10 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
         return 5
     }
 
+    fun wechat() {
+        apis(123).getWechatUserInfo("12311", "45611")
+    }
+
     fun nativeTest() {
         testSecondSub()
     }
@@ -61,7 +65,7 @@ class WechatModel : BaseModel(), SmartRefreshHelper.ISource<WechatUserBean> {
 
 
     override fun requestList(page: Int) {
-        apis().getWechatUserInfo("", "")
+        apis.getWechatUserInfo("", "")
     }
 
 

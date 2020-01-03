@@ -26,8 +26,11 @@ class FrameContextProvider : ContentProvider() {
     }
 
     override fun onCreate(): Boolean {
-        MFrame.init(context.applicationContext)
-        return true
+        context?.let {
+            MFrame.init(it.applicationContext)
+            return true
+        }
+        return false
     }
 
     override fun update(

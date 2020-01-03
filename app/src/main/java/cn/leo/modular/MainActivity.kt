@@ -1,6 +1,5 @@
 package cn.leo.modular
 
-import android.graphics.Color
 import cn.leo.base.arouter.pages.PagesHome
 import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.db.bean.User
@@ -37,7 +36,6 @@ class MainActivity : BaseModelActivity<WechatModel>() {
             "测试哈哈哈哈哈测试哈哈哈哈哈",
             "菜单"
         ) {
-
             model.insert(User(1, "Tom"))
             PagesHome.homeMain3Activity.jump()
         }
@@ -49,10 +47,10 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
             ivTest.loadImage(
                 "https://pic2.zhimg.com/v2-7cb8b1ea5e11779e25b4b35d52b777f2_xll.jpg",
-                //corners = 12.dp(),
+                //corners = 12.dp,
                 circle = true,
                 circleBorderWidth = 2.dp,
-                circleBorderColor = Color.GRAY,
+                circleBorderColor = R.color.colorPrimary.getColor(),
                 defResId = R.drawable.ic_launcher_background,
                 errResId = R.drawable.ic_launcher_background,
                 onLoadFailed = { _, _ ->
@@ -66,7 +64,8 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         node.setProgress(3)
 
         etTest.imeSearch {
-            etTest.checkEmpty { toast("输入不能为空"); return@imeSearch }
+            etTest
+                .checkEmpty { toast("输入不能为空"); return@imeSearch }
                 .checkNum(2, 6) { toast("字符不符合");return@imeSearch }
             toast(it)
         }
@@ -85,7 +84,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         }
 
         model.observe(this, Apis::getWechatUserInfo) {
-            loading = loadingFun
+            loading = loadingLazyFun
             success {
                 toast("请求成功：$obj  ")
             }
@@ -115,9 +114,9 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     private fun test() {
 
         //model.test(1)
-
-        model.apis(123).getWechatUserInfo("12311", "45611")
-//        model.apis.getWechatUserInfo("123", "456")
+        model.wechat()
+        //model.apis(123).getWechatUserInfo("12311", "45611")
+        //model.apis.getWechatUserInfo("123", "456")
     }
 
     override fun onBackPressed() {
