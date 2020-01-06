@@ -2,14 +2,15 @@ package cn.leo.modular.test
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import cn.leo.modular.R
 import kotlin.math.*
 
@@ -17,6 +18,22 @@ import kotlin.math.*
 /**
  * @author : ling luo
  * @date : 2019-12-09
+ *
+ * @desc 属性定义：
+<declare-styleable name="ArcNodeProgress">
+<attr name="textSize" format="dimension" />
+<attr name="textColor" format="color" />
+<attr name="strokeWidth" format="dimension" />
+<attr name="angle" format="integer" />
+<attr name="maxNode" format="integer" />
+<attr name="startColor" format="color" />
+<attr name="endColor" format="color" />
+<attr name="thumbSize" format="dimension" />
+<attr name="selectSize" format="dimension" />
+<attr name="thumb" format="reference" />
+<attr name="select" format="reference" />
+</declare-styleable>
+ *
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 open class ArcNodeProgress @JvmOverloads constructor(
@@ -63,7 +80,15 @@ open class ArcNodeProgress @JvmOverloads constructor(
     private var mAngle: Float = 140f
     //进度圆球大小
     private var mThumbSize = 20.dp
-
+    //选中文字背景大小
+    private var mSelectSize = 25.dp
+    //进度条渐变色起始和结束颜色
+    private var mStartColor = Color.parseColor("#FF5C58E0")
+    private var mEndColor = Color.parseColor("#FFB425FE")
+    //滑块图
+    private var mThumbDrawable: Drawable? = null
+    //选中文字背景图
+    private var mSelectDrawable: Drawable? = null
     //单位转换
     private val Int.dp
         get() = TypedValue.applyDimension(
@@ -73,32 +98,54 @@ open class ArcNodeProgress @JvmOverloads constructor(
         ).roundToInt()
 
     init {
-        //背景
-        mBackPaint.color = Color.GRAY
-        mBackPaint.strokeWidth = mStrokeWidth
+        //进度条背景
         mBackPaint.style = Paint.Style.STROKE
         mBackPaint.strokeCap = Paint.Cap.ROUND
-        //前景
-        mForePaint.shader =
-            LinearGradient(
-                0f, 0f, 200f, 0f,
-                Color.parseColor("#FF5C58E0"),
-                Color.parseColor("#FFB425FE"),
-                Shader.TileMode.MIRROR
-            )
-
-        mForePaint.strokeWidth = mStrokeWidth
+        //进度条前景
         mForePaint.style = Paint.Style.STROKE
         mForePaint.strokeCap = Paint.Cap.ROUND
         //文字
         mTextPaint.textAlign = Paint.Align.CENTER
-        mTextPaint.textSize = 15.dp.toFloat()
-        mTextPaint.color = Color.BLACK
-
-        /*if (BuildConfig.DEBUG) {
-            mCurrentSweepAngle = 30f
-        }*/
+        //属性初始化
+        val a = context?.obtainStyledAttributes(attrs, R.styleable.ArcNodeProgress)
+        a?.let {
+            initAttr(a)
+        }
+        a?.recycle()
     }
+
+    private fun initAttr(ta: TypedArray) {
+        //文字大小
+        mTextPaint.textSize =
+            ta.getDimensionPixelSize(R.styleable.ArcNodeProgress_textSize, 15.dp).toFloat()
+        //文字颜色
+        mTextPaint.color = ta.getColor(R.styleable.ArcNodeProgress_textColor, Color.BLACK)
+        //进度条粗细
+        mStrokeWidth =
+            ta.getDimensionPixelSize(R.styleable.ArcNodeProgress_strokeWidth, mStrokeWidth.toInt())
+                .toFloat()
+        mBackPaint.strokeWidth = mStrokeWidth
+        mForePaint.strokeWidth = mStrokeWidth
+        //进度条背景色
+        mBackPaint.color = ta.getColor(R.styleable.ArcNodeProgress_backColor, Color.GRAY)
+        //圆弧总角度
+        mAngle = ta.getFloat(R.styleable.ArcNodeProgress_angle, mAngle)
+        //最大可现实节点数
+        mMaxNode = ta.getInt(R.styleable.ArcNodeProgress_maxNode, mMaxNode)
+        //起始颜色
+        mStartColor = ta.getColor(R.styleable.ArcNodeProgress_startColor, mStartColor)
+        //结束颜色
+        mEndColor = ta.getColor(R.styleable.ArcNodeProgress_endColor, mEndColor)
+        //滑块大小
+        mThumbSize = ta.getDimensionPixelSize(R.styleable.ArcNodeProgress_thumbSize, mThumbSize)
+        //选中文字背景大小
+        mSelectSize = ta.getDimensionPixelSize(R.styleable.ArcNodeProgress_selectSize, mSelectSize)
+        //滑块图
+        mThumbDrawable = ta.getDrawable(R.styleable.ArcNodeProgress_thumb)
+        //选中文字背景图
+        mSelectDrawable = ta.getDrawable(R.styleable.ArcNodeProgress_select)
+    }
+
 
     @SuppressLint("DrawAllocation")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -139,7 +186,7 @@ open class ArcNodeProgress @JvmOverloads constructor(
             )
             val minNode = min(mMaxNode, mNodes.size)
             mPart = (mWidth / minNode - 1).toFloat()
-            mCurrentSweepAngle = mAngle / 2
+            setProgress(8000)
         }
     }
 
@@ -195,8 +242,8 @@ open class ArcNodeProgress @JvmOverloads constructor(
         mForePaint.shader =
             LinearGradient(
                 sx, sy, x, y,
-                Color.parseColor("#FF5C58E0"),
-                Color.parseColor("#FFB425FE"),
+                mStartColor,
+                mEndColor,
                 Shader.TileMode.MIRROR
             )
 
@@ -228,12 +275,12 @@ open class ArcNodeProgress @JvmOverloads constructor(
                 (cy + textRadius * sin((startAngle + index * mPart) * Math.PI / 180)).toFloat()
             //绘制选中文字背景
             if (i == mSelectNode) {
-                val drawable = ContextCompat.getDrawable(context, R.drawable.thumb_select)
+                val drawable = mSelectDrawable
                 drawable?.apply {
                     val textBounds = Rect()
                     mTextPaint.getTextBounds(node.text, 0, node.text.length, textBounds)
-                    val w = max(25.dp, textBounds.width())
-                    val h = max(25.dp, textBounds.height())
+                    val w = max(mSelectSize, textBounds.width() + 2.dp)
+                    val h = max(mSelectSize, textBounds.height() + 2.dp)
                     bounds.right = w
                     bounds.bottom = h
                     canvas.save()
@@ -250,7 +297,7 @@ open class ArcNodeProgress @JvmOverloads constructor(
         }
 
         //绘制圆球
-        val drawable = ContextCompat.getDrawable(context, R.drawable.thumb)
+        val drawable = mThumbDrawable
         drawable?.apply {
             val b = bounds
             b.right = mThumbSize
