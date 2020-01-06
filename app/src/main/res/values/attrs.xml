@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ArcNodeProgress">
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="color" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="angle" format="integer" />
+        <attr name="maxNode" format="integer" />
+        <attr name="startColor" format="color" />
+        <attr name="endColor" format="color" />
+        <attr name="thumbSize" format="dimension" />
+        <attr name="selectSize" format="dimension" />
+        <attr name="thumb" format="reference" />
+        <attr name="select" format="reference" />
+    </declare-styleable>
+</resources>

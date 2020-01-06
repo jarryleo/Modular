@@ -14,6 +14,7 @@ import cn.leo.frame.log.logE
 import cn.leo.frame.network.viewmodel.GlobalModelCreator
 import cn.leo.frame.support.*
 import cn.leo.frame.utils.toast
+import cn.leo.modular.test.ArcNodeProgress
 import com.alibaba.android.arouter.facade.annotation.Route
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -59,9 +60,20 @@ class MainActivity : BaseModelActivity<WechatModel>() {
             )
         }
 
-        val nodes = arrayOf("v1", "v2", "v3", "v4", "v5", "v6")
+        val nodes = arrayOf(
+            ArcNodeProgress.Node(1500, "1"),
+            ArcNodeProgress.Node(3000, "2"),
+            ArcNodeProgress.Node(8000, "3"),
+            ArcNodeProgress.Node(18000, "4"),
+            ArcNodeProgress.Node(28000, "5"),
+            ArcNodeProgress.Node(38000, "6"),
+            ArcNodeProgress.Node(58000, "7"),
+            ArcNodeProgress.Node(88000, "8"),
+            ArcNodeProgress.Node(128000, "9"),
+            ArcNodeProgress.Node(208000, "10")
+        )
         node.setNodes(nodes)
-        node.setProgress(3)
+        node.setProgress(36000)
 
         etTest.imeSearch {
             etTest
