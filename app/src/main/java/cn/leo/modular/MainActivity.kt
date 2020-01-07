@@ -80,6 +80,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
                 .checkEmpty { toast("输入不能为空"); return@imeSearch }
                 .checkNum(2, 6) { toast("字符不符合");return@imeSearch }
             toast(it)
+            node.setProgress(it.toInt())
         }
 
     }

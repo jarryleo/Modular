@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -182,7 +184,11 @@ open class ArcNodeProgress @JvmOverloads constructor(
                 Node(8000, "3"),
                 Node(18000, "4"),
                 Node(28000, "5"),
-                Node(38000, "6")
+                Node(38000, "6"),
+                Node(58000, "7"),
+                Node(88000, "8"),
+                Node(128000, "9"),
+                Node(208000, "10")
             )
             val minNode = min(mMaxNode, mNodes.size)
             mPart = (mWidth / minNode - 1).toFloat()
@@ -286,7 +292,8 @@ open class ArcNodeProgress @JvmOverloads constructor(
                     canvas.save()
                     canvas.translate(
                         tx - bounds.width() / 2,
-                        ty - (bounds.height() + textBounds.height()) / 2
+                        ty - bounds.height() / 2 -
+                                textBounds.height() / (if (isInEditMode) 3 else 2) //修正预览位置
                     )
                     draw(canvas)
                     canvas.restore()
@@ -304,6 +311,21 @@ open class ArcNodeProgress @JvmOverloads constructor(
             b.bottom = mThumbSize
             canvas.save()
             canvas.translate(x - (mThumbSize / 2), y - (mThumbSize / 2))
+            if (this is LayerDrawable) {
+                for (i in 0 until numberOfLayers) {
+                    val d = getDrawable(i)
+                    val bounds = d.bounds
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val l = getLayerInsetLeft(i)
+                        val r = getLayerInsetRight(i)
+                        val t = getLayerInsetTop(i)
+                        val b = getLayerInsetBottom(i)
+                        bounds.set(l, t, mThumbSize - r, mThumbSize - b)
+                    } else {
+                        bounds.set(0, 0, mThumbSize, mThumbSize)
+                    }
+                }
+            }
             draw(canvas)
             canvas.restore()
         }
@@ -335,7 +357,7 @@ open class ArcNodeProgress @JvmOverloads constructor(
         //选中的节点
         if (progress >= mNodes.last().num) {
             mSelectNode = mNodes.size - 1
-            mEndNode = mNodes.size - 1
+            mEndNode = mNodes.size
             mStartNode = mEndNode - minNode
             mCurrentSweepAngle = mAngle
         } else {
