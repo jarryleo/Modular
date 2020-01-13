@@ -22,26 +22,26 @@ class LoggerInterceptor : Interceptor {
         val request = chain.request()
         val startTime = System.nanoTime()
         Log.d(TAG, "----------Start----------")
-        Log.d(TAG, String.format("请求地址：| %s", request.url()))
+        Log.d(TAG, String.format("请求地址：| %s", request.url))
         //执行请求
         val response = chain.proceed(request)
-        printParams(request.body())
+        printParams(request.body)
         //拿到请求结果
-        val body = response.body()
+        val body = response.body
         val source = body!!.source()
         // Buffer the entire body.
         source.request(Integer.MAX_VALUE.toLong())
         val buffer = source.buffer()
         //接口数据大于16K不显示
-        if (buffer.size() > 1024 * 32) {
+        if (buffer.size > 1024 * 32) {
             Log.d(
-                TAG, UrlUtil.getBaseUrl(request.url().toString())
-                        + "请求返回：| (长度:" + buffer.size()
+                TAG, UrlUtil.getBaseUrl(request.url.toString())
+                        + "请求返回：| (长度:" + buffer.size
                         + ")大于16K不打印,点击链接在网页查看"
             )
             return response
         } else {
-            val headers = response.headers()
+            val headers = response.headers
             val header = headers.toString()
             Log.d(TAG, String.format("headers：|\n%s\n", header))
 

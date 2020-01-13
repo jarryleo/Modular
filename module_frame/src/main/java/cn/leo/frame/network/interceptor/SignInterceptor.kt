@@ -25,15 +25,15 @@ class SignInterceptor : Interceptor {
     @Throws(IOException::class)
     private fun rebuildRequest(request: Request): Request {
         return when {
-            "POST" == request.method() -> rebuildPostRequest(request)
-            "GET" == request.method() -> rebuildGetRequest(request)
+            "POST" == request.method -> rebuildPostRequest(request)
+            "GET" == request.method -> rebuildGetRequest(request)
             else -> request
         }
     }
 
     @Throws(IOException::class)
     private fun rebuildGetRequest(request: Request): Request {
-        val url = request.url().toString()
+        val url = request.url.toString()
         val urlString = getSignUrl(url)
         val requestBuilder = request.newBuilder()
         return requestBuilder.url(urlString).build()
@@ -43,13 +43,13 @@ class SignInterceptor : Interceptor {
     private fun rebuildPostRequest(request: Request): Request {
         //对参数进行签名
         val signParams = TreeMap<String, String>()
-        val originalRequestBody = request.body()!!
+        val originalRequestBody = request.body!!
         var newRequestBody: RequestBody? = null
         // 传统表单
         if (originalRequestBody is FormBody) {
             val builder = FormBody.Builder()
-            val requestBody = request.body() as FormBody?
-            val fieldSize = requestBody?.size() ?: 0
+            val requestBody = request.body as FormBody?
+            val fieldSize = requestBody?.size ?: 0
             for (i in 0 until fieldSize) {
                 signParams[requestBody!!.name(i)] = requestBody.value(i)
             }
@@ -61,23 +61,23 @@ class SignInterceptor : Interceptor {
             newRequestBody = builder.build()
         } else if (originalRequestBody is MultipartBody) {
             //文件提交
-            val requestBody = request.body() as MultipartBody?
+            val requestBody = request.body as MultipartBody?
             val multipartBodybuilder = MultipartBody.Builder()
             if (requestBody != null) {
-                for (i in 0 until requestBody.size()) {
+                for (i in 0 until requestBody.size) {
                     val part = requestBody.part(i)
                     multipartBodybuilder.addPart(part)
-                    val headers1 = part.headers()
+                    val headers1 = part.headers
                     for (name in headers1!!.names()) {
                         Log.d(javaClass.simpleName, "name$name")
                     }
-                    val mediaType = part.body().contentType()
+                    val mediaType = part.body.contentType()
                     if (mediaType == null) {
                         val normalParamKey: String
                         val normalParamValue: String
                         try {
-                            normalParamValue = getParamContent(requestBody.part(i).body())
-                            val headers = part.headers()
+                            normalParamValue = getParamContent(requestBody.part(i).body)
+                            val headers = part.headers
                             if (!TextUtils.isEmpty(normalParamValue) && headers != null) {
                                 for (name in headers.names()) {
                                     val headerContent = headers[name]
@@ -112,7 +112,7 @@ class SignInterceptor : Interceptor {
         } else {
             return request
         }
-        return request.newBuilder().method(request.method(), newRequestBody).build()
+        return request.newBuilder().method(request.method, newRequestBody).build()
 
     }
 

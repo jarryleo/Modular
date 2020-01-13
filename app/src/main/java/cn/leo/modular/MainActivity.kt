@@ -83,6 +83,10 @@ class MainActivity : BaseModelActivity<WechatModel>() {
             node.setProgress(it.toInt())
         }
 
+        count(208000, start = 1500, end = 209000, interval = 5, step = 10) {
+            if (it % 100 == 0) node.setProgress(it)
+        }
+
     }
 
     override fun onInitObserve() {

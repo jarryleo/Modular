@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import cn.leo.frame.utils.SafetyMainHandler
+import kotlin.math.abs
 
 /**
  * @author : ling luo
@@ -15,6 +16,7 @@ import cn.leo.frame.utils.SafetyMainHandler
  * @param times 计时次数
  * @param start 开始值
  * @param end 结束值
+ * @param step 每次累计数值
  * @param interval 计时间隔
  * @param invisibleCount 界面不可见的时候是否继续执行触发事件，false 不执行，true，执行
  * @param onStart 开始计时触发事件
@@ -25,6 +27,7 @@ inline fun LifecycleOwner.count(
     times: Int = 5,
     start: Int = times,
     end: Int = 0,
+    step: Int = 1,
     interval: Long = 1000L,
     invisibleCount: Boolean = false,
     crossinline onStart: (Int) -> Unit = {},
@@ -40,8 +43,8 @@ inline fun LifecycleOwner.count(
     }
     val runnable = object : Runnable {
         override fun run() {
-            if (count < end) count++ else count--
-            if (count != end) {
+            if (count < end) count += step else count -= step
+            if (abs(count - end) > step) {
                 if (invisibleCount) {
                     onCount(count)
                 } else {

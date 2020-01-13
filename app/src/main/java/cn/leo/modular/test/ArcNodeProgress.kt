@@ -316,11 +316,11 @@ open class ArcNodeProgress @JvmOverloads constructor(
                     val d = getDrawable(i)
                     val bounds = d.bounds
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        val l = getLayerInsetLeft(i)
-                        val r = getLayerInsetRight(i)
-                        val t = getLayerInsetTop(i)
-                        val b = getLayerInsetBottom(i)
-                        bounds.set(l, t, mThumbSize - r, mThumbSize - b)
+                        val left = getLayerInsetLeft(i)
+                        val right = getLayerInsetRight(i)
+                        val top = getLayerInsetTop(i)
+                        val bottom = getLayerInsetBottom(i)
+                        bounds.set(left, top, mThumbSize - right, mThumbSize - bottom)
                     } else {
                         bounds.set(0, 0, mThumbSize, mThumbSize)
                     }
