@@ -59,17 +59,28 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         val layoutRes = getLayoutRes()
         if (layoutRes != -1) {
-            //异步加载布局，不能在 onResume 和 onStart 里面操作UI
-            AsyncLayoutInflater(this).inflate(layoutRes, null)
-            { view, _, _ ->
-                setContentView(view)
-                //创建完毕后，在协程进行初始化
+            if (isAsyncLayoutInflater()) {
+                //异步加载布局，不能在 onResume 和 onStart 里面操作UI
+                AsyncLayoutInflater(this).inflate(layoutRes, null)
+                { view, _, _ ->
+                    setContentView(view)
+                    //创建完毕后，在协程进行初始化
+                    lifecycleScope.launchWhenCreated { onInitialize() }
+                }
+            } else {
+                setContentView(layoutRes)
                 lifecycleScope.launchWhenCreated { onInitialize() }
             }
         } else {
             lifecycleScope.launchWhenCreated { onInitialize() }
         }
     }
+
+    /**
+     * 是否异步加载布局
+     * 谨慎开启，某些自定义控件在初始化UI时操作UI会导致bug
+     */
+    open fun isAsyncLayoutInflater() = false
 
     /**
      * 异步加载布局，不能在 onResume 和 onStart 里面操作UI
