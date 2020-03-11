@@ -3,7 +3,9 @@ package cn.leo.frame.support
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import cn.leo.frame.ui.MagicTextViewUtil
+import cn.leo.frame.utils.ResUtil
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -75,3 +77,33 @@ fun double(view: () -> TextView) = object : TextProperty<Double>(view) {
 fun TextView.magic() = MagicTextViewUtil.getInstance(this)
 
 
+fun TextView.setDrawables(
+    @DrawableRes left: Int = 0,
+    @DrawableRes top: Int = 0,
+    @DrawableRes right: Int = 0,
+    @DrawableRes bottom: Int = 0,
+    drawablePadding: Int = -1
+) {
+    val leftDrawable = if (left == 0) {
+        null
+    } else {
+        ResUtil.getDrawable(left)
+    }?.apply { setBounds(0, 0, minimumWidth, minimumHeight) }
+    val topDrawable = if (top == 0) {
+        null
+    } else {
+        ResUtil.getDrawable(top)
+    }?.apply { setBounds(0, 0, minimumWidth, minimumHeight) }
+    val rightDrawable = if (right == 0) {
+        null
+    } else {
+        ResUtil.getDrawable(right)
+    }?.apply { setBounds(0, 0, minimumWidth, minimumHeight) }
+    val bottomDrawable = if (bottom == 0) {
+        null
+    } else {
+        ResUtil.getDrawable(bottom)
+    }?.apply { setBounds(0, 0, minimumWidth, minimumHeight) }
+    if (drawablePadding != -1) compoundDrawablePadding = drawablePadding
+    setCompoundDrawables(leftDrawable, topDrawable, rightDrawable, bottomDrawable)
+}
