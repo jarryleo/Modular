@@ -82,6 +82,6 @@ class LoggergerInterceptor : Interceptor {
     }
 
     companion object {
-        var TAG = "LoggergerInterceptor"
+        var TAG = "LoggerInterceptor"
     }
 }
