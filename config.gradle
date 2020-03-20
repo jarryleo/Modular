@@ -58,7 +58,8 @@ ext {
             //常用第三方版本
             eventbusVersion         : "3.0.0",
             //非常用第三方
-            loggerVersion           : "2.2.0",
+            ZLogger                 : "v1.0.8",
+            ZLogger_no_op           : "v1.0.0",
             barlibraryVersion       : "2.3.0",
             bannerVersion           : "1.4.10",
             javaxVersion            : "1.2",
@@ -124,7 +125,8 @@ ext {
                     "adapter-rxjava"         : "com.squareup.retrofit2:adapter-rxjava:${versions["retrofit2Version"]}",
 
                     //日志
-                    "logger"                 : "com.orhanobut:logger:${versions["loggerVersion"]}",
+                    "ZLogger"             : "com.github.jarryleo:ZLogger:${versions["ZLogger"]}",
+                    "ZLogger_no_op"       : "com.github.jarryleo:ZLogger-no-op:${versions["ZLogger_no_op"]}",
 
                     //json
                     "gson"                   : "com.google.code.gson:gson:${versions["gsonVersion"]}",

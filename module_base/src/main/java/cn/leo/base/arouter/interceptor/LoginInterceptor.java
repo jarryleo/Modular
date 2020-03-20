@@ -8,7 +8,7 @@ import com.alibaba.android.arouter.facade.callback.InterceptorCallback;
 import com.alibaba.android.arouter.facade.template.IInterceptor;
 
 import cn.leo.base.arouter.PagesConfig;
-import cn.leo.frame.log.Logger;
+import cn.leo.z_logger.Logger;
 
 /**
  * @author : ling luo

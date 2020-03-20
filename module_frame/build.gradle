@@ -104,6 +104,10 @@ dependencies {
     //下拉刷新
     api rootProject.ext.dependencies["SmartRefresh"]
 
+    //日志库
+    debugApi rootProject.ext.dependencies["ZLogger"]
+    releaseApi rootProject.ext.dependencies["ZLogger_no_op"]
+
 }
 repositories {
     mavenCentral()
