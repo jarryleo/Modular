@@ -15,7 +15,7 @@ import java.nio.charset.Charset
 /**
  * @author lingluo
  */
-class LoggergerInterceptor : Interceptor {
+class LoggerInterceptor : Interceptor {
 
     @Synchronized
     @Throws(IOException::class)

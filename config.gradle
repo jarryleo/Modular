@@ -12,7 +12,7 @@ ext {
             //编译相关版本
             compileSdkVersion       : 28,
             buildToolsVersion       : "28.0.3",
-            minSdkVersion           : 19,
+            minSdkVersion           : 21,
             targetSdkVersion        : 28,
             //官方依赖版本
             androidXVersion         : "1.0.0",

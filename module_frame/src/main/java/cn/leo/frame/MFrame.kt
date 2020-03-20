@@ -1,8 +1,6 @@
 package cn.leo.frame
 
 import android.content.Context
-import cn.leo.z_logger.Logger
-import com.alibaba.android.arouter.launcher.ARouter
 
 /**
  * @author : ling luo
@@ -12,6 +10,5 @@ object MFrame {
     lateinit var context: Context
     fun init(c: Context) {
         context = c
-        Logger.init(context)
     }
 }
