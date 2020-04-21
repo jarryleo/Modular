@@ -42,6 +42,9 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
                 }
             }
             liveData.success(result, obj)
+        } catch (e: CancellationException) {
+            //取消请求
+            e.printStackTrace()
         } catch (e: Exception) {
             e.printStackTrace()
             liveData.failed(e, obj)
@@ -67,6 +70,9 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
                 } else {
                     liveData.failed(NullPointerException("null"))
                 }
+            } catch (e: CancellationException) {
+                //取消请求
+                e.printStackTrace()
             } catch (e: Exception) {
                 e.printStackTrace()
                 liveData.failed(e)

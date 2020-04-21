@@ -2,6 +2,7 @@ package cn.leo.frame.support
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
 
 
 /**
@@ -15,7 +16,8 @@ import androidx.fragment.app.FragmentActivity
  * Activity show
  */
 inline fun <reified T : Fragment> FragmentActivity.showFragment(
-    replaceViewId: Int, init: (T).() -> Unit = {}
+    replaceViewId: Int, init: (T).() -> Unit = {},
+    lazy: Boolean = true
 ): T {
     val sfm = supportFragmentManager
     val transaction = sfm.beginTransaction()
@@ -24,8 +26,13 @@ inline fun <reified T : Fragment> FragmentActivity.showFragment(
         fragment = T::class.java.newInstance()
         transaction.add(replaceViewId, fragment, T::class.java.name)
     }
-    sfm.fragments.filter { it != fragment }.forEach { transaction.hide(it) }
+    sfm.fragments
+        .filter { it != fragment && it.id == replaceViewId }
+        .forEach { transaction.hide(it).setMaxLifecycle(it, Lifecycle.State.CREATED) }
     transaction.show(fragment!!)
+    if (lazy) {
+        transaction.setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
+    }
     transaction.commitAllowingStateLoss()
     sfm.executePendingTransactions()
     init(fragment as T)
@@ -52,7 +59,9 @@ inline fun FragmentActivity.showFragment(
     if (!fragment.isAdded) {
         transaction.add(replaceViewId, fragment, fragment.javaClass.name)
     }
-    sfm.fragments.filter { it != fragment }.forEach { transaction.hide(it) }
+    sfm.fragments
+        .filter { it != fragment && it.id == replaceViewId }
+        .forEach { transaction.hide(it).setMaxLifecycle(it, Lifecycle.State.CREATED) }
     transaction.show(fragment)
     transaction.commitAllowingStateLoss()
     sfm.executePendingTransactions()
@@ -62,7 +71,8 @@ inline fun FragmentActivity.showFragment(
  * Fragment show
  */
 inline fun <reified T : Fragment> Fragment.showFragment(
-    replaceViewId: Int, init: (T).() -> Unit = {}
+    replaceViewId: Int, init: (T).() -> Unit = {},
+    lazy: Boolean = true
 ): T {
     val sfm = childFragmentManager
     val transaction = sfm.beginTransaction()
@@ -71,8 +81,13 @@ inline fun <reified T : Fragment> Fragment.showFragment(
         fragment = T::class.java.newInstance()
         transaction.add(replaceViewId, fragment, T::class.java.name)
     }
-    sfm.fragments.filter { it != fragment }.forEach { transaction.hide(it) }
+    sfm.fragments
+        .filter { it != fragment && it.id == replaceViewId }
+        .forEach { transaction.hide(it).setMaxLifecycle(it, Lifecycle.State.CREATED) }
     transaction.show(fragment!!)
+    if (lazy) {
+        transaction.setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
+    }
     transaction.commitAllowingStateLoss()
     sfm.executePendingTransactions()
     init(fragment as T)
@@ -84,15 +99,21 @@ inline fun <reified T : Fragment> Fragment.showFragment(
  */
 inline fun Fragment.showFragment(
     fragment: Fragment,
-    replaceViewId: Int
+    replaceViewId: Int,
+    lazy: Boolean = true
 ) {
     val sfm = childFragmentManager
     val transaction = sfm.beginTransaction()
     if (!fragment.isAdded) {
         transaction.add(replaceViewId, fragment, fragment.javaClass.name)
     }
-    sfm.fragments.filter { it != fragment }.forEach { transaction.hide(it) }
+    sfm.fragments
+        .filter { it != fragment && it.id == replaceViewId }
+        .forEach { transaction.hide(it).setMaxLifecycle(it, Lifecycle.State.CREATED) }
     transaction.show(fragment)
+    if (lazy) {
+        transaction.setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
+    }
     transaction.commitAllowingStateLoss()
     sfm.executePendingTransactions()
 }

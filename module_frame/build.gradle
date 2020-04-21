@@ -107,6 +107,7 @@ dependencies {
     //日志库
     debugApi rootProject.ext.dependencies["ZLogger"]
     releaseApi rootProject.ext.dependencies["ZLogger_no_op"]
+    api 'androidx.fragment:fragment:1.2.4'
 
 }
 repositories {
