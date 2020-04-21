@@ -26,6 +26,7 @@ ext {
             annotationsVersion      : "24.0.0",
             multidexVersion         : "1.0.2",
             roomVersion             : "2.2.2",
+            viewpager2Version       : "1.0.0",
             //生命周期管理
             lifecycleVersion        : "2.2.0-rc03",
             //kotlin相关版本
@@ -91,6 +92,7 @@ ext {
                     "support"                : "androidx.legacy:legacy-support-v4:${versions["androidXVersion"]}",
                     "cardview"               : "androidx.cardview:cardview:${versions["androidXVersion"]}",
                     "recyclerview"           : "androidx.recyclerview:recyclerview:${versions["androidXVersion"]}",
+                    "viewpager2"             : "androidx.viewpager2:viewpager2:${versions["viewpager2Version"]}",
                     //kotlin
                     "kotlin"                 : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions["kotlinVersion"]}",
                     //kotlin 协程
@@ -188,11 +190,6 @@ ext {
 
                     //微信分享
                     "weichatshare"           : "com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+",
-
-
-                    //骨架图
-                    "skeleton"               : "com.ethanhua:skeleton:${versions["skeleton"]}",
-                    "shimmerlayout"          : "io.supercharge:shimmerlayout:${versions["shimmerlayout"]}"
 
     ]
 
