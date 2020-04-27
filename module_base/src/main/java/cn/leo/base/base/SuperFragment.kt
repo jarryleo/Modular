@@ -18,7 +18,7 @@ import com.alibaba.android.arouter.launcher.ARouter
  * @author Max
  * @date 2019-09-15.
  */
-abstract class SuperFragment : Fragment() {
+abstract class SuperFragment : Fragment(), SuperView {
 
 
     @Volatile
@@ -49,18 +49,6 @@ abstract class SuperFragment : Fragment() {
     }
 
     /**
-     * 初始化方法，只会调用一次，(若开启懒加载后，只有当一次可见时才会回调此方法，若关闭懒加载则按正常流程)
-     */
-    protected abstract fun onInitialize()
-
-    /**
-     * 初始化方法之后
-     */
-    protected fun onInitializeAfter() {
-
-    }
-
-    /**
      * 创建内容视图
      */
     protected open fun createView(): View? {
@@ -85,6 +73,22 @@ abstract class SuperFragment : Fragment() {
      */
     protected open fun isLazyLoad(): Boolean {
         return true
+    }
+
+    override fun onInitObserve() {
+
+    }
+
+    override fun onInitView() {
+
+    }
+
+    override fun onInitEvent() {
+
+    }
+
+    override fun onInitRequest() {
+
     }
 
     @CallSuper
@@ -229,8 +233,10 @@ abstract class SuperFragment : Fragment() {
     private fun onFragmentFirstVisible() {
         "${javaClass.simpleName} + 对用户第一次可见".toLogD()
         lifecycleScope.launchWhenCreated {
-            onInitialize()
-            onInitializeAfter()
+            onInitObserve()
+            onInitView()
+            onInitEvent()
+            onInitRequest()
         }
     }
 

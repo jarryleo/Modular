@@ -46,15 +46,6 @@ abstract class BaseModelFragment<T : MViewModel<*>> : SuperActionBarFragment(),
         }
     }
 
-    open fun onInitObserve() {
-    }
-
-
-    @CallSuper
-    override fun onInitialize() {
-        onInitObserve()
-    }
-
     override fun showLoading(message: CharSequence?) {
         if (mLoadingDialog != null && mLoadingDialog?.isShowing == true) {
             return

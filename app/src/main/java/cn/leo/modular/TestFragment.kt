@@ -30,8 +30,7 @@ class TestFragment : BaseModelFragment<TestModel>() {
         return R.layout.activity_main
     }
 
-    override fun onInitialize() {
-        super.onInitialize()
+    override fun onInitView() {
         actionBar("", "菜单") {
             toast("点击菜单")
         }

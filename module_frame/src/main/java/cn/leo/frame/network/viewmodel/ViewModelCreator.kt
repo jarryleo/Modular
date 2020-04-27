@@ -28,7 +28,7 @@ class ModelCreator<T : MViewModel<*>>(private val clazz: Class<T>) :
 class ShareModelCreator<T : MViewModel<*>>(private val clazz: Class<T>) :
     ReadOnlyProperty<Fragment, T> {
     override fun getValue(thisRef: Fragment, property: KProperty<*>): T {
-        return ViewModelProvider(thisRef.activity!!).get(clazz)
+        return ViewModelProvider(thisRef.requireActivity()).get(clazz)
     }
 }
 

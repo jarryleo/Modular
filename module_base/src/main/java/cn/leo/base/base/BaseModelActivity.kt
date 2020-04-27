@@ -22,7 +22,7 @@ import kotlinx.coroutines.delay
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
-    ILoading {
+    ILoading, SuperView {
 
     var initialized = false
 
@@ -109,15 +109,30 @@ abstract class BaseModelActivity<T : MViewModel<*>> : AppCompatActivity(),
     @LayoutRes
     open fun getLayoutRes(): Int = -1
 
-    open fun onInitView() {}
 
-    open fun onInitObserve() {}
+    override fun onInitObserve() {
+
+    }
+
+    override fun onInitView() {
+
+    }
+
+    override fun onInitEvent() {
+
+    }
+
+    override fun onInitRequest() {
+
+    }
 
     @CallSuper
     open fun onInitialize() {
         ARouter.getInstance().inject(this)
         onInitObserve()
         onInitView()
+        onInitEvent()
+        onInitRequest()
         onResumeSafe()
         initialized = true
     }

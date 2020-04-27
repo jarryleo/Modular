@@ -9,7 +9,6 @@ import cn.leo.base.support.actionBar
 import cn.leo.base.support.doubleClickExit
 import cn.leo.base.support.setActionBarTitle
 import cn.leo.frame.image.loadImage
-import cn.leo.z_logger.Logger
 import cn.leo.frame.log.logE
 import cn.leo.frame.network.viewmodel.GlobalModelCreator
 import cn.leo.frame.support.*
@@ -114,7 +113,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         model.observe(this, model::test) {
             success {
-                Logger.e("result = $it")
+                logE("result = $it")
             }
 
             failed {
