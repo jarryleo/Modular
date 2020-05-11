@@ -25,5 +25,8 @@ interface UserDao {
     fun update(vararg users: User): Int
 
     @Delete
-    fun del(user: User)
+    fun del(vararg user: User): Int
+
+    @Query("DELETE FROM user")
+    fun delAll()
 }

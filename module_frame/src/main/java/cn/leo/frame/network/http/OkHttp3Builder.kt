@@ -17,7 +17,8 @@ import javax.net.ssl.*
  * Created by Leo on 2018/1/4.
  */
 
-class OkHttp3Builder {
+class
+OkHttp3Builder {
     private var mCacheDir: File = MFrame.context.cacheDir
     private val mInterceptorList = ArrayList<Interceptor>()
     fun connectTimeout(timeout: Int): OkHttp3Builder {

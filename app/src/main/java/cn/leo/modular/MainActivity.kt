@@ -130,9 +130,9 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     private fun test() {
 
         //model.test(1)
-        model.wechat()
+        //model.wechat()
         //model.apis(123).getWechatUserInfo("12311", "45611")
-        //model.apis.getWechatUserInfo("123", "456")
+        model.apis.getWechatUserInfo("123", "456")
     }
 
     override fun onBackPressed() {
