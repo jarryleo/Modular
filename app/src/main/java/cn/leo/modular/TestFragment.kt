@@ -8,7 +8,7 @@ import cn.leo.frame.log.logE
 import cn.leo.frame.network.viewmodel.GlobalModelCreator
 import cn.leo.frame.network.viewmodel.ShareModelCreator
 import cn.leo.frame.network.viewmodel.plus
-import cn.leo.frame.support.singleClick
+import cn.leo.frame.ext.singleClick
 import cn.leo.frame.utils.toast
 import kotlinx.android.synthetic.main.activity_main.*
 

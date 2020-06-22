@@ -1,12 +1,11 @@
-package cn.leo.frame.support
+package cn.leo.frame.ext
 
 import android.view.View
 import android.widget.Checkable
 
 /**
- * 点击事件防重复
+ * 防重复点击拓展
  */
-
 inline fun <T : View> T.singleClick(time: Long = 800, crossinline block: (T) -> Unit) {
     setOnClickListener {
         val currentTimeMillis = System.currentTimeMillis()
@@ -17,7 +16,9 @@ inline fun <T : View> T.singleClick(time: Long = 800, crossinline block: (T) -> 
     }
 }
 
-//兼容点击事件设置为this的情况
+/**
+ * 兼容点击事件设置为this的情况
+ */
 fun <T : View> T.singleClick(onClickListener: View.OnClickListener, time: Long = 800) {
     setOnClickListener {
         val currentTimeMillis = System.currentTimeMillis()
