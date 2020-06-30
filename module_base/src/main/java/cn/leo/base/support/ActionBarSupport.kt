@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import cn.leo.base.R
 import cn.leo.base.base.SuperActionBarFragment
 import cn.leo.frame.support.getColor
-import cn.leo.frame.support.setDarkStatusBar
-import cn.leo.frame.support.visibleOrGone
+import cn.leo.frame.ext.setDarkStatusBar
+import cn.leo.frame.ext.visibleOrGone
 
 /**
  * @author : ling luo

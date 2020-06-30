@@ -1,12 +1,12 @@
-package cn.leo.frame.support
+package cn.leo.frame.ext
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.ColorInt
-import cn.leo.frame.MFrame
 
 /**
  * @author : ling luo
@@ -16,14 +16,14 @@ import cn.leo.frame.MFrame
 /**
  * 获取状态栏高度——方法
  */
-fun getStatusBarHeight(): Int {
+fun Context.getStatusBarHeight(): Int {
     var statusBarHeight = -1
     //获取status_bar_height资源的ID
-    val resourceId = MFrame.context.resources
+    val resourceId = resources
         .getIdentifier("status_bar_height", "dimen", "android")
     if (resourceId > 0) {
         //根据资源ID获取响应的尺寸值
-        statusBarHeight = MFrame.context.resources.getDimensionPixelSize(resourceId)
+        statusBarHeight = resources.getDimensionPixelSize(resourceId)
     }
     return statusBarHeight
 }

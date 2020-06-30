@@ -1,4 +1,4 @@
-package cn.leo.frame.support
+package cn.leo.frame.ext
 
 import android.text.InputFilter
 import android.view.inputmethod.EditorInfo
@@ -51,34 +51,6 @@ fun EditText.getInt() = text.toString().toIntOrNull() ?: 0
 fun EditText.getLong() = text.toString().toLongOrNull() ?: 0L
 fun EditText.getFloat() = text.toString().toFloatOrNull() ?: 0f
 fun EditText.getDouble() = text.toString().toDoubleOrNull() ?: 0.0
-
-/**
- * 根据中英文字符限制字符数（一个中文等于2个字符）
- */
-fun EditText.textChangeWatcher(length: (text: CharSequence) -> Int) {
-    filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
-        val text = dest.replaceRange(dstart, dend, source)
-        var keep = length(text) - (dest.length - (dend - dstart))
-        when {
-            keep <= 0 -> {
-                return@InputFilter ""
-            }
-            keep >= end - start -> {
-                return@InputFilter null
-            }
-            else -> {
-                keep += start
-                if (Character.isHighSurrogate(source[keep - 1])) {
-                    --keep
-                    if (keep == start) {
-                        return@InputFilter ""
-                    }
-                }
-                return@InputFilter source.subSequence(start, keep)
-            }
-        }
-    })
-}
 
 /**
  * 当输入文字为空时候执行block

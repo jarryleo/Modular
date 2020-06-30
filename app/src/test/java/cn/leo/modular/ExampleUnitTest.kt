@@ -2,8 +2,8 @@ package cn.leo.modular
 
 import cn.leo.frame.ext.io
 import cn.leo.frame.ext.merge
-import cn.leo.frame.ext.wait
 import cn.leo.frame.support.measureTimeMillis
+import cn.leo.frame.ext.secondToHHmmSS
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import org.junit.Test
@@ -48,5 +48,11 @@ class ExampleUnitTest {
         }
         /*上面的协程代码并不会阻塞掉线程，所以我们这里让线程睡4秒，保证线程的存活，在实际的Android开发中无需这么做*/
         Thread.sleep(4000)
+    }
+
+    @Test
+    fun test2(){
+        val second = 100L
+        print(second.secondToHHmmSS())
     }
 }

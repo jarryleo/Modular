@@ -1,10 +1,9 @@
-package cn.leo.frame.support
+package cn.leo.frame.ext
 
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.TextView
 import androidx.annotation.DrawableRes
-import cn.leo.frame.ui.MagicTextViewUtil
 import cn.leo.frame.utils.ResUtil
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -72,9 +71,6 @@ fun double(view: () -> TextView) = object : TextProperty<Double>(view) {
         return getText().toDoubleOrNull() ?: 0.0
     }
 }
-
-
-fun TextView.magic() = MagicTextViewUtil.getInstance(this)
 
 
 fun TextView.setDrawables(

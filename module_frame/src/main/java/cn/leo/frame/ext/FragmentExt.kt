@@ -1,4 +1,4 @@
-package cn.leo.frame.support
+package cn.leo.frame.ext
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

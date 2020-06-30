@@ -1,4 +1,4 @@
-package cn.leo.frame.support
+package cn.leo.frame.ext
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData

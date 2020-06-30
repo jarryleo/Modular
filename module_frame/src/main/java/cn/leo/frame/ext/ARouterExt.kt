@@ -1,7 +1,6 @@
-package cn.leo.frame.support
+package cn.leo.frame.ext
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
@@ -55,7 +54,8 @@ fun <V> String.jumpForResult(
     requestCode: Int,
     vararg pairs: Pair<String, V>
 ): Any? {
-    return buildPostcard(this, *pairs).navigation(context, requestCode)
+    return buildPostcard(this, *pairs)
+        .navigation(context, requestCode)
 }
 
 
