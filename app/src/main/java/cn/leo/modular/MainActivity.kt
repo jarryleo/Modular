@@ -1,5 +1,6 @@
 package cn.leo.modular
 
+import android.graphics.Color
 import cn.leo.base.arouter.pages.PagesHome
 import cn.leo.base.base.BaseModelActivity
 import cn.leo.base.db.bean.User
@@ -44,7 +45,7 @@ class MainActivity : BaseModelActivity<WechatModel>() {
 
         tvTest.setOnClickListener {
             test()
-            model.findUserById(1)
+            //model.findUserById(1)
 
             ivTest.loadImage(
                 "https://pic2.zhimg.com/v2-7cb8b1ea5e11779e25b4b35d52b777f2_xll.jpg",
@@ -129,9 +130,9 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     }
 
     private fun test() {
-
+        tvTest.text = "你好啊，哈哈哈，吼吼吼".highLight("哈哈哈",Color.RED)
         //model.test(1)
-        model.wechat()
+        //model.wechat()
         //model.apis(123).getWechatUserInfo("12311", "45611")
         //model.apis.getWechatUserInfo("123", "456")
     }
