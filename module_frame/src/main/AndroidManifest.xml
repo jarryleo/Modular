@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.leo.frame">
     <!--网络权限-->
 
@@ -23,5 +24,15 @@
             android:name=".provider.FrameContextProvider"
             android:authorities="${applicationId}.FrameContextProvider"
             android:exported="false" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="cn.leo.frame.ext.ContextInitializer"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 </manifest>

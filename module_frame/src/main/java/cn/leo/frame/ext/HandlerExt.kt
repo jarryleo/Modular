@@ -1,9 +1,8 @@
 package cn.leo.frame.ext
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import cn.leo.frame.utils.SafetyMainHandler
+import android.os.Handler
+import android.os.Looper
+import androidx.lifecycle.*
 import kotlin.math.abs
 
 /**
@@ -80,4 +79,30 @@ inline fun LifecycleOwner.repeat(
         }
     }
     handler.postDelayed(runnable, interval)
+}
+
+
+/**
+ * 生命周期安全的 handler
+ */
+class SafetyMainHandler : Handler, LifecycleObserver {
+    constructor(lifecycleOwner: LifecycleOwner) : super(Looper.getMainLooper()) {
+        bindLifecycle(lifecycleOwner)
+    }
+
+    constructor(lifecycleOwner: LifecycleOwner, callback: Callback?) : super(
+        Looper.getMainLooper(),
+        callback
+    ) {
+        bindLifecycle(lifecycleOwner)
+    }
+
+    private fun bindLifecycle(lifecycleOwner: LifecycleOwner) {
+        lifecycleOwner.lifecycle.addObserver(this)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroy() {
+        removeCallbacksAndMessages(null)
+    }
 }

@@ -47,6 +47,9 @@ fun String.highLight(text: String, @ColorInt color: Int = Color.RED): Spanned {
  * @param length 整体长度
  */
 fun String.formatNum(length: Int = 2): String {
+    if (this.length >= length) {
+        return this
+    }
     val sb = StringBuilder()
     val left = length - this.length
     repeat(left) {

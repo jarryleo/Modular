@@ -27,6 +27,8 @@ ext {
             multidexVersion         : "1.0.2",
             roomVersion             : "2.2.2",
             viewpager2Version       : "1.0.0",
+            //启动管理
+            startupVersion          : "1.0.0-alpha01",
             //生命周期管理
             lifecycleVersion        : "2.2.0-rc03",
             //kotlin相关版本
@@ -93,6 +95,7 @@ ext {
                     "cardview"               : "androidx.cardview:cardview:${versions["androidXVersion"]}",
                     "recyclerview"           : "androidx.recyclerview:recyclerview:${versions["androidXVersion"]}",
                     "viewpager2"             : "androidx.viewpager2:viewpager2:${versions["viewpager2Version"]}",
+                    "startup"                : "androidx.startup:startup-runtime:${versions["startupVersion"]}",
                     //kotlin
                     "kotlin"                 : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions["kotlinVersion"]}",
                     //kotlin 协程

@@ -60,6 +60,7 @@ dependencies {
     api rootProject.ext.dependencies["support_annotations"]
     api rootProject.ext.dependencies["fragment"]
     api rootProject.ext.dependencies["viewpager2"]
+    api rootProject.ext.dependencies["startup"]
 
     //生命周期管理
     api rootProject.ext.dependencies["lifecycle-viewmodel-ktx"]
@@ -110,6 +111,7 @@ dependencies {
     //日志库
     debugApi rootProject.ext.dependencies["ZLogger"]
     releaseApi rootProject.ext.dependencies["ZLogger_no_op"]
+
 
 }
 repositories {
