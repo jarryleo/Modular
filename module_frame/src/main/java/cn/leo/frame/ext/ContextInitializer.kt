@@ -10,6 +10,11 @@ import kotlin.properties.Delegates
  * 清单文件注册启动器获取上下文
  *
  * JetPack 最新库
+ *
+dependencies {
+    implementation "androidx.startup:startup-runtime:1.0.0-alpha01"
+}
+清单文件注册：
 <provider
 android:name="androidx.startup.InitializationProvider"
 android:authorities="${applicationId}.androidx-startup"

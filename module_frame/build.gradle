@@ -112,7 +112,11 @@ dependencies {
     debugApi rootProject.ext.dependencies["ZLogger"]
     releaseApi rootProject.ext.dependencies["ZLogger_no_op"]
 
-
+    //测试谷歌新的 ActivityResult
+    implementation 'androidx.activity:activity:1.2.0-alpha06'
+    implementation 'androidx.activity:activity-ktx:1.2.0-alpha06'
+    implementation 'androidx.fragment:fragment:1.3.0-alpha06'
+    implementation 'androidx.fragment:fragment-ktx:1.3.0-alpha06'
 }
 repositories {
     mavenCentral()

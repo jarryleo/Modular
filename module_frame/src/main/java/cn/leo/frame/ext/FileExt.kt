@@ -1,5 +1,7 @@
 package cn.leo.frame.ext
 
+import android.content.Context
+import android.media.MediaScannerConnection
 import java.io.File
 import java.io.RandomAccessFile
 
@@ -50,4 +52,28 @@ inline fun File.getBlock(offset: Long, blockSize: Int = CHUNK_LENGTH): ByteArray
         }
     }
     return null
+}
+
+/**
+ * 通知刷新图库的显示
+ */
+fun File.refreshMediaStore(context: Context = ContextManager.context) {
+    MediaScannerConnection.scanFile(
+        context,
+        arrayOf(absolutePath),
+        null,
+        null
+    )
+}
+
+/**
+ * 通知刷新图库的显示
+ */
+fun String.refreshMediaStore(context: Context = ContextManager.context) {
+    MediaScannerConnection.scanFile(
+        context,
+        arrayOf(this),
+        null,
+        null
+    )
 }

@@ -3,17 +3,14 @@ package cn.leo.modular
 import android.graphics.Color
 import cn.leo.base.arouter.pages.PagesHome
 import cn.leo.base.base.BaseModelActivity
-import cn.leo.base.db.bean.User
 import cn.leo.base.model.WechatModel
 import cn.leo.base.net.Apis
-import cn.leo.base.support.actionBar
 import cn.leo.base.support.doubleClickExit
-import cn.leo.base.support.setActionBarTitle
 import cn.leo.frame.ext.*
 import cn.leo.frame.image.loadImage
 import cn.leo.frame.log.logE
 import cn.leo.frame.network.viewmodel.GlobalModelCreator
-import cn.leo.frame.support.*
+import cn.leo.frame.support.getColor
 import cn.leo.frame.utils.toast
 import cn.leo.modular.test.ArcNodeProgress
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -34,13 +31,6 @@ class MainActivity : BaseModelActivity<WechatModel>() {
     }
 
     override fun onInitView() {
-        actionBar(
-            "测试哈哈哈哈哈测试哈哈哈哈哈",
-            "菜单"
-        ) {
-            model.insert(User(1, "Tom"))
-            PagesHome.homeMain3Activity.jump()
-        }
 
 
         tvTest.setOnClickListener {
@@ -123,14 +113,10 @@ class MainActivity : BaseModelActivity<WechatModel>() {
             }
         }
 
-        globalModel.observe(this, globalModel::setTitle) {
-            success { setActionBarTitle(it) }
-        }
-
     }
 
     private fun test() {
-        tvTest.text = "你好啊，哈哈哈，吼吼吼".highLight("哈哈哈",Color.RED)
+        tvTest.text = "你好啊，哈哈哈，吼吼吼".highLight("哈哈哈", Color.RED)
         //model.test(1)
         //model.wechat()
         //model.apis(123).getWechatUserInfo("12311", "45611")
