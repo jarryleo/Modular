@@ -11,6 +11,7 @@ import cn.leo.frame.image.loadImage
 import cn.leo.frame.log.logE
 import cn.leo.frame.network.viewmodel.GlobalModelCreator
 import cn.leo.frame.support.getColor
+import cn.leo.frame.utils.WifiChecker
 import cn.leo.frame.utils.toast
 import cn.leo.modular.test.ArcNodeProgress
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -36,6 +37,9 @@ class MainActivity : BaseModelActivity<WechatModel>() {
         tvTest.setOnClickListener {
             test()
             //model.findUserById(1)
+
+            //toast("wifi 开关状态 =" + WifiChecker.isWifiOpen(this))
+            toast("wifi 连接状态 =" + WifiChecker.isWifiConnected(this))
 
             ivTest.loadImage(
                 "https://pic2.zhimg.com/v2-7cb8b1ea5e11779e25b4b35d52b777f2_xll.jpg",

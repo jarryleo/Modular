@@ -9,6 +9,7 @@ import cn.leo.frame.MFrame
 /**
  * @author : ling luo
  * @date : 2019-12-03
+ * 模块初始化时候获取上下文application
  */
 class FrameContextProvider : ContentProvider() {
     override fun insert(uri: Uri, values: ContentValues?): Uri? {

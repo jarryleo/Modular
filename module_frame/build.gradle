@@ -113,10 +113,13 @@ dependencies {
     releaseApi rootProject.ext.dependencies["ZLogger_no_op"]
 
     //测试谷歌新的 ActivityResult
-    implementation 'androidx.activity:activity:1.2.0-alpha06'
-    implementation 'androidx.activity:activity-ktx:1.2.0-alpha06'
-    implementation 'androidx.fragment:fragment:1.3.0-alpha06'
-    implementation 'androidx.fragment:fragment-ktx:1.3.0-alpha06'
+    implementation 'androidx.activity:activity:1.2.0-beta01'
+    implementation 'androidx.activity:activity-ktx:1.2.0-beta01'
+    implementation 'androidx.fragment:fragment:1.3.0-beta01'
+    implementation 'androidx.fragment:fragment-ktx:1.3.0-beta01'
+
+    //代替 SharedPreferences 的新库： dataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha02"
 }
 repositories {
     mavenCentral()

@@ -34,5 +34,6 @@
                 android:name="cn.leo.frame.ext.ContextInitializer"
                 android:value="androidx.startup" />
         </provider>
+
     </application>
 </manifest>
